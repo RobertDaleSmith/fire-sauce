@@ -1,0 +1,10 @@
+{
+  "dbConfig": {
+    "name"        : "RDS-Testing",
+    "url"         : "paulo.mongohq.com",
+    "port"        : "10028",
+    "username"    : "firesauce",
+    "password"    : "burntsauce",
+    "secret"      : "0f1i2r3e4s5a6u7c8e9s0p9i8c7e6s5u4p3y2o1u2r3v4i5d6e7o8s9"
+  }
+}
