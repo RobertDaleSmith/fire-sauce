@@ -37,60 +37,57 @@ Index.prototype.twitterSearchName = function( req, res ) {
 	var shorts = [], longs = [], shortFunctions = [];
 
 	var params = {screen_name: 'robertdalesmith', count: 50, result_type: 'video'};
-	twitter.get('statuses/user_timeline', params, function(error, tweets, response){
+	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
 		if (!error) {
-			
+
 			// console.log(tweets);
-
-			async.auto([
-				function(next){
-
-					tweets.forEach(function(tweet){
-
-						// console.log(tweet.entities.urls);
-						if(tweet.entities.urls.length >= 1){
-							for(var i=0; i<tweet.entities.urls.length; i++){
-								shorts.push(tweet.entities.urls[i].expanded_url);
+			async.auto({
+				getUrls: function(done) {
+					var tempArr = tweets.reduce(function(arr, tweet) {
+						if (tweet.entities.urls.length >= 1) {
+							for (var i = 0; i < tweet.entities.urls.length; i++) {
+								arr.push(tweet.entities.urls[i].expanded_url);
 							}
 						}
+						return arr;
+					}, []);
 
-					});
-
-					next();
-
+					return done(null, tempArr);
 				},
-				function(next){
+				expandUrls: ['getUrls', function(done, results) {
+					var shortUrlArr = results.getUrls;
+					var expandedUrlArr = [];
 
-					shorts.forEach(function(url, i){
-
-						shortFunctions.push(function(cont){
-
-							unshortener.expand(shorts[longs.length]+'', bitlyAuth, function (err, url){
-								console.log(url.href);
-								longs.push(url.href);
-								cont();
-							});
-
+					// will do 20 at a time
+					async.eachLimit(shortUrlArr, 20, function(url, next) {
+						request({
+							method: "HEAD",
+							url: url,
+							followAllRedirects: true
+						}, function(error, response) {
+							if (error) {
+								// not sure how to handle a bad url...continue for now
+								return next();
+							}
+							expandedUrlArr.push(response.request.href);
+							next();
 						});
-
+					}, function(err) {
+						if (err) {
+							return done(err);
+						}
+						return done(null, expandedUrlArr)
 					});
 
-					next();
-
+				}]
+			}, function(err, results) {
+				if (err) {
+					res.send(err);
 				}
-			], 
-			function(){
-
-				async.series(shortFunctions, function(){
-
-					res.send(shorts);
-
-				});				
-				
+				res.send(results.expandUrls);
 			});
 
 		}
 	});
 
-	
 };
