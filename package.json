@@ -20,7 +20,7 @@
     "dustjs-linkedin": "*",
     "dustjs-helpers": "*",
     "consolidate": "*",
-    "mongodb": "*",
+    "mongodb": "2.*",
     "connect-mongodb": "*",
     "async": "*",
     "node-sass":"0.8.1",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "chai": "*"
+    "chai": "2.2.0"
   },
   "license": "BSD",
   "engines": {
