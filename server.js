@@ -19,7 +19,7 @@ var dbInfo = config.get('dbConfig');
 
 var app = express();
 
-var conf = { 'port':(process.env.PORT || 8000), 'base':'' };
+var conf = { 'port':(process.env.PORT || 8080), 'base':'' };
 
 var mongo = new (require('./libs/Mongo').Mongo)(dbInfo);
 
@@ -116,7 +116,7 @@ mongo.connect(function(err) {
   app.get( '/', function( req, res, next ) { routes.Index.home( req, res, next ); } );
 
 
-  app.get( '/search/name/:name', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
+  app.get( '/search/:query', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
 
   //Uncomment and use to create admin password, then comment out.
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );
