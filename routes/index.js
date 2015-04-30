@@ -9,7 +9,6 @@ var async = require("async")
 		access_token_key: '***REMOVED***',
 		access_token_secret: '***REMOVED***'
 	  })
-	, unshortener = require('unshortener')
 	, bitlyAuth = {bitly: {username: ***REMOVED***, apikey: '***REMOVED***'}}
 	, request = require('request')
 	;
@@ -61,7 +60,7 @@ function vimeo_parser(url) {
 }
 
 function isTargetedContentType(url){
-	
+
 	var isIt = false;
 
 	if(url.indexOf("youtube.com") > -1) isIt = true;
@@ -83,7 +82,7 @@ function trimURL(url){
 Index.prototype.twitterSearchName = function( req, res ) {
 	console.log('twitterSearchName');
 	var shorts = [], longs = [], shortFunctions = [];
-	
+
 	var name = req.params.name;
 
 	var params = {screen_name: name, count: 100};
@@ -125,9 +124,9 @@ Index.prototype.twitterSearchName = function( req, res ) {
 							var resultURL = response.request.href;
 
 							if( isTargetedContentType(resultURL) != 0 ){
-								expandedUrlArr.push( trimURL(resultURL) );	
+								expandedUrlArr.push( trimURL(resultURL) );
 							}
-							
+
 							next();
 						});
 					}, function(err) {
@@ -148,6 +147,6 @@ Index.prototype.twitterSearchName = function( req, res ) {
 		}
 	});
 
-	
+
 
 };
