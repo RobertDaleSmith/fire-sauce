@@ -36,3 +36,7 @@ thumbs.db
 Thumbs.db
 Icon?
 *.sublime-workspace
+
+# Webstorm Files #
+##################
+.idea
