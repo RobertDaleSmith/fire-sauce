@@ -1,0 +1,241 @@
+*, *:before, *:after {
+    -webkit-box-sizing: border-box; /* Needed for mobile WebKit */
+       -moz-box-sizing: border-box; /* Needed for Firefox */
+    		box-sizing: border-box;
+
+	-webkit-user-select: none;
+	 -khtml-user-select: none;
+	   -moz-user-select: none;
+		-ms-user-select: none; /* IE 10+ */
+			user-select: none;
+}
+
+html{
+	color: #000000;
+	background-color: #FFFFFF;
+	width: 100%;
+	height: 100%;
+}
+
+body{
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	font-family: 'Open Sans', sans-serif;
+	background-color: #000000;
+}
+
+
+#main_wrapper{
+	display: block;
+	position: absolute;
+	top: 0px; left: 0px;
+	width: 100%;
+	height: 100%;
+
+}
+
+#player_viewport{
+	display: block;
+	position: absolute;
+	top: 0px; left: 320px;
+	width: calc(100% - 320px);
+	height: 100%;
+}
+
+#player_watermark{
+	display: block;
+	position: absolute;
+
+	left:30px;
+	bottom:30px;
+
+	width: 42px;
+	height:48px;
+
+	background-image:url('../watermark.png');
+	background-repeat: no-repeat;
+	background-size: 42px 48px;
+	z-index: 1000;
+
+	opacity: 0.333;
+
+	cursor: pointer;
+
+	-webkit-clip-path: polygon(0 0, 0 100%, 100% 50%);
+			clip-path: polygon(0 0, 0 100%, 100% 50%);
+}
+	#player_watermark:hover{
+		opacity: 0.666;
+	}
+
+#ytplayer{
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+}
+
+#chrome_wrapper{
+	display: block;
+	position: absolute;
+	top: 0; left: 0px;
+	width: 320px;
+	height: 100%;
+
+	background-color:#394658;
+}
+
+#search_wrapper{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	height: 68px;
+	padding: 10px;
+	font-size: 22px;
+
+}
+#search_wrapper::after{
+	content: '@';
+	display: inline-block;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 30px;
+	height: 48px;
+	color: lightgrey;
+	padding-left: 10px;
+	line-height: 46px;
+}
+
+	input#search_input{
+		display: inline-block;
+		position: relative;
+		width: 100%;
+		height: 48px;
+		background-color: #ffffff;
+		padding: 0 70px 0 30px;
+		border-style: solid;
+		border-width: 2px;
+		border-color: #394658;
+		font-size: inherit;
+		color: #4f6074;
+	}
+	input#search_input:focus{
+		outline:0;
+		border-color: #4f6074;
+	}
+
+	input#search_button{
+		display: inline-block;
+		position: absolute;
+		top: 22px;
+		right: 22px;
+		width: auto;
+		height: 24px;
+		background-color: #f4f4f4;
+		padding: 0 5px;
+		border-style: solid;
+		border-width: 0px;
+		border-color: #4f6074;
+		font-size: 14px;
+		border-radius: 4px;
+		line-height: 24px;
+		cursor: pointer;
+		color: #53D063;
+	}
+	input#search_button:focus{
+		outline:0;
+		border-color: #4f6074;
+	}
+	
+
+#schedule_wrapper{
+	display: inline-block;
+	position: absolute;
+	top: 68px; left: 0px;
+	width: 100%; height:auto;
+
+	max-height: calc(100% - 68px);
+  
+	padding: 0px; margin: 0px;
+	background-color:#435264;
+	overflow-x: hidden;
+}
+	#progress_wrapper{
+		display: block;
+		position: absolute;
+		top: 0px; left: 0px;
+
+	}
+
+	.show{
+		display: inline-block;
+		position: relative;
+		float:left;
+
+		height:auto;
+		min-height:48px; 
+
+		width: 100%;
+		
+		line-height:48px;
+		color:#ffffff;
+
+		padding: 10px 15px;
+		border-style: solid;
+		border-width: 1px 0 0 0;
+		border-color: #4f6074;
+
+		-webkit-box-shadow: inset -1px 0 0 #36414f;
+		   -moz-box-shadow: inset -1px 0 0 #36414f;
+				box-shadow: inset -1px 0 0 #36414f;
+
+		cursor: pointer;
+		background-color: transparent;
+		text-align: center;
+	}
+	.show:active{
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+		.show .indicator{
+			display: inline-block;
+			position: absolute;
+			left: 0px; top:0px;
+			height: 100%; width: 5px;
+			background-color: transparent;
+		}
+		.show.playing .indicator{
+			background-color: #59faad;
+		}
+
+		.show .progress{
+			display: inline-block;
+			position: absolute;
+			left: 0px; top:0px;
+			height: 100%; width: 0px;
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+
+		.show .text{
+			display: inline-block;
+			position: relative;
+			float:left;
+			width: 100%; height: auto;
+			line-height: 20px;
+			font-size: 12px;
+			text-align: left;
+		}
+
+		.show .url{
+			display: inline-block;
+			position: relative;
+			float:left;
+			width: 100%; height: auto;
+			line-height: 20px;
+			font-size: 10px;
+			text-align: left;
+		}
+

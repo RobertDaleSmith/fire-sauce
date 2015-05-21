@@ -64,28 +64,56 @@ function isTargetedContentType(url){
 	var isIt = false;
 
 	if(url.indexOf("youtube.com") > -1) isIt = true;
-	else if(url.indexOf("vimeo.com") > -1) isIt = true;
+	// else if(url.indexOf("vimeo.com") > -1) isIt = true;
 
 	return isIt;
 
 }
 
-function trimURL(url){
+function trimYouTubeURL(url){
 
-	// url = url.split('&')[0];
+	var base = url.split('?')[0],
+	  params = getParamsArray(url);
+	
+	url = base + '?v=' + params.v;
+	if(params.t) url += '&t=' + params.t;
 
 	// if(url.indexOf("vimeo.com") > -1) url = url.split('?')[0];
 
 	return url;
 }
 
+function getParamsArray(url){
+	
+	var params = url.split('?')[1];
+	if(params) params = params.split('&');
+	else params = [];
+
+	var jsonStr = '{';
+
+	for(var i=0; i<params.length; i++){
+
+		var param = params[i].split('=');
+
+		jsonStr += '"' + param[0] + '":"' + param[1] + '"';
+
+		if(i<params.length-1) jsonStr += ',';
+
+	}
+
+	jsonStr+='}';
+
+	return JSON.parse( jsonStr );
+
+}
+
 Index.prototype.twitterSearchName = function( req, res ) {
-	console.log('twitterSearchName');
+	// console.log('twitterSearchName');
 	var shorts = [], longs = [], shortFunctions = [];
 
-	var name = req.params.name;
+	var query = req.params.query;
 
-	var params = {screen_name: name, count: 100};
+	var params = {screen_name: query, count: 100}; 
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
 	// var params = {q: query, count: 100};
 	// twitter.get('search/tweets', params, function(error, tweets, response) {
@@ -93,11 +121,23 @@ Index.prototype.twitterSearchName = function( req, res ) {
 
 			// console.log(tweets);
 			async.auto({
-				getUrls: function(done) {
+				getTweetLinks: function(done) {
 					var tempArr = tweets.reduce(function(arr, tweet) {
 						if (tweet.entities.urls.length >= 1) {
 							for (var i = 0; i < tweet.entities.urls.length; i++) {
-								arr.push(tweet.entities.urls[i].expanded_url);
+								arr.push({
+									id: tweet.id_str,
+									text: tweet.text,
+									created_at: tweet.created_at,
+									url: tweet.entities.urls[i].expanded_url,
+									user: tweet.user,
+									retweet_count: tweet.retweet_count,
+									favorite_count: tweet.favorite_count,
+									favorited: tweet.favorited,
+									retweeted: tweet.retweeted,
+									source: tweet.source,
+									lang: tweet.lang
+								});
 							}
 						}
 						return arr;
@@ -105,15 +145,15 @@ Index.prototype.twitterSearchName = function( req, res ) {
 
 					return done(null, tempArr);
 				},
-				expandUrls: ['getUrls', function(done, results) {
-					var shortUrlArr = results.getUrls;
-					var expandedUrlArr = [];
+				expandUrls: ['getTweetLinks', function(done, results) {
+					var tweetLinks = results.getTweetLinks;
+					var expandedTweetUrlArr = [];
 
 					// will do 20 at a time
-					async.eachLimit(shortUrlArr, 20, function(url, next) {
+					async.eachLimit(tweetLinks, 10, function(tweet, next) {
 						request({
 							method: "HEAD",
-							url: url,
+							url: tweet.url,
 							followAllRedirects: true
 						}, function(error, response) {
 							if (error) {
@@ -121,10 +161,11 @@ Index.prototype.twitterSearchName = function( req, res ) {
 								return next();
 							}
 
-							var resultURL = response.request.href;
+							var resultLongUrl = response.request.href;
 
-							if( isTargetedContentType(resultURL) != 0 ){
-								expandedUrlArr.push( trimURL(resultURL) );
+							if( isTargetedContentType(resultLongUrl) != 0 ){
+								tweet.url = trimYouTubeURL(resultLongUrl);
+								expandedTweetUrlArr.push(tweet);
 							}
 
 							next();
@@ -133,7 +174,11 @@ Index.prototype.twitterSearchName = function( req, res ) {
 						if (err) {
 							return done(err);
 						}
-						return done(null, expandedUrlArr)
+
+						//Sort by date created_at before returning results.
+						expandedTweetUrlArr.sort(function(a,b) { return (new Date(a.created_at)) - (new Date(b.created_at)) } )
+
+						return done(null, expandedTweetUrlArr)
 					});
 
 				}]
@@ -141,6 +186,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 				if (err) {
 					res.send(err);
 				}
+
 				res.send(results.expandUrls);
 			});
 
