@@ -112,8 +112,9 @@ Index.prototype.twitterSearchName = function( req, res ) {
 	var shorts = [], longs = [], shortFunctions = [];
 
 	var query = req.params.query;
+	console.log("Fetching user: " + query);
 
-	var params = {screen_name: query, count: 100}; 
+	var params = {screen_name: query, count: 200}; 
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
 	// var params = {q: query, count: 100};
 	// twitter.get('search/tweets', params, function(error, tweets, response) {
@@ -150,7 +151,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 					var expandedTweetUrlArr = [];
 
 					// will do 20 at a time
-					async.eachLimit(tweetLinks, 10, function(tweet, next) {
+					async.eachLimit(tweetLinks, 20, function(tweet, next) {
 						request({
 							method: "HEAD",
 							url: tweet.url,

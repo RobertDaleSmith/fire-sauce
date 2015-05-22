@@ -72,6 +72,10 @@ $(window).bind("load", function() {
 						var element = $('<li/>').addClass("show")
 												.attr('id', "video__"+idx)
 												.append($('<div/>')
+													.addClass("started")
+													.text( moment(new Date(tweet.created_at)).fromNow() )
+												)
+												.append($('<div/>')
 													.addClass("text")
 													.html(tweet.text)
 												)
@@ -121,10 +125,12 @@ var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(ytScriptTag, firstScriptTag);
 
 // This function creates an <iframe> (and YouTube player) after the API code downloads.
-var ytplayer, ytplayerReady, ytIframeAPIReady;
+var ytplayer, ytplayerReady, ytIframeAPIReady, playerState = 0;
 function onYouTubeIframeAPIReady() {
 	ytplayerReady = true;
 	// loadVideo("8AvI-3Ows-8");
+
+	setInterval(updatePlayerInfo, 250);
 }
 
 function initYouTubeIframeAPI(videoId) {
@@ -178,6 +184,9 @@ function onYtPlayerStateChange(event) {
 	else if (event.data == YT.PlayerState.CUED) {
 		console.log("CUED");
 	}
+
+	playerState = event.data;
+	console.log(playerState);
 
 }
 
@@ -272,6 +281,8 @@ function getVimeoID(url) {
 }
 
 function playNextTrack(){
+
+	$('li.show#video__'+trackIndex).addClass('watched');
 	trackIndex--;
 	playTrack(trackIndex);
 }
@@ -306,3 +317,67 @@ function cleanTweetText(text){
 }
 
 
+var markerWidth = 0, 
+	prevCurrentTime = 0, 
+	prevDuration = 0, 
+	currentTime = 0,
+	tempCurrentTime = 0, 
+	tempDuration = 0, 
+	durationTimeOutput = 0, 
+	currentTimeOutput = 0,
+	seekBarWidth, 
+	completedWidth, 
+	fractionLoaded, 
+	fractionLoadedWidth,
+	timeSeeking = false, 
+	volSeeking = false,
+	completedPercent = 0;
+
+// Display information about the current state of the player
+function updatePlayerInfo() {
+  
+    if(ytplayer){
+
+    	try{
+
+    		tempCurrentTime = parseInt(ytplayer.getCurrentTime().toFixed(0));
+        	tempDuration = parseInt(ytplayer.getDuration().toFixed(0));	
+
+    	}catch(e){}
+        
+        if(playerState == 1) {
+
+        	completedPercent = ((tempCurrentTime * 100) / tempDuration).toFixed(0);
+        	$('li.show#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
+
+            seekBarWidth = document.getElementById("timeSlider").clientWidth;
+            completedWidth = ((tempCurrentTime * (seekBarWidth - markerWidth)) / tempDuration).toFixed(0);
+
+            fractionLoaded = ytplayer.getVideoLoadedFraction();
+            fractionLoadedWidth = ((fractionLoaded * (seekBarWidth)));
+
+            //update seeker
+            if (!timeSeeking) {
+            	$("#timeSlider .marker").css("left",completedWidth+"px");
+            	$("#timeSlider .complete").css("width",completedWidth+"px");
+
+                currentTimeOutput = secondsToTime(tempCurrentTime);
+                document.getElementById("timer_current").innerHTML = currentTimeOutput;
+
+                $("#fractionLoaded").css("width",fractionLoadedWidth+"px");
+            }
+
+            durationTimeOutput = secondsToTime(tempDuration);
+            document.getElementById("timer_duration").innerHTML = durationTimeOutput;
+
+            prevCurrentTime = tempCurrentTime;
+            prevDuration = tempDuration;
+
+        }
+        // else if(playerState == 0) {
+        //     videoEnded();
+        // }
+
+    }
+
+}
