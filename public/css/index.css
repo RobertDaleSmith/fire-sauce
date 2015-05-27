@@ -65,10 +65,19 @@ body{
 
 	-webkit-clip-path: polygon(0 0, 0 100%, 100% 50%);
 			clip-path: polygon(0 0, 0 100%, 100% 50%);
+
+	-webkit-transition: opacity 500ms;
+	   -moz-transition: opacity 500ms;
+		 -o-transition: opacity 500ms;
+			transition: opacity 500ms;
 }
-	#player_watermark:hover{
-		opacity: 0.666;
-	}
+#player_watermark:hover{
+	opacity: 0.666;
+}
+#player_watermark.live{
+	opacity: 0.666;
+	
+}
 
 #ytplayer{
 	display: block;
@@ -138,17 +147,20 @@ body{
 		background-color: #f4f4f4;
 		padding: 0 5px;
 		border-style: solid;
-		border-width: 0px;
-		border-color: #4f6074;
+		border-width: 1px;
+		border-color: #f4f4f4;
 		font-size: 14px;
 		border-radius: 4px;
 		line-height: 24px;
 		cursor: pointer;
 		color: #53D063;
 	}
+	input#search_button:active{
+		opacity: 0.7;
+	}
 	input#search_button:focus{
 		outline:0;
-		border-color: #4f6074;
+		border-color: rgba(83, 208, 99, 0.35);
 	}
 	
 
@@ -171,7 +183,7 @@ body{
 
 	}
 
-	.show{
+	.track{
 		display: inline-block;
 		position: relative;
 		float:left;
@@ -192,39 +204,43 @@ body{
 		   -moz-box-shadow: inset -1px 0 0 #36414f;
 				box-shadow: inset -1px 0 0 #36414f;
 
-		cursor: pointer;
 		background-color: transparent;
 		text-align: center;
 	}
-	.show:active{
-		background-color: rgba(0, 0, 0, 0.1);
+	.track:active{
+		/*background-color: rgba(0, 0, 0, 0.1);*/
 	}
-		.show .indicator{
+		.track .indicator{
 			display: inline-block;
 			position: absolute;
 			left: 0px; top:0px;
 			height: 100%; width: 5px;
 			background-color: transparent;
 		}
-		.show.playing .indicator{
+		.track.playing .indicator{
 			background-color: #59faad;
 		}
-		.show.watched .indicator{
+		.track.watched .indicator{
 			background-color: rgba(89, 250, 173, 0.3);
 		}
 
-		.show .progress{
+		.track .progress{
 			display: inline-block;
 			position: absolute;
 			left: 0px; top:0px;
 			height: 100%; width: 0px;
 			background-color: rgba(255, 255, 255, 0.1);
+
+			-webkit-transition: width 1s;
+			   -moz-transition: width 1s;
+				 -o-transition: width 1s;
+					transition: width 1s;
 		}
-		.show.watched .progress{
-			width: 100% !important;
+		.track.watched .progress{
+			width: 100%;
 		}
 
-		.show .started{
+		.track .started{
 			display: inline-block;
 			position: relative;
 			float: left;
@@ -237,7 +253,7 @@ body{
   			margin-bottom: 5px;
 		}
 
-		.show .text{
+		.track .text{
 			display: inline-block;
 			position: relative;
 			float:left;
@@ -247,7 +263,7 @@ body{
 			text-align: left;
 		}
 
-		.show .url{
+		.track .url{
 			display: inline-block;
 			position: relative;
 			float:left;
@@ -256,6 +272,43 @@ body{
 			font-size: 10px;
 			text-align: left;
 		}
+
+		.track .controls{
+			display: inline-block;
+			position: relative;
+			float:left;
+			width: calc(100% + 8px); height: auto;
+			/*line-height: 20px;*/
+			/*font-size: 10px;*/
+			text-align: left;
+			margin: 5px 0 0 0;
+			left: -4px;
+		}
+
+			.track .controls .btn{
+				display: inline-block;
+				position: relative;
+				float: left;
+				text-align: center;
+				width: 22px; height: 22px;
+				opacity: 0.7;
+				margin: 0 4px 0 0;
+				cursor: pointer;
+			}
+			.track .controls .btn:active{
+				opacity: 1;
+			}
+			.track .controls .btn.right{
+				float: right;
+				margin: 0 0 0 4px;
+			}
+			.track .controls .btn.pause{
+				display: none;
+			}
+			.track.playing .controls .btn.pause{
+				display: inline-block;
+			}
+
 
 
 .timeSlider_holder{
@@ -287,6 +340,11 @@ body{
 	top:0px; left:0px;
 	height: 100%; width: auto;
 	background-color: rgba(255, 255, 255, 0.15);
+
+	-webkit-transition: width 1s;
+	   -moz-transition: width 1s;
+		 -o-transition: width 1s;
+			transition: width 1s;
 }
 
 .timeSlider {
@@ -298,18 +356,23 @@ body{
 	cursor: pointer;
 	
 	top: 19px; left: 0px;
-
-	-webkit-transition: all ease-in 250ms;
-    -moz-transition: all ease-in 250ms;
-    -o-transition: all ease-in 250ms;
-    transition: all ease-in 250ms;
+	
+	-webkit-transition: top ease-in 250ms;
+	   -moz-transition: top ease-in 250ms;
+		 -o-transition: top ease-in 250ms;
+			transition: top ease-in 250ms;
 
 }
 .timeSlider_holder:hover .timeSlider{
 	top: 0px;
+
+	-webkit-transition: top ease-in 500ms;
+	   -moz-transition: top ease-in 500ms;
+		 -o-transition: top ease-in 500ms;
+			transition: top ease-in 500ms;
 }
 
-.timeSlider .marker {
+.timeSlider .ui-slider-handle {
 	display: inline-block;
 	position: absolute;
 	top: 0; left: 0;
@@ -317,38 +380,47 @@ body{
 	cursor: pointer;
 	background-color: #fff;
 	z-index: 3;
-  
+  	
+  	/*-webkit-transition: width 1s;
+	   -moz-transition: width 1s;
+		 -o-transition: width 1s;
+			transition: width 1s;*/
 }
-.timeSlider .complete {
+.timeSlider .ui-slider-range {
 	display: inline-block;
 	position: absolute;
 	
 	width: auto; height: 100%;
-	background-color: #53D063;
+	background-color: #C0362C;
 	z-index: 2;
 
 	border-style: solid;
 	border-width: 0px;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	border-color: #53D063;
+	border-color: #C0362C;
+
+	/*-webkit-transition: width 1s;
+	   -moz-transition: width 1s;
+		 -o-transition: width 1s;
+			transition: width 1s;*/
 }
 .timeSlider.vertical {
   height: auto;
   width: 12px;
 }
-.timeSlider.vertical .complete {
+.timeSlider.vertical .ui-slider-range {
   position: absolute;
   height: auto;
   width: 20px;
   bottom: 0;
 }
-.timeSlider:hover .complete {
-  background-color: #54EC67;
+.timeSlider:hover .ui-slider-range {
+  background-color: #C0362C;
 }
-.timeSlider:active .complete,
-.timeSlider:active + .marker:active .complete {
-  background-color: #54EC67;
+.timeSlider:active .ui-slider-range,
+.timeSlider:active + .ui-slider-handle:active .ui-slider-range {
+  background-color: #CF3B30;
 }
 
 #timer_current{

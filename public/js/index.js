@@ -69,7 +69,7 @@ $(window).bind("load", function() {
 
 					var tweetElements = [];
 					$.each( tweets, function( idx, tweet ) {
-						var element = $('<li/>').addClass("show")
+						var element = $('<li/>').addClass("track")
 												.attr('id', "video__"+idx)
 												.append($('<div/>')
 													.addClass("started")
@@ -79,23 +79,40 @@ $(window).bind("load", function() {
 													.addClass("text")
 													.html(tweet.text)
 												)
-												// .append($('<div/>')
-												// 	.addClass("url")
-												// 	.text(tweet.url)
-												// )
 												.append($('<div/>')
 													.addClass("indicator")
 												)
 												.append($('<div/>')
 													.addClass("progress")
 												)
+												.append($('<div/>')
+													.addClass("controls")
+													.append($('<div/>')
+														.addClass("btn pause")
+														.html("<i class='fa fa-pause'></i>")
+													)
+													.append($('<div/>')
+														.addClass("btn start")
+														.html("<i class='fa fa-play'></i>")
+													)
+													.append($('<div/>')
+														.addClass("btn right fav")
+														.html("<i class='fa fa-star-o'></i>")
+													)
+													.append($('<div/>')
+														.addClass("btn right resauce")
+														.html("<i class='fa fa-retweet'></i>")
+													)
+												)
 												;
-						element.bind('click', showListElClickEvent);
+						element.find('.btn.start').bind('click', videoStartClickEvent);
+						element.find('.btn.pause').bind('click', videoPauseClickEvent);
+						element.find('.btn.fav').bind('click', videoFavClickEvent);
 						tweetElements.push(element);
 					});
 
 					$("#schedule_wrapper").html(tweetElements);
-					$("#schedule_wrapper")[0].scrollTop = $("#schedule_wrapper")[0].scrollHeight;
+					$("#schedule_wrapper").animate($("#schedule_wrapper")[0].scrollHeight,500);
 
 					// Play most recent.
 					trackIndex = tweets.length;
@@ -108,10 +125,44 @@ $(window).bind("load", function() {
 	});
 
 	$('#player_watermark').bind('click', function(e) {
-		playNextTrack();
+		
+		if($(this).hasClass('live')) $(this).removeClass('live');
+		else $(this).addClass('live');
+		
 	});
-
 	
+	$( "#timeSlider" ).slider({
+		animate: "fast",
+		orientation: "horizontal",
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 0,
+		start: function(){
+
+			timeSeeking = true;
+
+		},
+		slide: function(){
+			var seconds = $("#timeSlider").slider("value");
+			
+			// seekVideoTo(seconds, false);
+
+		},
+		stop: function(){
+			var seconds = $("#timeSlider").slider("value");
+
+			seekVideoTo(seconds, true);
+
+			setTimeout(function(){timeSeeking = false;}, 100);
+
+		},
+		change: function(){
+
+			// console.log( $( "#timeSlider" ).slider("value") );
+
+		}
+    });
 
 });
 
@@ -130,7 +181,7 @@ function onYouTubeIframeAPIReady() {
 	ytplayerReady = true;
 	// loadVideo("8AvI-3Ows-8");
 
-	setInterval(updatePlayerInfo, 250);
+	setInterval(updatePlayerInfo, 33);
 }
 
 function initYouTubeIframeAPI(videoId) {
@@ -145,7 +196,7 @@ function initYouTubeIframeAPI(videoId) {
 				controls : 0,
 				enablejsapi: 1,
 				disablekb: 1,
-				// html5: 1,
+				html5: 1,
 				iv_load_policy: 3,
 				modestbranding: 1,
 				origin: window.location.host,
@@ -168,30 +219,39 @@ function onYtPlayerReady(event) {
 }
 
 function onYtPlayerStateChange(event) {
+	playerState = event.data;
 	if (event.data == YT.PlayerState.ENDED) {
 		console.log("ENDED");
+
 		playNextTrack();
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {
 		console.log("PLAYING");
+
+		//Sets timeSlider max to the number of seconds in current video.
+		$( "#timeSlider" ).slider('option', 'max', ytplayer.getDuration() );
+
+		//Sets pause button to show play icon.
+		$('li.track.playing div.btn.pause i.fa').removeClass('fa-play').addClass('fa-pause');
 	}
 	else if (event.data == YT.PlayerState.PAUSED) {
 		console.log("PAUSED");
+
+		//Sets pause button to show pause icon.
+		$('li.track.playing div.btn.pause i.fa').removeClass('fa-pause').addClass('fa-play');
 	}
 	else if (event.data == YT.PlayerState.BUFFERING) {
 		console.log("BUFFERING");
+
 	}
 	else if (event.data == YT.PlayerState.CUED) {
 		console.log("CUED");
+
 	}
-
-	playerState = event.data;
-	console.log(playerState);
-
 }
 
 var errorCodes = {
-	150 : "This video is unavailable.",
+	150 : "This video is unavailable. Possible embedding disabled.",
 	2 : "This video ID is invalid."
 }
 
@@ -222,6 +282,7 @@ function stopVideo() {
 }
 
 function loadVideo(videoId) {
+	playerState = 0;
 	if(!ytIframeAPIReady) initYouTubeIframeAPI(videoId);
 	else ytplayer.loadVideoById(videoId, 0, "large");
 }
@@ -245,25 +306,25 @@ function toggleMute(videoId) {
 }
 
 
-function analyzeVideoUrl(url) {
-    var vidInfo = {
-        provider: null,
-        url: url,
-        id: null
-    }
-    if(typeof url != "string") url = "";
+// function analyzeVideoUrl(url) {
+//     var vidInfo = {
+//         provider: null,
+//         url: url,
+//         id: null
+//     }
+//     if(typeof url != "string") url = "";
     
-    if(url.contains('youtube.com') || url.contains('youtu.be')){
-    	vidInfo.provider = "youtube";
-    	vidInfo.id = getYouTubeID(url);
-    }
-    else if(url.contains('vimeo.com')){
-    	vidInfo.provider = "vimeo";
-    	vidInfo.id = getVimeoID(url);
-    }
+//     if(url.contains('youtube.com') || url.contains('youtu.be')){
+//     	vidInfo.provider = "youtube";
+//     	vidInfo.id = getYouTubeID(url);
+//     }
+//     else if(url.contains('vimeo.com')){
+//     	vidInfo.provider = "vimeo";
+//     	vidInfo.id = getVimeoID(url);
+//     }
 
-    return vidInfo;
-}
+//     return vidInfo;
+// }
 
 function getYouTubeID(url){
 	var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -281,10 +342,13 @@ function getVimeoID(url) {
 }
 
 function playNextTrack(){
+	
+	$('li.track#video__'+trackIndex).css('width','').addClass('watched');
 
-	$('li.show#video__'+trackIndex).addClass('watched');
 	trackIndex--;
+	playerState = 0;
 	playTrack(trackIndex);
+
 }
 
 function playTrack(index){
@@ -293,28 +357,42 @@ function playTrack(index){
 		console.log("Starting next track... " + index + " : " + trackList[index].url);
 		loadVideo(getYouTubeID(trackList[index].url));
 	}
-	$('li.show').removeClass('playing');
-	$('li.show#video__'+index).addClass('playing');
+	$('li.track').removeClass('playing');
+	$('li.track#video__'+index).addClass('playing');
 
 	var thisOffsetTop = 0;
 	try{ thisOffsetTop = $("#video__"+index).offset().top; }catch(e){}
 
 	var elementFromTop = $("#schedule_wrapper").scrollTop() + thisOffsetTop - 68;
-	$("#schedule_wrapper")[0].scrollTop = elementFromTop;
+	$("#schedule_wrapper").animate({scrollTop:elementFromTop},500);
+
+	$('.track .controls .btn.start .fa').removeClass('fa-repeat').addClass('fa-play');
+	$('#video__' + index + ' .btn.start .fa').removeClass('fa-play').addClass('fa-repeat');
 }
 
-function showListElClickEvent(e){
-	var index = parseInt( this.id.replace('video__','') );
+function videoStartClickEvent(e){
+	var index = parseInt( $(this).parent().parent().attr('id').replace('video__','') );
 	playTrack(index);
 }
 
-function cleanTweetText(text){
-
-	// text = text.replace(/^(\[url=)?(http?:\/\/)?(www\.|\S+?\.)(\S+?\.)?\S+$\s*/mg, '');
-
-	return text;
-
+function videoPauseClickEvent(e){
+	if( playerState == 1 ){
+		pauseVideo();
+		
+	} else {
+		playVideo();
+		$('li.track.playing div.btn.pause i.fa').removeClass('fa-play').addClass('fa-pause');
+	}
 }
+
+function videoFavClickEvent(e){
+	if( $(this).find('.fa').hasClass('fa-star-o'))
+		$(this).find('.fa').removeClass('fa-star-o').addClass('fa-star');
+	else
+		$(this).find('.fa').removeClass('fa-star').addClass('fa-star-o');
+	
+}
+
 
 
 var markerWidth = 0, 
@@ -326,9 +404,7 @@ var markerWidth = 0,
 	durationTimeOutput = 0, 
 	currentTimeOutput = 0,
 	seekBarWidth, 
-	completedWidth, 
 	fractionLoaded, 
-	fractionLoadedWidth,
 	timeSeeking = false, 
 	volSeeking = false,
 	completedPercent = 0;
@@ -337,34 +413,25 @@ var markerWidth = 0,
 function updatePlayerInfo() {
   
     if(ytplayer){
-
-    	try{
-
-    		tempCurrentTime = parseInt(ytplayer.getCurrentTime().toFixed(0));
-        	tempDuration = parseInt(ytplayer.getDuration().toFixed(0));	
-
-    	}catch(e){}
         
         if(playerState == 1) {
 
-        	completedPercent = ((tempCurrentTime * 100) / tempDuration).toFixed(0);
-        	$('li.show#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
+			fractionLoaded = ytplayer.getVideoLoadedFraction();
+			tempCurrentTime = ytplayer.getCurrentTime();
+			tempDuration = ytplayer.getDuration();
+			seekBarWidth = document.getElementById("timeSlider").clientWidth;
 
-            seekBarWidth = document.getElementById("timeSlider").clientWidth;
-            completedWidth = ((tempCurrentTime * (seekBarWidth - markerWidth)) / tempDuration).toFixed(0);
-
-            fractionLoaded = ytplayer.getVideoLoadedFraction();
-            fractionLoadedWidth = ((fractionLoaded * (seekBarWidth)));
+        	completedPercent = ((tempCurrentTime*100)/tempDuration).toFixed(3);
+        	$('li.track#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
 
             //update seeker
             if (!timeSeeking) {
-            	$("#timeSlider .marker").css("left",completedWidth+"px");
-            	$("#timeSlider .complete").css("width",completedWidth+"px");
+            	$("#timeSlider").slider("value", tempCurrentTime);
 
                 currentTimeOutput = secondsToTime(tempCurrentTime);
                 document.getElementById("timer_current").innerHTML = currentTimeOutput;
 
-                $("#fractionLoaded").css("width",fractionLoadedWidth+"px");
+                $("#fractionLoaded").css("width", (fractionLoaded*seekBarWidth) +"px");
             }
 
             durationTimeOutput = secondsToTime(tempDuration);
