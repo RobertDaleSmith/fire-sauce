@@ -76,7 +76,7 @@ body{
 }
 #player_watermark.live{
 	opacity: 0.666;
-	
+
 }
 
 #ytplayer{
@@ -261,6 +261,12 @@ body{
 			line-height: 20px;
 			font-size: 12px;
 			text-align: left;
+
+			-webkit-user-select: initial;
+			 -khtml-user-select: initial;
+			   -moz-user-select: initial;
+				-ms-user-select: initial; /* IE 10+ */
+					user-select: initial;
 		}
 
 		.track .url{
@@ -308,7 +314,9 @@ body{
 			.track.playing .controls .btn.pause{
 				display: inline-block;
 			}
-
+			.track .controls .btn.fav.diamond{
+				color: gold;
+			}
 
 
 .timeSlider_holder{

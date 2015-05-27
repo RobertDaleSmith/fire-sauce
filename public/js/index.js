@@ -90,18 +90,22 @@ $(window).bind("load", function() {
 													.append($('<div/>')
 														.addClass("btn pause")
 														.html("<i class='fa fa-pause'></i>")
+														.attr('title','Pause')
 													)
 													.append($('<div/>')
 														.addClass("btn start")
 														.html("<i class='fa fa-play'></i>")
+														.attr('title','Start')
 													)
 													.append($('<div/>')
 														.addClass("btn right fav")
-														.html("<i class='fa fa-star-o'></i>")
+														.html("<i class='fa fa-diamond'></i>")
+														.attr('title','Diamond in the rough')
 													)
 													.append($('<div/>')
 														.addClass("btn right resauce")
 														.html("<i class='fa fa-retweet'></i>")
+														.attr('title','Resauce to your stream')
 													)
 												)
 												;
@@ -128,7 +132,7 @@ $(window).bind("load", function() {
 		
 		if($(this).hasClass('live')) $(this).removeClass('live');
 		else $(this).addClass('live');
-		
+
 	});
 	
 	$( "#timeSlider" ).slider({
@@ -233,12 +237,14 @@ function onYtPlayerStateChange(event) {
 
 		//Sets pause button to show play icon.
 		$('li.track.playing div.btn.pause i.fa').removeClass('fa-play').addClass('fa-pause');
+		$('li.track.playing div.btn.pause').attr('title','Pause');
 	}
 	else if (event.data == YT.PlayerState.PAUSED) {
 		console.log("PAUSED");
 
 		//Sets pause button to show pause icon.
 		$('li.track.playing div.btn.pause i.fa').removeClass('fa-pause').addClass('fa-play');
+		$('li.track.playing div.btn.pause').attr('title','Play');
 	}
 	else if (event.data == YT.PlayerState.BUFFERING) {
 		console.log("BUFFERING");
@@ -366,8 +372,13 @@ function playTrack(index){
 	var elementFromTop = $("#schedule_wrapper").scrollTop() + thisOffsetTop - 68;
 	$("#schedule_wrapper").animate({scrollTop:elementFromTop},500);
 
+	//Clears out any others in playing state.
 	$('.track .controls .btn.start .fa').removeClass('fa-repeat').addClass('fa-play');
+	$('.track .controls .btn.start').attr('title','Start');
+
+	//Sets this one to playing state.
 	$('#video__' + index + ' .btn.start .fa').removeClass('fa-play').addClass('fa-repeat');
+	$('#video__' + index + ' .btn.start').attr('title','Restart');
 }
 
 function videoStartClickEvent(e){
@@ -386,10 +397,12 @@ function videoPauseClickEvent(e){
 }
 
 function videoFavClickEvent(e){
-	if( $(this).find('.fa').hasClass('fa-star-o'))
-		$(this).find('.fa').removeClass('fa-star-o').addClass('fa-star');
-	else
-		$(this).find('.fa').removeClass('fa-star').addClass('fa-star-o');
+	// if( $(this).find('.fa').hasClass('fa-star-o'))
+	// 	$(this).find('.fa').removeClass('fa-star-o').addClass('fa-star');
+	// else
+	// 	$(this).find('.fa').removeClass('fa-star').addClass('fa-star-o');
+
+	$(this).toggleClass('diamond');
 	
 }
 
