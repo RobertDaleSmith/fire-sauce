@@ -54,6 +54,8 @@ $(window).bind("load", function() {
 		this.setSelectionRange(c, c);
 	});
 
+
+
 	// Twitter username submission to render feed.
 	$('input#search_button').bind('click', function(e) {
 		
@@ -61,69 +63,7 @@ $(window).bind("load", function() {
 		if(query.length > 0){
 			console.log("fire: " + query);
 
-			$.getJSON( "/search/"+query, function( tweets ) {
-				
-				if(tweets.length > 0){
-					
-					trackList = tweets;
-
-					var tweetElements = [];
-					$.each( tweets, function( idx, tweet ) {
-						var element = $('<li/>').addClass("track")
-												.attr('id', "video__"+idx)
-												.append($('<div/>')
-													.addClass("started")
-													.text( moment(new Date(tweet.created_at)).fromNow() )
-												)
-												.append($('<div/>')
-													.addClass("text")
-													.html(tweet.text)
-												)
-												.append($('<div/>')
-													.addClass("indicator")
-												)
-												.append($('<div/>')
-													.addClass("progress")
-												)
-												.append($('<div/>')
-													.addClass("controls")
-													.append($('<div/>')
-														.addClass("btn pause")
-														.html("<i class='fa fa-pause'></i>")
-														.attr('title','Pause')
-													)
-													.append($('<div/>')
-														.addClass("btn start")
-														.html("<i class='fa fa-play'></i>")
-														.attr('title','Start')
-													)
-													.append($('<div/>')
-														.addClass("btn right fav")
-														.html("<i class='fa fa-diamond'></i>")
-														.attr('title','Diamond in the rough')
-													)
-													.append($('<div/>')
-														.addClass("btn right resauce")
-														.html("<i class='fa fa-retweet'></i>")
-														.attr('title','Resauce to your stream')
-													)
-												)
-												;
-						element.find('.btn.start').bind('click', videoStartClickEvent);
-						element.find('.btn.pause').bind('click', videoPauseClickEvent);
-						element.find('.btn.fav').bind('click', videoFavClickEvent);
-						tweetElements.push(element);
-					});
-
-					$("#schedule_wrapper").html(tweetElements);
-					$("#schedule_wrapper").animate($("#schedule_wrapper")[0].scrollHeight,500);
-
-					// Play most recent.
-					trackIndex = tweets.length;
-					playNextTrack();
-				}
-
-			});
+			watchUsername(query);
 
 		}		
 	});
@@ -169,6 +109,83 @@ $(window).bind("load", function() {
     });
 
 });
+
+function watchUsername(screen_name){
+
+	$.getJSON( "/search/"+screen_name, function( tweets ) {
+		
+		if(tweets.length > 0){
+			
+			$('input#search_input').val(screen_name);
+
+			trackList = tweets;
+
+			var tweetElements = [];
+			$.each( tweets, function( idx, tweet ) {
+				var element = $('<li/>').addClass("track")
+										.attr('id', "video__"+idx)
+										.append($('<div/>')
+											.addClass("indicator")
+										)
+										.append($('<div/>')
+											.addClass("progress")
+										)
+										.append($('<a/>')
+											.addClass("started")
+											.text( moment(new Date(tweet.created_at)).fromNow() )
+											.attr('href','http://twitter.com/'+tweet.user.screen_name+'/status/'+tweet.id)
+											.attr('target','_blank')
+										)
+										.append($('<div/>')
+											.addClass("text")
+											.html(tweet.text.linkify_tweet())
+										)
+										.append($('<div/>')
+											.addClass("controls")
+											.append($('<div/>')
+												.addClass("btn pause")
+												.html("<i class='fa fa-pause'></i>")
+												.attr('title','Pause')
+											)
+											.append($('<div/>')
+												.addClass("btn start")
+												.html("<i class='fa fa-play'></i>")
+												.attr('title','Start')
+											)
+											.append($('<div/>')
+												.addClass("btn right fav")
+												.html("<i class='fa fa-star-o'></i>")
+												.attr('title','Diamond in the rough')
+											)
+											.append($('<div/>')
+												.addClass("btn right resauce")
+												.html("<i class='fa fa-retweet'></i>")
+												.attr('title','Resauce to your stream')
+											)
+										)
+										;
+				element.find('.btn.start').bind('click', videoStartClickEvent);
+				element.find('.btn.pause').bind('click', videoPauseClickEvent);
+				element.find('.btn.fav').bind('click', videoFavClickEvent);
+				tweetElements.push(element);
+			});
+
+			$("#schedule_wrapper").html(tweetElements);
+			$("#schedule_wrapper").animate($("#schedule_wrapper")[0].scrollHeight,500);
+
+			// Play most recent.
+			trackIndex = tweets.length;
+			playNextTrack();
+		} else {
+			console.log('No compatible content found...');
+		}
+
+	});
+
+
+	
+	
+}
 
 var trackList = null;
 var trackIndex = -1;
@@ -397,13 +414,11 @@ function videoPauseClickEvent(e){
 }
 
 function videoFavClickEvent(e){
-	// if( $(this).find('.fa').hasClass('fa-star-o'))
-	// 	$(this).find('.fa').removeClass('fa-star-o').addClass('fa-star');
-	// else
-	// 	$(this).find('.fa').removeClass('fa-star').addClass('fa-star-o');
+	if(  $(this).find('.fa').hasClass('fa-star-o')  )
+		 $(this).find('.fa').removeClass('fa-star-o').addClass('fa-star');
+	else $(this).find('.fa').removeClass('fa-star').addClass('fa-star-o');
 
-	$(this).toggleClass('diamond');
-	
+	$(this).toggleClass('diamond');	
 }
 
 

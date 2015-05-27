@@ -245,12 +245,17 @@ body{
 			position: relative;
 			float: left;
 			text-align: left;
-			width: 100%;
+			width: auto;
 			height: auto;
 			font-size: 10px;
 			line-height: initial;
 			opacity: 0.5;
   			margin-bottom: 5px;
+  			color: #ffffff;
+  			text-decoration: none;
+		}
+		.track .started:hover{
+			text-decoration: underline;
 		}
 
 		.track .text{
@@ -268,6 +273,13 @@ body{
 				-ms-user-select: initial; /* IE 10+ */
 					user-select: initial;
 		}
+			.text a{
+				text-decoration: none;
+				color: #ffffff;
+			}
+			.text a:hover{
+				text-decoration: underline;
+			}
 
 		.track .url{
 			display: inline-block;
