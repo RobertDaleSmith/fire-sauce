@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Firesauce - crowd tv</title>
+		<title>Firesauce - simple video discovery</title>
 		<meta charset='utf-8'>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta http-equiv="Content-Language" content="en">
@@ -46,8 +46,18 @@
 	    			<input id="search_input" type="text" placeholder="YouTube" value="YouTube" maxlength="16">
 	    			<input id="search_button" type="button" value="watch">
 	    		</div>
+	    		<div id="failed_wrapper">
+	    			<div id="searching_spinner" class="dimming"></div>
+	    			<div id="failed_message">No recent video Tweets.</div>
+	    			<input id="close_failed_button" type="button" value="close">
+	    		</div>
+	    		<div id="searching_wrapper">
+	    			<div id="searching_spinner" class="dimming"></div>
+	    			<div id="searching_message">Saucing up some tweets...</div>
+	    			<input id="cancel_search_button" type="button" value="cancel">
+	    		</div>
 	    		<ul id="schedule_wrapper">
-	    			<li class="track">Feed me any Twitter username!</li>
+	    			<!-- <li class="track">Feed me any Twitter username!</li> -->
 	    		</ul>
 	    	</div>
 	    </div>

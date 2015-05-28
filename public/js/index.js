@@ -68,6 +68,17 @@ $(window).bind("load", function() {
 		}		
 	});
 
+	$('input#cancel_search_button').bind('click', function(e) {
+		
+		$('#searching_wrapper').removeClass('searching');
+		if(searchRequest) searchRequest.abort();
+			
+	});
+
+	$('input#close_failed_button').bind('click', function(e) {
+		hideFailedAlert();
+	});
+
 	$('#player_watermark').bind('click', function(e) {
 		
 		if($(this).hasClass('live')) $(this).removeClass('live');
@@ -110,10 +121,32 @@ $(window).bind("load", function() {
 
 });
 
+function showSearchSpinner() {
+	$('#searching_wrapper').addClass('searching');
+}
+function hideSearchSpinner() {
+	$('#searching_wrapper').removeClass('searching');
+}
+
+function showFailedAlert(msg) {
+	$('#failed_wrapper').addClass('failed');
+	$('#failed_message').text(msg);
+}
+function hideFailedAlert() {
+	$('#failed_wrapper').removeClass('failed');
+}
+
+var searchRequest = null;
+
 function watchUsername(screen_name){
 
-	$.getJSON( "/search/"+screen_name, function( tweets ) {
+	showSearchSpinner();
+
+	if(searchRequest) searchRequest.abort();
+	searchRequest = $.getJSON( "/search/"+screen_name, function( tweets ) {
 		
+		hideSearchSpinner();
+		hideFailedAlert();
 		if(tweets.length > 0){
 			
 			$('input#search_input').val(screen_name);
@@ -169,7 +202,7 @@ function watchUsername(screen_name){
 				element.find('.btn.fav').bind('click', videoFavClickEvent);
 				tweetElements.push(element);
 			});
-
+			
 			$("#schedule_wrapper").html(tweetElements);
 			$("#schedule_wrapper").animate($("#schedule_wrapper")[0].scrollHeight,500);
 
@@ -178,6 +211,8 @@ function watchUsername(screen_name){
 			playNextTrack();
 		} else {
 			console.log('No compatible content found...');
+			showFailedAlert("No recent video Tweets.");
+
 		}
 
 	});
@@ -219,7 +254,7 @@ function initYouTubeIframeAPI(videoId) {
 				disablekb: 1,
 				html5: 1,
 				iv_load_policy: 3,
-				modestbranding: 1,
+				modestbranding: 0,
 				origin: window.location.host,
 				playsinline: 1,
 				rel: 0,

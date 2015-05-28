@@ -95,11 +95,13 @@ body{
 	height: 100%;
 
 	background-color:#394658;
+	overflow: hidden;
 }
 
 #search_wrapper{
 	display: inline-block;
 	position: relative;
+	float: left;
 	width: 100%;
 	height: 68px;
 	padding: 10px;
@@ -162,16 +164,224 @@ body{
 		outline:0;
 		border-color: rgba(83, 208, 99, 0.35);
 	}
+
+
+
+
+	@-webkit-keyframes rotating /* Safari and Chrome */ {
+	  from {
+	    -ms-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -webkit-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  to {
+	    -ms-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -webkit-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	@keyframes rotating {
+	  from {
+	    -ms-transform: rotate(0deg);
+	    -moz-transform: rotate(0deg);
+	    -webkit-transform: rotate(0deg);
+	    -o-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	  }
+	  to {
+	    -ms-transform: rotate(360deg);
+	    -moz-transform: rotate(360deg);
+	    -webkit-transform: rotate(360deg);
+	    -o-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	  }
+	}
+	.rotating {
+	  -webkit-animation: rotating 2s linear infinite;
+	  	 -moz-animation: rotating 2s linear infinite;
+	  	  -ms-animation: rotating 2s linear infinite;
+	  	   -o-animation: rotating 2s linear infinite;
+	  		  animation: rotating 2s linear infinite;
+	}
+
+	@-webkit-keyframes dimming /* Safari and Chrome */ {
+	  0% {
+	    opacity: 1;
+	  }
+	  25% {
+	    opacity: 0.25;
+	  }
+	  50% {
+	    opacity: 0.5;
+	  }
+	  75% {
+	    opacity: 0.25;
+	  }
+	  100% {
+	    opacity: 1;
+	  }
+	}
+	@keyframes dimming {
+	  0% {
+	    opacity: 1;
+	  }
+	  25% {
+	    opacity: 0.25;
+	  }
+	  50% {
+	    opacity: 0.5;
+	  }
+	  75% {
+	    opacity: 0.25;
+	  }
+	  100% {
+	    opacity: 1;
+	  }
+	}
+	.dimming {
+	  -webkit-animation: dimming 2s linear infinite;
+	  	 -moz-animation: dimming 2s linear infinite;
+	  	  -ms-animation: dimming 2s linear infinite;
+	  	   -o-animation: dimming 2s linear infinite;
+	  		  animation: dimming 2s linear infinite;
+	}
 	
+#searching_wrapper{
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 100%; height: 0px;
+	padding: 0px 0;
+	text-align: left;
+	background-color: #4f6074;
+	color: #ffffff;
+	overflow: hidden;
+	
+	-webkit-transition: height ease-in 250ms, padding ease-in 250ms;
+	   -moz-transition: height ease-in 250ms, padding ease-in 250ms;
+		 -o-transition: height ease-in 250ms, padding ease-in 250ms;
+			transition: height ease-in 250ms, padding ease-in 250ms;
+}
+#searching_wrapper.searching{
+	height: 44px;
+	padding: 10px 0;
+}
+	#searching_spinner{
+		display: inline-block;
+		position: relative;
+		float: left;
+		width: 24px; height: 24px;
+
+		margin: 0 0 0 10px;
+
+		background-image: url('../watermark.png');
+		background-size: 20px 20px;
+		background-repeat: no-repeat;
+		background-position: 2px 2px;
+	}
+		#failed_wrapper #searching_spinner{
+			background-image: url('../logo_io.png');
+		}
+
+	#searching_message{
+		display: inline-block;
+		position: relative;
+		float: left;
+		width: auto; height: auto;
+		margin: 0 0 0 8px;
+
+	}
+
+	input#cancel_search_button{
+		display: inline-block;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		width: auto;
+		height: 24px;
+		background-color: transparent;
+		padding: 0 5px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #f4f4f4;
+		font-size: 14px;
+		border-radius: 4px;
+		line-height: 22px;
+		cursor: pointer;
+		color: #f4f4f4;
+	}
+	input#cancel_search_button:active{
+		opacity: 0.7;
+	}
+	input#cancel_search_button:focus{
+		outline:0;
+	}
+
+#failed_wrapper{
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 100%; height: 0px;
+	padding: 0px 0;
+	text-align: left;
+	background-color: #4f6074;
+	color: #ffffff;
+	overflow: hidden;
+	
+	-webkit-transition: height ease-in 250ms, padding ease-in 250ms;
+	   -moz-transition: height ease-in 250ms, padding ease-in 250ms;
+		 -o-transition: height ease-in 250ms, padding ease-in 250ms;
+			transition: height ease-in 250ms, padding ease-in 250ms;
+}
+#failed_wrapper.failed{
+	height: 44px;
+	padding: 10px 0;
+}
+	#failed_message{
+		display: inline-block;
+		position: relative;
+		float: left;
+		width: auto; height: auto;
+		margin: 0 0 0 8px;
+
+	}
+
+	input#close_failed_button{
+		display: inline-block;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		width: auto;
+		height: 24px;
+		background-color: transparent;
+		padding: 0 5px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: #f4f4f4;
+		font-size: 14px;
+		border-radius: 4px;
+		line-height: 22px;
+		cursor: pointer;
+		color: #f4f4f4;
+	}
+	input#close_failed_button:active{
+		opacity: 0.7;
+	}
+	input#close_failed_button:focus{
+		outline:0;
+	}
+
 
 #schedule_wrapper{
 	display: inline-block;
-	position: absolute;
-	top: 68px; left: 0px;
+	position: relative;
 	width: 100%; height:auto;
-
 	max-height: calc(100% - 68px);
-  
+  	float: left;
 	padding: 0px; margin: 0px;
 	background-color:#435264;
 	overflow-x: hidden;
