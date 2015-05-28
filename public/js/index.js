@@ -62,7 +62,7 @@ $(window).bind("load", function() {
 		var query = $('input#search_input').val();
 		if(query.length > 0){
 			console.log("fire: " + query);
-
+			ga('send', 'event', 'search', 'screen_name', query);
 			watchUsername(query);
 
 		}		
@@ -136,22 +136,29 @@ function hideFailedAlert() {
 	$('#failed_wrapper').removeClass('failed');
 }
 
-var searchRequest = null;
+var searchRequest, watchingUser;
 
 function watchUsername(screen_name){
 
 	showSearchSpinner();
 
 	if(searchRequest) searchRequest.abort();
+
 	searchRequest = $.getJSON( "/search/"+screen_name, function( tweets ) {
 		
 		hideSearchSpinner();
+
 		hideFailedAlert();
+
 		if(tweets.length > 0){
-			
+
+			ga('send', 'event', 'watch', 'screen_name', screen_name);
+
 			$('input#search_input').val(screen_name);
 
 			trackList = tweets;
+
+			watchingUser = screen_name;
 
 			var tweetElements = [];
 			$.each( tweets, function( idx, tweet ) {
@@ -410,10 +417,15 @@ function playNextTrack(){
 }
 
 function playTrack(index){
+	var videoID = getYouTubeID(trackList[index].url);
+	ga('send', 'event', 'video', 'play', videoID);
+	ga('send', 'event', 'video', 'view', watchingUser);
+
 	trackIndex = index;
+
 	if(index>=0) {
 		console.log("Starting next track... " + index + " : " + trackList[index].url);
-		loadVideo(getYouTubeID(trackList[index].url));
+		loadVideo(videoID);
 	}
 	$('li.track').removeClass('playing');
 	$('li.track#video__'+index).addClass('playing');
