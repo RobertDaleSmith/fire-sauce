@@ -58,13 +58,12 @@ $(window).bind("load", function() {
 
 	// Twitter username submission to render feed.
 	$('input#search_button').bind('click', function(e) {
-		
 		var query = $('input#search_input').val();
 		if(query.length > 0){
 			console.log("fire: " + query);
 			ga('send', 'event', 'search', 'screen_name', query);
 			watchUsername(query);
-
+			hideFailedAlert();
 		}		
 	});
 
