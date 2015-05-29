@@ -559,7 +559,7 @@ body{
     overflow: hidden;
 }
 
-.timeSlider_holder:hover{
+#player_viewport:hover .timeSlider_holder{
     
     bottom:0px;
 }
