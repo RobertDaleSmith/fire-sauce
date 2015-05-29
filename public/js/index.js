@@ -118,6 +118,15 @@ $(window).bind("load", function() {
 		}
     });
 
+
+    // Check hash and load it.
+    var hash = location.hash || "";
+    hash = hash.replace('#','');
+    if(hash.length>0){
+    	$('input#search_input').val(hash);
+    	watchUsername(hash);
+    }
+
 });
 
 function showSearchSpinner() {
@@ -154,6 +163,8 @@ function watchUsername(screen_name){
 			ga('send', 'event', 'watch', 'screen_name', screen_name);
 
 			$('input#search_input').val(screen_name);
+
+			location.hash = screen_name;
 
 			trackList = tweets;
 
