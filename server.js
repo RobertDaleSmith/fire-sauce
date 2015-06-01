@@ -12,6 +12,7 @@ var bodyParser     = require('body-parser')
   , session        = require('express-session')
   , cookieParser   = require('cookie-parser')
   , flash          = require('connect-flash')
+  , events         = require('events')
   ;
 
 var dbInfo = config.get('dbConfig');
@@ -36,6 +37,8 @@ dust.helpers.formatIndex = function (chunk, context, bodies, params) {
   var reversed = (idx - len) * -1;
   return chunk.write(reversed);
 }
+
+events.EventEmitter.prototype._maxListeners = 100;
 
 mongo.connect(function(err) {
 
@@ -116,7 +119,7 @@ mongo.connect(function(err) {
   app.get( '/', function( req, res, next ) { routes.Index.home( req, res, next ); } );
 
 
-  app.get( '/search/:query', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
+  app.get( '/search/', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
 
   //Uncomment and use to create admin password, then comment out.
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );

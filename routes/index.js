@@ -110,13 +110,13 @@ function getParamsArray(url){
 Index.prototype.twitterSearchName = function( req, res ) {
 	// console.log('twitterSearchName');
 	var shorts = [], longs = [], shortFunctions = [];
+	var user = req.query.screen_name,
+		since = req.query.sinceID;
+	console.log("Fetching user: " + user);
 
-	var query = req.params.query;
-	console.log("Fetching user: " + query);
-
-	var params = {screen_name: query, count: 200}; 
+	var params = {screen_name: user, count: 200, since_id: since, include_rts: true}; 
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
-	// var params = {q: query, count: 100};
+	// var params = {q: user, count: 100};
 	// twitter.get('search/tweets', params, function(error, tweets, response) {
 		if (!error) {
 
