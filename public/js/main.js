@@ -152,19 +152,21 @@ function watchUsername(screen_name){
 	var sinceID = null;
 
 	if(history.channels[screen_name]){
+		if(history.channels[screen_name].trackList.length > 0){
 
-		console.log('Previously watched.. Pulling only since last id.');
-		//Get last id.
-		var listLength = history.channels[screen_name].trackList.length;
-		sinceID = history.channels[screen_name].trackList[listLength-1].id;
+			console.log('Previously watched.. Pulling only since last id.');
+			//Get last id.
+			var listLength = history.channels[screen_name].trackList.length;
+			sinceID = history.channels[screen_name].trackList[listLength-1].id;
 
-		tracksLoaded = 0;
-		$("#schedule_wrapper").html('');
-		renderTweets(history.channels[screen_name].trackList);
+			tracksLoaded = 0;
+			$("#schedule_wrapper").html('');
+			renderTweets(history.channels[screen_name].trackList);
 
-		location.hash = screen_name;
-		currentChannel = screen_name;
+			location.hash = screen_name;
+			currentChannel = screen_name;
 
+		}
 	}
 
 	if(searchRequest) searchRequest.abort();
@@ -193,7 +195,7 @@ function watchUsername(screen_name){
 				$("#schedule_wrapper").html('');
 				history.channels[currentChannel] = {'trackList':tweets};
 			}else{
-				history.channels[currentChannel].trackList.concat(tweets);
+				history.channels[currentChannel].trackList = history.channels[currentChannel].trackList.concat(tweets);
 			}
 
 			renderTweets(tweets);
@@ -393,7 +395,10 @@ var errorCodes = {
 
 function onYtPlayerError(event) {
 	console.log("Error: " + event);
-	console.dir(event);
+	console.dir(event.data);
+
+	if(event.data == 150 || event.data == 2) history.channels[currentChannel].trackList[trackIndex].error = event.data;
+	$('li.track#video__'+trackIndex).addClass('error');
 
 	playNextTrack();
 }
@@ -419,7 +424,6 @@ function stopVideo() {
 
 function loadVideo(videoId, startTime) {
 	if(!startTime) startTime = 0;
-	console.log(startTime);
 	playerState = 0;
 	if(!ytIframeAPIReady) initYouTubeIframeAPI(videoId, startTime);
 	else ytplayer.loadVideoById(videoId, startTime, "large");
@@ -473,7 +477,8 @@ function playMostRecentUnplayed(){
 	
 	var listLength = history.channels[currentChannel].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[currentChannel].trackList[idx].watched ){
+		if( !history.channels[currentChannel].trackList[idx].watched &&
+			!history.channels[currentChannel].trackList[idx].error ){
 			playTrack(idx);
 			break;
 		}
@@ -482,8 +487,7 @@ function playMostRecentUnplayed(){
 }
 
 function playTrack(index){
-	console.log(index);
-	console.log(currentChannel);
+	// console.log(index); console.log(currentChannel);
 
 	var videoID = getYouTubeID(history.channels[currentChannel].trackList[index].url);
 	var percent = history.channels[currentChannel].trackList[index].percent || 0;
