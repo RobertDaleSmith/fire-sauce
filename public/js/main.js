@@ -208,7 +208,7 @@ function watchUsername(screen_name){
 			showFailedAlert("No new recent videos.");
 
 			if(sinceID){
-				playMostRecentUnplayed();
+				playMostRecentUnfinished();
 			}
 
 		}
@@ -292,7 +292,7 @@ var history = { key: '', channels: null };
 var trackIndex = -1;
 var tracksLoaded = 0;
 
-var store = new Lawnchair({name:'firesauce'}, function(store) {
+var store = new Lawnchair({name:'firesauce', adapter:'dom'}, function(store) {
 	// var me = {key:'a',firstName:'Clark',lastName:'Kent'};
 	// store.save(me);
 	store.get('history', function(obj) {
@@ -311,7 +311,7 @@ var ytplayer, ytplayerReady, ytIframeAPIReady, playerState = 0;
 function onYouTubeIframeAPIReady() {
 	ytplayerReady = true;
 	// loadVideo("L-6LXhFNeGw");
-	setInterval(updatePlayerInfo, 500);
+	setInterval(updatePlayerInfo, 100);
 }
 
 function initYouTubeIframeAPI(videoId, startTime) {
@@ -469,11 +469,27 @@ function playNextTrack(){
 	trackIndex--;
 	playerState = 0;
 	// playTrack(trackIndex);
-	playMostRecentUnplayed();
+	playMostRecentUnstarted();
 
 }
 
-function playMostRecentUnplayed(){
+function playMostRecentUnstarted(){
+	
+	var listLength = history.channels[currentChannel].trackList.length;
+	for(var idx = listLength-1; idx >= 0; idx--){
+		if( !history.channels[currentChannel].trackList[idx].started &&
+			!history.channels[currentChannel].trackList[idx].error ){
+			
+			playTrack(idx);
+			break;
+
+		} else if(idx==0) playMostRecentUnfinished();
+		
+	}
+
+}
+
+function playMostRecentUnfinished(){
 	
 	var listLength = history.channels[currentChannel].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
@@ -481,6 +497,11 @@ function playMostRecentUnplayed(){
 			!history.channels[currentChannel].trackList[idx].error ){
 			playTrack(idx);
 			break;
+		} else if(idx==0) {
+			// played all current results
+
+			// check for some new content
+			
 		}
 	}
 
