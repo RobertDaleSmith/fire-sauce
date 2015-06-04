@@ -143,7 +143,7 @@ function hideFailedAlert() {
 	$('#failed_wrapper').removeClass('failed');
 }
 
-var searchRequest, currentChannel;
+var searchRequest;
 
 function watchUsername(screen_name){
 
@@ -164,7 +164,7 @@ function watchUsername(screen_name){
 			renderTweets(history.channels[screen_name].trackList);
 
 			location.hash = screen_name;
-			currentChannel = screen_name;
+			history.watching = screen_name;
 
 		}
 	}
@@ -188,14 +188,14 @@ function watchUsername(screen_name){
 			$('input#search_input').val(screen_name);
 
 			location.hash = screen_name;
-			currentChannel = screen_name;
+			history.watching = screen_name;
 			
 			if(!sinceID){
 				tracksLoaded = 0;
 				$("#schedule_wrapper").html('');
-				history.channels[currentChannel] = {'trackList':tweets};
+				history.channels[history.watching] = {'trackList':tweets};
 			}else{
-				history.channels[currentChannel].trackList = history.channels[currentChannel].trackList.concat(tweets);
+				history.channels[history.watching].trackList = history.channels[history.watching].trackList.concat(tweets);
 			}
 
 			renderTweets(tweets);
@@ -233,7 +233,7 @@ function renderTweets(tweets){
 			)
 			.append($('<a/>')
 				.addClass("started")
-				.text( moment(new Date(tweet.created_at)).fromNow() )
+				.text( moment( new Date(tweet.created_at)).fromNow() )
 				.attr('href','http://twitter.com/'+tweet.user.screen_name+'/status/'+tweet.id)
 				.attr('target','_blank')
 			)
@@ -273,6 +273,7 @@ function renderTweets(tweets){
 			element.find('div.progress').attr('style', "width: " + tweet.percent + "%");
 		}
 		if(tweet.watched) element.addClass('watched');
+		if(tweet.skipped) element.addClass('skipped');
 
 		$("#schedule_wrapper").append(element);
 		tracksLoaded++;
@@ -286,7 +287,7 @@ function renderTweets(tweets){
 
 }
 
-var history = { key: '', channels: null };
+var history = { key: '', channels: null, watching: '' };
 	history.key = 'history';
 	history.channels = {};
 var trackIndex = -1;
@@ -354,13 +355,13 @@ function onYtPlayerStateChange(event) {
 	playerState = event.data;
 	if (event.data == YT.PlayerState.ENDED) {
 		console.log("ENDED");
-		history.channels[currentChannel].trackList[trackIndex].watched = true;
-		history.channels[currentChannel].trackList[trackIndex].percent = 100;
+		history.channels[history.watching].trackList[trackIndex].watched = true;
+		history.channels[history.watching].trackList[trackIndex].percent = 100;
 		playNextTrack();		
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {
 		console.log("PLAYING");
-		history.channels[currentChannel].trackList[trackIndex].started = true;
+		history.channels[history.watching].trackList[trackIndex].started = true;
 		
 		store.save(history);
 
@@ -397,7 +398,7 @@ function onYtPlayerError(event) {
 	console.log("Error: " + event);
 	console.dir(event.data);
 
-	if(event.data == 150 || event.data == 2) history.channels[currentChannel].trackList[trackIndex].error = event.data;
+	if(event.data == 150 || event.data == 2) history.channels[history.watching].trackList[trackIndex].error = event.data;
 	$('li.track#video__'+trackIndex).addClass('error');
 
 	playNextTrack();
@@ -469,59 +470,70 @@ function playNextTrack(){
 	trackIndex--;
 	playerState = 0;
 	// playTrack(trackIndex);
-	playMostRecentUnstarted();
+	playMostRecentUnfinished();
 
 }
 
 function playMostRecentUnstarted(){
 	
-	var listLength = history.channels[currentChannel].trackList.length;
+	var listLength = history.channels[history.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[currentChannel].trackList[idx].started &&
-			!history.channels[currentChannel].trackList[idx].error ){
-			
+		if( !history.channels[history.watching].trackList[idx].started &&
+			!history.channels[history.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
 
 		} else if(idx==0) playMostRecentUnfinished();
-		
 	}
 
 }
 
 function playMostRecentUnfinished(){
 	
-	var listLength = history.channels[currentChannel].trackList.length;
+	var listLength = history.channels[history.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[currentChannel].trackList[idx].watched &&
-			!history.channels[currentChannel].trackList[idx].error ){
+		if( !history.channels[history.watching].trackList[idx].watched &&
+		   (!history.channels[history.watching].trackList[idx].skipped || idx >= trackIndex ) &&
+			!history.channels[history.watching].trackList[idx].error ){
+			playTrack(idx);
+			break;
+		} else if(idx==0) playMostRecentSkipped();
+	}
+
+}
+
+function playMostRecentSkipped(){
+	
+	var listLength = history.channels[history.watching].trackList.length;
+	for(var idx = listLength-1; idx >= 0; idx--){
+		if( !history.channels[history.watching].trackList[idx].watched &&
+			 history.channels[history.watching].trackList[idx].skipped &&
+			!history.channels[history.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
 		} else if(idx==0) {
 			// played all current results
-
 			// check for some new content
-			
 		}
 	}
 
 }
 
 function playTrack(index){
-	// console.log(index); console.log(currentChannel);
+	// console.log(index); console.log(history.watching);
 
-	var videoID = getYouTubeID(history.channels[currentChannel].trackList[index].url);
-	var percent = history.channels[currentChannel].trackList[index].percent || 0;
-	var startTime = history.channels[currentChannel].trackList[index].time || 0;
+	var videoID = getYouTubeID(history.channels[history.watching].trackList[index].url);
+	var percent = history.channels[history.watching].trackList[index].percent || 0;
+	var startTime = history.channels[history.watching].trackList[index].time || 0;
 	if( percent >= 100 ) startTime = 0;
 
 	ga('send', 'event', 'video', 'play', videoID);
-	ga('send', 'event', 'video', 'view', currentChannel);
+	ga('send', 'event', 'video', 'view', history.watching);
 
 	trackIndex = index;
 
 	if(index>=0) {
-		console.log("Starting next track... " + index + " : " + history.channels[currentChannel].trackList[index].url);
+		console.log("Starting next track... " + index + " : " + history.channels[history.watching].trackList[index].url);
 		loadVideo(videoID, startTime);
 	}
 	$('li.track').removeClass('playing');
@@ -552,6 +564,7 @@ function videoStartClickEvent(e){
 		playVideo();
 	}else{
 		var index = parseInt( $(this).parent().parent().attr('id').replace('video__','') );
+		history.channels[history.watching].trackList[trackIndex].skipped = true;
 		playTrack(index);	
 	}
 	
@@ -606,8 +619,9 @@ function updatePlayerInfo() {
         	completedPercent = ((tempCurrentTime*100)/tempDuration).toFixed(2);
         	$('li.track#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
 
-        	history.channels[currentChannel].trackList[trackIndex].percent = completedPercent;
-        	history.channels[currentChannel].trackList[trackIndex].time = tempCurrentTime;
+        	if(completedPercent>history.channels[history.watching].trackList[trackIndex].percent)
+        		history.channels[history.watching].trackList[trackIndex].percent = completedPercent;
+        	history.channels[history.watching].trackList[trackIndex].time = tempCurrentTime;
 
             //update seeker
             if (!timeSeeking) {
