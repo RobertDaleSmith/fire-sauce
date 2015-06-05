@@ -119,7 +119,7 @@ $(window).bind("load", function() {
 
     // Check hash and load it.
     var hash = location.hash || "";
-    hash = hash.replace('#','');
+    hash = hash.replace('#/','').replace('#','');
     if(hash.length>0){
     	$('input#search_input').val(hash);
     	watchUsername(hash);
@@ -163,7 +163,7 @@ function watchUsername(screen_name){
 			$("#schedule_wrapper").html('');
 			renderTweets(history.channels[screen_name].trackList);
 
-			location.hash = screen_name;
+			location.hash = "/"+screen_name;
 			history.watching = screen_name;
 
 		}
@@ -187,7 +187,7 @@ function watchUsername(screen_name){
 
 			$('input#search_input').val(screen_name);
 
-			location.hash = screen_name;
+			location.hash = "/"+screen_name;
 			history.watching = screen_name;
 			
 			if(!sinceID){
@@ -208,7 +208,15 @@ function watchUsername(screen_name){
 			showFailedAlert("No new recent videos.");
 
 			if(sinceID){
-				playMostRecentUnfinished();
+
+				if(history.channels[history.watching].trackIndex>=0){
+					trackIndex = history.channels[history.watching].trackIndex;
+					playTrack(trackIndex);
+				}else{
+					trackIndex = tweets.length;
+					playNextTrack();	
+				}
+				
 			}
 
 		}
@@ -274,6 +282,7 @@ function renderTweets(tweets){
 		}
 		if(tweet.watched) element.addClass('watched');
 		if(tweet.skipped) element.addClass('skipped');
+		if(tweet.error) element.addClass('error');
 
 		$("#schedule_wrapper").append(element);
 		tracksLoaded++;
@@ -326,7 +335,7 @@ function initYouTubeIframeAPI(videoId, startTime) {
 			playerVars : {
 				start: parseInt(startTime),
 				cc_load_policy: 0,
-				controls : 0,
+				controls : 1,
 				enablejsapi: 1,
 				disablekb: 1,
 				html5: 1,
@@ -357,11 +366,14 @@ function onYtPlayerStateChange(event) {
 		console.log("ENDED");
 		history.channels[history.watching].trackList[trackIndex].watched = true;
 		history.channels[history.watching].trackList[trackIndex].percent = 100;
-		playNextTrack();		
+		$('li.track#video__'+trackIndex).css('width','').addClass('watched')
+										.find('div.progress').attr('style', "");
+		playNextTrack();	
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {
 		console.log("PLAYING");
 		history.channels[history.watching].trackList[trackIndex].started = true;
+		history.channels[history.watching].trackIndex = trackIndex;
 		
 		store.save(history);
 
@@ -464,8 +476,6 @@ function getVimeoID(url) {
 }
 
 function playNextTrack(){
-	
-	$('li.track#video__'+trackIndex).css('width','').addClass('watched');
 
 	trackIndex--;
 	playerState = 0;
@@ -474,26 +484,12 @@ function playNextTrack(){
 
 }
 
-function playMostRecentUnstarted(){
-	
-	var listLength = history.channels[history.watching].trackList.length;
-	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[history.watching].trackList[idx].started &&
-			!history.channels[history.watching].trackList[idx].error ){
-			playTrack(idx);
-			break;
-
-		} else if(idx==0) playMostRecentUnfinished();
-	}
-
-}
-
 function playMostRecentUnfinished(){
 	
 	var listLength = history.channels[history.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
 		if( !history.channels[history.watching].trackList[idx].watched &&
-		   (!history.channels[history.watching].trackList[idx].skipped || idx >= trackIndex ) &&
+		   (!history.channels[history.watching].trackList[idx].skipped || idx <= trackIndex ) &&
 			!history.channels[history.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
@@ -501,6 +497,8 @@ function playMostRecentUnfinished(){
 	}
 
 }
+
+var loopEnabled = true;
 
 function playMostRecentSkipped(){
 	
@@ -513,11 +511,23 @@ function playMostRecentSkipped(){
 			break;
 		} else if(idx==0) {
 			// played all current results
+			if(loopEnabled) playTrack(trackIndex);
 			// check for some new content
 		}
 	}
 
 }
+
+// function playMostRecentUnstarted(){
+// 	var listLength = history.channels[history.watching].trackList.length;
+// 	for(var idx = listLength-1; idx >= 0; idx--){
+// 		if( !history.channels[history.watching].trackList[idx].started &&
+// 			!history.channels[history.watching].trackList[idx].error ){
+// 			playTrack(idx);
+// 			break;
+// 		} else if(idx==0) playMostRecentUnfinished();
+// 	}
+// }
 
 function playTrack(index){
 	// console.log(index); console.log(history.watching);
@@ -564,7 +574,7 @@ function videoStartClickEvent(e){
 		playVideo();
 	}else{
 		var index = parseInt( $(this).parent().parent().attr('id').replace('video__','') );
-		history.channels[history.watching].trackList[trackIndex].skipped = true;
+		if(trackIndex>=0) history.channels[history.watching].trackList[trackIndex].skipped = true;
 		playTrack(index);	
 	}
 	
@@ -618,8 +628,10 @@ function updatePlayerInfo() {
 
         	completedPercent = ((tempCurrentTime*100)/tempDuration).toFixed(2);
         	$('li.track#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
+        	console.log(completedPercent);
 
-        	if(completedPercent>history.channels[history.watching].trackList[trackIndex].percent)
+        	var prevPercent = history.channels[history.watching].trackList[trackIndex].percent;
+        	if(completedPercent>prevPercent || !prevPercent)
         		history.channels[history.watching].trackList[trackIndex].percent = completedPercent;
         	history.channels[history.watching].trackList[trackIndex].time = tempCurrentTime;
 

@@ -811,6 +811,9 @@ nav a:hover {
         .track.watched .indicator{
             background-color: rgba(89, 250, 173, 0.3);
         }
+        .track.error .indicator{
+            background-color: lightcoral;
+        }
 
         .track .progress{
             display: inline-block;
@@ -893,6 +896,18 @@ nav a:hover {
             margin: 5px 0 0 0;
             left: -4px;
         }
+        .track.error {
+            background-color: rgba(0,0,0,0.05);
+        }
+        /*.track.error .controls{
+            display: none;
+        }*/
+        .track.error .text,
+        .track.error .text a,
+        .track.error .started{
+            color: lightcoral;
+            opacity: 0.5;
+        }
 
             .track .controls .btn{
                 display: inline-block;
@@ -924,6 +939,7 @@ nav a:hover {
 
 .timeSlider_holder{
     display: inline-block;
+    display: none;
     position: absolute;
     
     bottom:0px;

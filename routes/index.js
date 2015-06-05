@@ -107,6 +107,23 @@ function getParamsArray(url){
 
 }
 
+Index.prototype.twitterSearch = function( req, res ) {
+	var query = req.params.query;
+
+	console.log(query);
+
+	var params = {q: query, count: 200}; 
+	twitter.get('search/tweets', params, function(error, tweets, response) {
+
+		console.log(tweets);
+		res.send(tweets.statuses);
+
+	});
+
+	
+};
+
+
 Index.prototype.twitterSearchName = function( req, res ) {
 	// console.log('twitterSearchName');
 	var shorts = [], longs = [], shortFunctions = [];
@@ -152,6 +169,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 
 					// will do 20 at a time
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
+						console.log(tweet.url);
 						request({
 							method: "HEAD",
 							url: tweet.url,
