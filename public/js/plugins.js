@@ -134,7 +134,10 @@ String.prototype.linkify_tweet = function() {
         wrap.appendChild(anch);
         return wrap.innerHTML;
     });
-    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" target="_blank">$2</a>');
+        
+    tweet = tweet.replace(/(^|\s)“@(\w+)/g, '$1“@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
+    tweet = tweet.replace(/(^|\s).@(\w+)/g, '$1@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
+    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
     // tweet = tweet.replace(/(^|\s)#(\w+)/g, '$1#<a href="http://search.twitter.com/search?q=%23$2" target="_blank">$2</a>');
     return tweet;
 };
@@ -171,4 +174,10 @@ function insertAtCaret(areaId,text) {
         txtarea.focus();
     }
     // txtarea.scrollTop = scrollPos;
+}
+
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {'use strict';
+    return String.prototype.indexOf.apply(this, arguments) !== -1;
+  };
 }

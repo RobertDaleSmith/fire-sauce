@@ -29,7 +29,8 @@
     "connect-flash": "^0.1.1",
     "twitter":"*",
     "unshorten":"*",
-    "request": "^2.5.5"
+    "request": "^2.5.5",
+    "cheerio":"*"
   },
   "devDependencies": {
     "mocha": "*",

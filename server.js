@@ -120,6 +120,7 @@ mongo.connect(function(err) {
 
   app.get( '/search/:query', function( req, res, next ) { routes.Index.twitterSearch( req, res, next ); } );
   app.get( '/search/', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
+  app.get( '/userInfo/', function( req, res, next ) { routes.Index.twitterGetUserInfo( req, res, next ); } );
 
   //Uncomment and use to create admin password, then comment out.
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );

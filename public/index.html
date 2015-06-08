@@ -26,7 +26,7 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div id="main_wrapper">
+        <div id="main_wrapper" class="side_open">
             <div id="player_viewport">
                 <div id="ytplayer"></div>
                 <!-- <div id="vplayer"></div> -->
@@ -35,38 +35,58 @@
                     <div id="timeSlider" class="timeSlider" data-role="slider" data-param-accuracy="0.1">
                         <div id="fractionLoaded"></div>
                         <div id="timer_current"></div><div id="timer_duration"></div>
-                        <div class="complete"></div>
+                        <!-- <div class="complete"></div> -->
                         <!-- <div class="marker"></div> -->
                     </div>
                 </div>
 
-                <div id="player_controls">
-               <!-- <div id="player_btn_play"></div> -->
-                    <div id="player_btn_mute"></div>
-                    <div id="player_btn_full"></div>
-                    <div id="player_btn_mute"></div>
+                <!-- <div id="player_watermark"></div> -->
+                
+                <div id="channel_info_wrapper" class="" style="display:none;">
+                    <img class="avatar" src="http://a0.twimg.com/sticky/default_profile_images/default_profile_6_normal.png">
+                    <div class="name"></div>
+                    <div class="screen_name"></div>
+                    <div class="follow_btn"><span>FOLLOW</span></div>
                 </div>
 
-                <!-- <div id="player_watermark"></div> -->
+                <div id="track_tweet_wrapper"></div>
+
+                <div id="toggle_sidebar_btn"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></div>
+
             </div>
             <div id="chrome_wrapper">
-                <div id="search_wrapper">
-                    <input id="search_input" type="text" placeholder="YouTube" value="" maxlength="16">
-                    <input id="search_button" type="button" value="watch">
+                <div id="titlebar_wrapper">
+                    <div class="btn" for="history_wrapper"><i class="fa fa-history"></i></div>
+                    <div class="btn active" for="watch_wrapper"><i class="fa fa-eye"></i></div>
+                    <div class="btn" for="settings_wrapper"><i class="fa fa-cogs"></i></div>
                 </div>
-                <div id="failed_wrapper">
-                    <div id="searching_spinner" class="dimming"></div>
-                    <div id="failed_message">No recent video Tweets.</div>
-                    <input id="close_failed_button" type="button" value="close">
+                <div class="panel" id="watch_wrapper">
+                    <div id="search_wrapper">
+                        <input id="search_input" type="text" placeholder="" value="" maxlength="16">
+                        <input id="search_button" type="button" value="watch">
+                    </div>
+                    <div id="failed_wrapper">
+                        <div id="searching_spinner" class="dimming"></div>
+                        <div id="failed_message">No recent video Tweets.</div>
+                        <input id="close_failed_button" type="button" value="close">
+                    </div>
+                    <div id="searching_wrapper">
+                        <div id="searching_spinner" class="dimming"></div>
+                        <div id="searching_message">Please wait. Loading.</div>
+                        <input id="cancel_search_button" type="button" value="cancel">
+                    </div>
+                    <ul id="schedule_wrapper">
+                        <!-- <li class="track">Feed me any Twitter username!</li> -->
+                    </ul>
                 </div>
-                <div id="searching_wrapper">
-                    <div id="searching_spinner" class="dimming"></div>
-                    <div id="searching_message">Please wait. Loading.</div>
-                    <input id="cancel_search_button" type="button" value="cancel">
+                <div class="panel" id="history_wrapper" style="display:none;">
+                    <ul id="channels_wrapper"></ul>
                 </div>
-                <ul id="schedule_wrapper">
-                    <!-- <li class="track">Feed me any Twitter username!</li> -->
-                </ul>
+                <div class="panel" id="settings_wrapper" style="display:none;">
+                    <ul id="channels_wrapper">
+                        <li class="channel">Settings</li>
+                    </ul>
+                </div>
             </div>
         </div>
 

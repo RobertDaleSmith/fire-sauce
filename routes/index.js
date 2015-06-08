@@ -11,6 +11,7 @@ var async = require("async")
 	  })
 	, bitlyAuth = {bitly: {username: ***REMOVED***, apikey: '***REMOVED***'}}
 	, request = require('request')
+	, cheerio = require('cheerio')
 	;
 
 var Index = function( mongo ) {
@@ -30,6 +31,12 @@ Index.prototype.home = function( req, res ) {
 		title:  'Home'
 	});
 };
+
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {'use strict';
+    return String.prototype.indexOf.apply(this, arguments) !== -1;
+  };
+}
 
 function youtube_parser(url) {
     url = url.replace("player_embedded&v=", "watch?v=");
@@ -63,7 +70,7 @@ function isTargetedContentType(url){
 
 	var isIt = false;
 
-	if(url.indexOf("youtube.com") > -1) isIt = true;
+	if(url)if(url.indexOf("youtube.com") > -1) isIt = true;
 	// else if(url.indexOf("vimeo.com") > -1) isIt = true;
 
 	return isIt;
@@ -123,6 +130,24 @@ Index.prototype.twitterSearch = function( req, res ) {
 	
 };
 
+Index.prototype.twitterGetUserInfo = function( req, res ) {
+	// console.log('twitterSearchName');
+	var shorts = [], longs = [], shortFunctions = [];
+	var user = req.query.screen_name;
+	console.log("Fetching user: " + user);
+
+	twitter.get('users/show', {screen_name: user}, function(error, user, response) {
+
+		if(!error){
+			res.send(user);
+		} else {
+			res.send({error:error});
+		}
+
+	});
+
+};
+
 
 Index.prototype.twitterSearchName = function( req, res ) {
 	// console.log('twitterSearchName');
@@ -167,35 +192,82 @@ Index.prototype.twitterSearchName = function( req, res ) {
 					var tweetLinks = results.getTweetLinks;
 					var expandedTweetUrlArr = [];
 
+					console.log(tweetLinks.length);
+					var cnt = 0;
+
 					// will do 20 at a time
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
-						console.log(tweet.url);
-						request({
-							method: "HEAD",
-							url: tweet.url,
-							followAllRedirects: true
-						}, function(error, response) {
-							if (error) {
-								// not sure how to handle a bad url...continue for now
-								return next();
-							}
+						var thisCnt = 0;
+						
 
-							var resultLongUrl = response.request.href;
+						//Skip request check
+						if(	tweet.url.includes('youtube.com/watch')		||
+							tweet.url.includes('http://goo.gl/JSDcVh')	||
+							tweet.url.includes('youtu.be')   	  		){
 
-							if( isTargetedContentType(resultLongUrl) != 0 ){
-								tweet.url = trimYouTubeURL(resultLongUrl);
+							if( isTargetedContentType(tweet.url) != 0 ){
+								tweet.url = trimYouTubeURL(tweet.url);
 								expandedTweetUrlArr.push(tweet);
 							}
 
+							thisCnt = cnt++;
+							// console.log(thisCnt + '\t' + 'skipped\t' + tweet.url);
 							next();
-						});
+						} else {
+
+							request({
+								method: "HEAD",
+								url: tweet.url,
+								followAllRedirects: true,
+								maxRedirects: 5,
+								timeout: 3000
+							}, function(error, response, html) {
+								if (error) {
+									// not sure how to handle a bad url...continue for now
+									thisCnt = cnt++;
+									// console.log(thisCnt + '\terror getting long from short\t' + error);
+									// console.log(thisCnt + '\t' + 'errored\t' + tweet.url);
+									next();
+								} else {
+									var resultLongUrl = response.request.href;
+
+									if( isTargetedContentType(resultLongUrl) != 0 ){
+										tweet.url = trimYouTubeURL(resultLongUrl);
+										expandedTweetUrlArr.push(tweet);
+									}else{
+										// console.log(resultLongUrl.includes('upworthy'));
+										if( resultLongUrl.includes('upworthy.com') || 
+											resultLongUrl.includes('buzzfeed.com') ){
+											//scrape html for iframe with youtube.com/embed in src.
+											//then grab that iframe's id
+											var $ = cheerio.load(html);
+											var ytUrl = $('iframe[src^="https://www.youtube.com/embed"]').attr('src');
+											if( isTargetedContentType(ytUrl) != 0 ){
+												console.log(ytUrl);
+												tweet.url = trimYouTubeURL(ytUrl);
+												expandedTweetUrlArr.push(tweet);
+											}
+										}
+									}
+									thisCnt = cnt++;
+									// console.log(thisCnt + '\t' + 'success\t' + resultLongUrl);
+									next();
+								}
+							});
+
+						}
+
 					}, function(err) {
+						console.log('done filtering urls');
 						if (err) {
+							console.log(err);
 							return done(err);
 						}
 
 						//Sort by date created_at before returning results.
 						expandedTweetUrlArr.sort(function(a,b) { return (new Date(a.created_at)) - (new Date(b.created_at)) } )
+
+						console.log('done resorting urls \tresults: ' + expandedTweetUrlArr.length);
 
 						return done(null, expandedTweetUrlArr)
 					});
@@ -206,6 +278,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 					res.send(err);
 				}
 
+				console.log('returning results');
 				res.send(results.expandUrls);
 			});
 
