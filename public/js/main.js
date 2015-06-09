@@ -165,6 +165,13 @@ $(window).bind("load", function() {
 
 	$('#twitter_signin_btn').bind('click', function(e) {
 		$('#splash_wrapper').css('display','none');
+		$('#titlebar_wrapper .btn.watching').click();
+	});
+
+	$('#twitter_signout_btn').bind('click', function(e) {
+		$('#splash_wrapper').css('display','');
+		// location.hash = "";
+		pauseVideo();
 	});
 
     // Check hash and load it.
