@@ -121,9 +121,13 @@ $(window).bind("load", function() {
 		
 		if($(this).hasClass('followed')) {
 			$(this).removeClass('followed');
+			$("#channel__"+history.watching).removeClass('followed');
+			$("#channel__"+history.watching+" .follow").val("FOLLOW");
 			history.channels[history.watching].followed = false;
 		} else {
 			$(this).addClass('followed');
+			$("#channel__"+history.watching).addClass('followed');
+			$("#channel__"+history.watching+" .follow").val("FOLLOWED");
 			history.channels[history.watching].followed = true;
 		}
 
@@ -849,14 +853,17 @@ function renderChannels(channels){
 		element.find('input.follow').bind('click', function(){ 
 			var channel = $(this).parent().attr('channel');
 
+			console.log(history.watching+"=="+channel);
 			if(!$(this).parent().hasClass("followed")){
 				$(this).parent().addClass("followed");
 				$(this).val("FOLLOWED");
 				history.channels[channel].followed = true;
+				if(history.watching==channel)$("#channel_info_wrapper").addClass("follow");
 			}else{
 				$(this).parent().removeClass("followed");
 				$(this).val("FOLLOW");
 				history.channels[channel].followed = false;
+				if(history.watching==channel)$("#channel_info_wrapper").removeClass("follow");
 			}
 		});
 		if(channel.followed){

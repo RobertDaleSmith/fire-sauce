@@ -237,11 +237,12 @@ Index.prototype.twitterSearchName = function( req, res ) {
 									}else{
 										// console.log(resultLongUrl.includes('upworthy'));
 										if( resultLongUrl.includes('upworthy.com') || 
-											resultLongUrl.includes('buzzfeed.com') ){
+											resultLongUrl.includes('buzzfeed.com') || 
+											resultLongUrl.includes('topdocumentaryfilms.com') ){
 											//scrape html for iframe with youtube.com/embed in src.
 											//then grab that iframe's id
 											var $ = cheerio.load(html);
-											var ytUrl = $('iframe[src^="https://www.youtube.com/embed"]').attr('src');
+											var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
 											if( isTargetedContentType(ytUrl) != 0 ){
 												console.log(ytUrl);
 												tweet.url = trimYouTubeURL(ytUrl);

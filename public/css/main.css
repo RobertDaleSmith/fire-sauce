@@ -569,7 +569,7 @@ nav a:hover {
             font-weight: 300;
         }
         #followed_wrapper::before{
-            content:'FAVORITE STREAMS';
+            content:'FOLLOWED STREAMS';
             display: inline-block;
             position: relative;
         }
