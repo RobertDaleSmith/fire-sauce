@@ -7,7 +7,7 @@ module.exports = function(grunt) {
           cwd: 'src/main/resources',
           src: 'public/js/**/*.js',
           dest: "target/classes",
-          ext: '.min.js'
+          ext: '.js'
         }]
       }
     }
