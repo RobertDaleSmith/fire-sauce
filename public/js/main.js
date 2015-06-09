@@ -288,7 +288,7 @@ function updateChannelInfo(user){
 	if(history.channels[history.watching].followed)$('#channel_info_wrapper').addClass('followed');
 	else $('#channel_info_wrapper').removeClass('followed');
 	$('#channel_info_wrapper').css('display','');
-	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url);
+	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url.replace('http:',''));
 	$('#channel_info_wrapper .name').text(user.name);
 	$('#channel_info_wrapper .screen_name').text('@'+user.screen_name);
 
@@ -813,7 +813,7 @@ function renderChannels(channels){
 				.addClass("info")
 				.append($('<img>')
 					.addClass("avatar")
-					.attr('src', channel.info.profile_image_url)
+					.attr('src', channel.info.profile_image_url.replace('http:',''))
 				)		
 				.append($('<div/>')
 					.addClass("name")
