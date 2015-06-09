@@ -141,7 +141,7 @@ $(window).bind("load", function() {
 			$('#chrome_wrapper .panel').css('display','none');
 			$('#chrome_wrapper .panel#'+isFor).css('display','');
 
-			if(isFor=="history_wrapper"){
+			if(isFor=="channels_wrapper"){
 				renderChannels(history.channels);
 			}
 		}
@@ -160,8 +160,7 @@ $(window).bind("load", function() {
     // Check hash and load it.
     var hash = location.hash || "";
     hash = hash.replace('#/','').replace('#','');
-    if(hash.length>0){
-    	$('input#search_input').val(hash);
+    if(hash.length>0){    	
     	watchUsername(hash);
     }
 
@@ -187,6 +186,8 @@ var searchRequest, getUserRequest;
 
 function watchUsername(screen_name){
 
+	
+
 	screen_name = screen_name.toLowerCase();
 
 	showSearchSpinner();
@@ -205,6 +206,7 @@ function watchUsername(screen_name){
 			$("#schedule_wrapper").html('');
 			renderTweets(history.channels[screen_name].trackList);
 
+			$('input#search_input').val(screen_name);
 			history.watching = screen_name.toLowerCase();
 			getTwitterUserInfo(screen_name, updateChannelInfo);
 		}
@@ -230,6 +232,7 @@ function watchUsername(screen_name){
 
 			$('input#search_input').val(screen_name);
 
+			$('input#search_input').val(screen_name);
 			history.watching = screen_name.toLowerCase();
 			getTwitterUserInfo(screen_name, updateChannelInfo);
 			
@@ -302,10 +305,17 @@ function renderTweets(tweets){
 			)
 			.append($('<a/>')
 				.addClass("started")
-				.text( moment( new Date(tweet.created_at)).fromNow() )
-				.attr('title', moment( new Date(tweet.created_at)).format('llll') )
+				// .attr('title', moment( new Date(tweet.created_at)).format('llll') )
 				.attr('href','http://twitter.com/'+tweet.user.screen_name+'/status/'+tweet.id)
 				.attr('target','_blank')
+				.append($('<span/>')
+					.addClass("fromNow")
+					.text( moment( new Date(tweet.created_at)).fromNow() )
+				)
+				.append($('<span/>')
+					.addClass("exactDate")
+					.text( moment( new Date(tweet.created_at)).format('llll') )
+				)
 			)
 			.append($('<div/>')
 				.addClass("text")
@@ -438,7 +448,8 @@ function onYtPlayerStateChange(event) {
 		console.log("PLAYING");
 		history.channels[history.watching].trackList[trackIndex].started = true;
 		history.channels[history.watching].trackIndex = trackIndex;
-		
+		history.channels[history.watching].lastWatched = (new Date()).toString();
+
 		if(history.channels[history.watching].trackList[trackIndex].error){
 			history.channels[history.watching].trackList[trackIndex].error = null;
 			$('li.track#video__'+trackIndex).removeClass('error');
@@ -724,12 +735,10 @@ function updatePlayerInfo() {
         	completedPercent = ((tempCurrentTime*100)/tempDuration).toFixed(2);
         	$('li.track#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
 
-        	var prevPercent;
-        	if(history.channels[history.watching].trackList[trackIndex]) 
-        		prevPercent = history.channels[history.watching].trackList[trackIndex].percent;
-        	if(completedPercent>prevPercent || !prevPercent)
-        		history.channels[history.watching].trackList[trackIndex].percent = completedPercent;
-        	history.channels[history.watching].trackList[trackIndex].time = tempCurrentTime;
+    		if(history.channels[history.watching].trackList[trackIndex]){
+    			history.channels[history.watching].trackList[trackIndex].percent = completedPercent;
+    			history.channels[history.watching].trackList[trackIndex].time = tempCurrentTime;
+    		}
 
             //update seeker
             if (!timeSeeking) {
@@ -760,26 +769,101 @@ function updatePlayerInfo() {
 
 function renderChannels(channels){
 
-	$("#channels_wrapper").html('');
+	$("#followed_wrapper").html('');
+	$("#history_wrapper").html('');
 
-	$.each( channels, function( key, channel ) {
+	var sortable = [];
+	for (var channel in channels) {
+		channels[channel].id = channel;
+		sortable.push(channels[channel]);
+	}
+	sortable.sort(function(a,b) { return (new Date(a.lastWatched)) - (new Date(b.lastWatched)) } );
+
+	$.each( sortable, function( idx, channel ) {
 		// console.log(channel);
 
 		var element = $('<li/>')
 			.addClass("channel")
-			.attr('id', "channel__"+key)
-			.attr('channel', key)
-			.html('@'+key)
+			.attr('id', "channel__"+channel.id)
+			.attr('channel', channel.id)
+			.append($('<div/>')
+				.addClass("options")
+				.append($('<div/>')
+					.addClass("btn delete")
+					.html('<i class="fa fa-remove"></i>')
+				)
+			)
+			.append($('<div/>')
+				.addClass("info")
+				.append($('<img>')
+					.addClass("avatar")
+					.attr('src', channel.info.profile_image_url)
+				)		
+				.append($('<div/>')
+					.addClass("name")
+					.html(channel.info.name)
+				)
+				.append($('<div/>')
+					.addClass("screen_name")
+					.html('@'+channel.info.screen_name)
+				)
+				.append($('<div/>')
+					.addClass("views")
+					.html('&nbsp;'+getWatchedCount(channel.trackList)+' / '+channel.trackList.length+'&nbsp;')
+				)
+			)
+			.append($('<input>')
+				.addClass("follow")
+				.attr('type','button')
+				.val("FOLLOW")
+			)
+			
 		;
-		element.bind('click', function(){ 
-			var channel = $(this).attr('channel');
+		element.find('div.info').bind('click', function(){ 
+			var channel = $(this).parent().attr('channel');
 			watchUsername(channel);
 		});
+		element.find('div.info').bind('contextmenu', function(e){ 
+			e.preventDefault();
+			$(this).parent().toggleClass('edit');
+		});
+		element.find('div.btn.delete').bind('click', function(){ 
+			var channel = $(this).parent().parent().attr('channel');
+			console.log('delete '+ channel);
+
+			delete history.channels[channel];
+			$(this).parent().parent().remove();
+		});
+		element.find('input.follow').bind('click', function(){ 
+			var channel = $(this).parent().attr('channel');
+
+			if(!$(this).parent().hasClass("followed")){
+				$(this).parent().addClass("followed");
+				$(this).val("FOLLOWED");
+				history.channels[channel].followed = true;
+			}else{
+				$(this).parent().removeClass("followed");
+				$(this).val("FOLLOW");
+				history.channels[channel].followed = false;
+			}
+		});
+		if(channel.followed){
+			element.addClass("followed");
+			element.find('input.follow').val("FOLLOWED");
+		}
 		// if(channel.info) element.html('@'+channel.info.screen_name);
-		$("#channels_wrapper").prepend(element);
+
+		if(channel.followed) $("#followed_wrapper").prepend(element);
+		else $("#history_wrapper").prepend(element);
+		
 	});
 
+}
 
-
-
+function getWatchedCount(tracks){
+	var count = 0;
+	for (var idx in tracks) {
+		count += tracks[idx].watched ? 1 : 0;
+	}
+    return count;
 }

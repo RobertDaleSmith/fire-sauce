@@ -265,7 +265,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 						}
 
 						//Sort by date created_at before returning results.
-						expandedTweetUrlArr.sort(function(a,b) { return (new Date(a.created_at)) - (new Date(b.created_at)) } )
+						expandedTweetUrlArr.sort(function(a,b) { return (new Date(a.created_at)) - (new Date(b.created_at)) } );
 
 						console.log('done resorting urls \tresults: ' + expandedTweetUrlArr.length);
 

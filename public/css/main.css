@@ -536,27 +536,56 @@ nav a:hover {
     height: 100%;
 }
 
-#history_wrapper{
+#channels_wrapper{
     display: inline-block;
     position: relative;
     width: 100%;
     height: 100%;
+
+    max-height: calc(100% - 48px);
+    padding: 0; margin: 0px;
+    overflow-x: hidden;
 }
-    #channels_wrapper{
+    #suggested_wrapper,
+    #followed_wrapper,
+    #history_wrapper{
         display: inline-block;
         position: relative;
         width: 100%; height: auto;
-        max-height: calc(100% - 48px);
+        float: left; overflow: hidden;
         padding: 0; margin: 0px;
-        overflow-x: hidden;
     }
+        #suggested_wrapper::before,
+        #followed_wrapper::before,
+        #history_wrapper::before{
+            content: '';
+            display: inline-block;
+            position: relative;
+            text-align: center;
+            width: 100%;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            line-height: 30px;
+            font-weight: 300;
+        }
+        #followed_wrapper::before{
+            content:'FAVORITES';
+            display: inline-block;
+            position: relative;
+        }
+        #history_wrapper::before{
+            content:'WATCHED';
+            display: inline-block;
+            position: relative;
+        }
+
         #channels_wrapper .channel{
             display: inline-block;
             position: relative;
             float: left;
             width: 100%; height: auto; 
-            min-height: 68px;
-            padding: 10px 15px; 
+            min-height: 72px;
+            padding: 10px; 
             margin: 0px;
             color: #ffffff;
             cursor: pointer;
@@ -571,7 +600,124 @@ nav a:hover {
             background-color: transparent;
 
         }
+        
+        #channels_wrapper .channel.edit{
+            left:50px;
+        }
 
+            #channels_wrapper .channel .options{
+                display: inline-block;
+                position: absolute;
+                left: -50px; top: 0px;
+                width: 50px; height: 100%;
+                background-color: rgba(0,0,0,0.2);
+                text-align: center;
+                line-height: 72px;
+            }
+                #channels_wrapper .channel .options .btn.delete{
+                    display: inline-block;
+                    position: relative;
+                    width: 100%; height: 100%;
+                    color:#ffffff;
+                }
+                #channels_wrapper .channel .options .btn.delete:active{
+                    background-color:rgba(255, 0, 0, 0.7);
+                }
+
+
+            #channels_wrapper .channel .info{
+                display: inline-block;
+                position: absolute;
+                left: 0px; top: 0px;
+                width: 100%; height: 100%;
+                padding: inherit; 
+            }
+            #channels_wrapper .channel .info:hover{
+                background-color: rgba(255,255,255,0.05);
+            }
+            #channels_wrapper .channel .info:active{
+                background-color: rgba(255,255,255,0.1);
+            }
+
+                #channels_wrapper .channel .avatar{
+                    display: inline-block;
+                    position: absolute;
+                    left: 10px; top: 10px;
+                    width: 48px; height: 48px;
+                    border-radius: 48px;
+                }
+                #channels_wrapper .channel .name{
+                    display: inline-block;
+                    position: relative;
+                    float: left;
+                    width: 100%;
+                    height: auto;
+                    padding: 0 0 0 58px;
+                    font-weight: 500;
+                    font-size: 15px;
+                    line-height: 14px;
+                    margin: 0px 0 8px 0;
+
+                }
+                #channels_wrapper .channel .screen_name{
+                    display: inline-block;
+                    position: relative;
+                    float: left;
+                    width: 100%;
+                    height: auto;
+                    padding: 0 0 0 58px;
+                    font-weight: 300;
+                    font-size: 12px;
+                    line-height: 11px;
+                    color: rgba(255,255,255,0.7);
+                    margin: 0px 0 8px 0;
+                }
+                #channels_wrapper .channel .views{
+                    display: inline-block;
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: auto;
+                    height: auto;
+                    padding: 3px 5px;
+                    font-weight: 300;
+                    font-size: 12px;
+                    line-height: 14px;
+                    color: rgba(255,255,255,0.7);
+                    background-color: rgba(0,0,0,0.2);
+                    border-radius: 30px;
+                }
+
+            input.follow{
+                display: inline-block;
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                width: auto;
+                height: 20px;
+                background-color: #f4f4f4;
+                padding: 0 4px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #f4f4f4;
+                font-size: 12px;
+                border-radius: 4px;
+                line-height: 16px;
+                cursor: pointer;
+                color: #53D063;
+            }
+            input.follow:active{
+                opacity: 0.7;
+            }
+            input.follow:focus{
+                outline:0;
+                border-color: rgba(83, 208, 99, 0.35);
+            }
+            #channels_wrapper .channel.followed input.follow{
+                color: #f4f4f4;
+                background-color: #53D063;
+                border-color: #53D063;
+            }
 #settings_wrapper{
     display: inline-block;
     position: relative;
@@ -965,7 +1111,22 @@ nav a:hover {
         }
         .track .started:hover{
             text-decoration: underline;
-        }
+        }  
+            .track .started .fromNow,
+            .track .started .exactDate{
+                display: inline-block;
+                position: relative;
+                width: auto; height: auto;
+            }
+            .track .started .exactDate{
+                display: none;
+            }
+            .track .started:hover .exactDate{
+                display: inline-block;
+            }
+            .track .started:hover .fromNow{
+                display: none;
+            }
 
         .track .text{
             display: inline-block;
