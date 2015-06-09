@@ -64,7 +64,7 @@
                 <ul id="history_wrapper"></ul>
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
-                {?production}PRODUCTION{:else}DEVELOPMENT{/production}
+                
             </div>
         </div>
     </div>
