@@ -67,6 +67,15 @@
                 
             </div>
         </div>
+
+        <div id="splash_wrapper">
+        	<div class="content">
+	        	<div class="logo"></div><br>
+	        	<span class="oneliner">Crowdsourced TV</span><br>
+	        	<button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Watch with Twitter</button>
+	        </div>
+        </div>
+
     </div>
 
 {/html_body}

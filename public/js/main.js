@@ -163,11 +163,16 @@ $(window).bind("load", function() {
 
 	});
 
+	$('#twitter_signin_btn').bind('click', function(e) {
+		$('#splash_wrapper').css('display','none');
+	});
+
     // Check hash and load it.
     var hash = location.hash || "";
     hash = hash.replace('#/','').replace('#','');
     if(hash.length>0){    	
     	watchUsername(hash);
+    	$('#splash_wrapper').css('display','none');
     }
 
 });
