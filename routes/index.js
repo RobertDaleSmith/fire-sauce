@@ -26,7 +26,7 @@ exports.initIndex = function( mongo ){
 Index.prototype.home = function( req, res ) {
 	console.log('home');
 
-	var prod = process.env.deployment;
+	var prod = process.env.production;
 	if(!prod)prod=false;
 
 	res.render( 'index/home', {
