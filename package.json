@@ -1,5 +1,5 @@
 {
-  "name": "Node-Starter-Site",
+  "name": "Fire-Sauce-TV",
   "version": "1.0.0-1",
   "description": "Node starter site with MongoDB, dust.js, Sass, and bcrypt password protected backend.",
   "main": "server.js",

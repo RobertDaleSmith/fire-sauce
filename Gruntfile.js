@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'public/js/main.js',
-        dest: 'build/main.min.js'
+        dest: 'public/build/main.min.js'
       }
     }
   });
