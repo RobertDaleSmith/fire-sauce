@@ -569,12 +569,12 @@ nav a:hover {
             font-weight: 300;
         }
         #followed_wrapper::before{
-            content:'FAVORITES';
+            content:'FAVORITE STREAMS';
             display: inline-block;
             position: relative;
         }
         #history_wrapper::before{
-            content:'WATCHED';
+            content:'PREVIOUSLY WATCHED';
             display: inline-block;
             position: relative;
         }
@@ -1070,7 +1070,7 @@ nav a:hover {
             background-color: transparent;
         }
         .track.playing .indicator{
-            background-color: #59faad;
+            background-color: #59faad !important;
         }
         .track.watched .indicator{
             background-color: rgba(89, 250, 173, 0.3);

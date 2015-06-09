@@ -143,6 +143,8 @@ $(window).bind("load", function() {
 
 			if(isFor=="channels_wrapper"){
 				renderChannels(history.channels);
+			}else if(isFor=="watch_wrapper"){
+				scrollToTrack();
 			}
 		}
 
@@ -364,8 +366,8 @@ function renderTweets(tweets){
 
 		}
 	});
-
-	$("#schedule_wrapper").animate({scrollTop:$("#schedule_wrapper")[0].scrollHeight},500);
+	
+	scrollToTrack();
 
 }
 
@@ -439,6 +441,7 @@ function onYtPlayerStateChange(event) {
 	if (event.data == YT.PlayerState.ENDED) {
 		console.log("ENDED");
 		history.channels[history.watching].trackList[trackIndex].watched = true;
+		history.channels[history.watching].trackList[trackIndex].skipped = null;
 		history.channels[history.watching].trackList[trackIndex].percent = 100;
 		$('li.track#video__'+trackIndex).css('width','').addClass('watched')
 										.find('div.progress').attr('style', "");
@@ -447,6 +450,7 @@ function onYtPlayerStateChange(event) {
 	else if (event.data == YT.PlayerState.PLAYING) {
 		console.log("PLAYING");
 		history.channels[history.watching].trackList[trackIndex].started = true;
+		history.channels[history.watching].trackList[trackIndex].skipped = null;
 		history.channels[history.watching].trackIndex = trackIndex;
 		history.channels[history.watching].lastWatched = (new Date()).toString();
 
@@ -623,11 +627,11 @@ function playTrack(index){
 		$('li.track').removeClass('playing');
 		$('li.track#video__'+index).addClass('playing');
 
-		var thisOffsetTop = 0;
-		try{ thisOffsetTop = $("#video__"+index).offset().top; }catch(e){}
-
-		var elementFromTop = $("#schedule_wrapper").scrollTop() + thisOffsetTop - 116;
-		$("#schedule_wrapper").animate({scrollTop:elementFromTop},500);
+		// var thisOffsetTop = 0;
+		// try{ thisOffsetTop = $("#video__"+index).offset().top; }catch(e){}
+		// var elementFromTop = $("#schedule_wrapper").scrollTop() + thisOffsetTop - 116;
+		// $("#schedule_wrapper").animate({scrollTop:elementFromTop},500);
+		scrollToTrack();
 
 		//Clears out any others in playing state.
 		$('.track .controls .btn.start .fa').removeClass('fa-repeat').addClass('fa-play');
@@ -643,6 +647,14 @@ function playTrack(index){
 		$('#track_tweet_wrapper').html(history.channels[history.watching].trackList[index].text.linkify_tweet());
 	}catch(e){
 		console.log('error caught for playTrack('+index+')');
+	}
+}
+
+function scrollToTrack(){
+	if( $("#schedule_wrapper .playing") ){
+		if( $("#schedule_wrapper .playing").offset() ){
+			$("#schedule_wrapper").animate({scrollTop:$("#schedule_wrapper").scrollTop() + $("#schedule_wrapper .playing").offset().top-116},500);
+		}
 	}
 }
 
