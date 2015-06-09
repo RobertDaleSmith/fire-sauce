@@ -1,5 +1,6 @@
 source
 node_modules
+build/*.js
 dev_conf.js
 # Compiled source #
 ###################
