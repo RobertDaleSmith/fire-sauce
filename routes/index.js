@@ -25,10 +25,15 @@ exports.initIndex = function( mongo ){
 
 Index.prototype.home = function( req, res ) {
 	console.log('home');
+
+	var prod = process.env.deployment;
+	if(!prod)prod=false;
+
 	res.render( 'index/home', {
 		pageId: 'home',
 		subId:  '',
-		title:  'Home'
+		title:  '',
+		production: prod
 	});
 };
 

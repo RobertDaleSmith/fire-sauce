@@ -1,56 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Firesauce - Crowd TV {+title}{/title}</title>
+        <meta name="description" content="Firesauce TV turns any Twitter feed into an asynchronous stream of curated video content.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<html lang="en">
+        <!-- Fonts -->
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800'>
+        <link rel="stylesheet" type='text/css' href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-	<head>
+        <!-- Styles -->
+        <link rel="stylesheet" type='text/css' href="css/pure-min.css">
+        <link rel="stylesheet" type='text/css' href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+			
+		{!>"index/partials/header"/!}
+			
+		{+html_body}{/html_body}
 		
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="TicHelper Admin Console">
-		<meta name="author" content="Bouncing Pixel">
-		<link rel="shortcut icon" href="/favicon.ico"/>
-		
-		<title>Project Name | {+title}{/title}</title>
+		{!>"index/partials/footer"/!}
 
-		<!-- Custom Fonts -->
-		<link rel="stylesheet" type="text/css" href="http://fast.fonts.net/cssapi/8183d384-4216-40d7-a33f-d058d267345b.css"/>
-		<link rel="stylesheet" type="text/css" href="/libs/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,800">
-		
-		<!-- Custom CSS -->
-		<link rel="stylesheet" type="text/css" href="/css/style_index.css">
-		
-		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery-ui.min.js"></script>
+        <script src="js/vendor/lawnchair-0.6.1.min.js"></script>
+        <script src="js/vendor/moment.min.js"></script>
+        <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
 
-		{+headScripts/}
-		
-	</head>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
 
-	<body>
-
-		<div id="main_wrapper">
-			{>"index/partials/header"/}
-			{+html_body}
-			{/html_body}
-			{>"index/partials/footer"/}		
-		</div>
-		<!-- jQuery JavaScript -->
-		<script src="/libs/jquery/jquery-2.1.1.min.js"></script>
-
-		<!-- Prototypes & Helpers JavaScript -->
-		<script src="/js/helpers.js"></script>
-
-		<!-- Custom JavaScript -->
-		<script src="/js/script_index.js"></script>
-
-		{+bodyScripts/}
-
-	</body>
-
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-63501332-1','auto');ga('send','pageview');
+        </script>
+    </body>
 </html>
