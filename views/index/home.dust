@@ -72,8 +72,8 @@
         	<div class="content">
 	        	<div class="logo"></div><br>
 	        	<span class="oneliner">Crowdsourced TV</span><br>
-                <a href="/auth/twitter" id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</a>
-	        	<!-- <button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button> -->
+                <!-- <a href="/auth/twitter" id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</a> -->
+	        	<button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button>
 	        </div>
         </div>
 
