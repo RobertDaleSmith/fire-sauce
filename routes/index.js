@@ -76,6 +76,7 @@ function isTargetedContentType(url){
 	var isIt = false;
 
 	if(url)if(url.indexOf("youtube.com") > -1) isIt = true;
+	else if(url)if(url.indexOf("youtu.be") > -1) isIt = true;
 	// else if(url.indexOf("vimeo.com") > -1) isIt = true;
 
 	return isIt;
@@ -204,12 +205,13 @@ Index.prototype.twitterSearchName = function( req, res ) {
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
 						var thisCnt = 0;
 						
+						console.log(tweet.url);
 
 						//Skip request check
 						if(	tweet.url.includes('youtube.com/watch')		||
-							tweet.url.includes('http://goo.gl/JSDcVh')	||
 							tweet.url.includes('youtu.be')   	  		){
 
+							console.log(isTargetedContentType(tweet.url));
 							if( isTargetedContentType(tweet.url) != 0 ){
 								tweet.url = trimYouTubeURL(tweet.url);
 								expandedTweetUrlArr.push(tweet);
