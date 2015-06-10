@@ -13,6 +13,8 @@ var bodyParser     = require('body-parser')
   , cookieParser   = require('cookie-parser')
   , flash          = require('connect-flash')
   , events         = require('events')
+  , passport       = require('passport')
+  , TwitterStrategy= require('passport-twitter').Strategy
   ;
 
 var dbInfo = config.get('dbConfig');
@@ -86,6 +88,24 @@ mongo.connect(function(err) {
   var Admin = require('./routes/admin.js').initAdmin;
   routes.Admin = new Admin(mongo);
 
+  passport.use(new TwitterStrategy({
+      consumerKey: "***REMOVED***",
+      consumerSecret: "***REMOVED***",
+      callbackURL: "http://firesauce.tv/auth/twitter/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+
+      console.log(token);
+      console.log(tokenSecret);
+      console.log(profile);
+      done(null, profile);
+      // User.findOrCreate(..., function(err, user) {
+      //   if (err) { return done(err); }
+      //   done(null, user);
+      // });
+    }
+  ));
+
   /* Middlewares */
   function requiresAdminLogin(req, res, next) {
     if( req.session.admin && req.session.loggedIn ){
@@ -121,6 +141,20 @@ mongo.connect(function(err) {
   app.get( '/search/:query', function( req, res, next ) { routes.Index.twitterSearch( req, res, next ); } );
   app.get( '/search/', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
   app.get( '/userInfo/', function( req, res, next ) { routes.Index.twitterGetUserInfo( req, res, next ); } );
+
+
+  // Redirect the user to Twitter for authentication.  When complete, Twitter
+  // will redirect the user back to the application at
+  //   /auth/twitter/callback
+  app.get('/auth/twitter', passport.authenticate('twitter'));
+
+  // Twitter will redirect the user to this URL after approval.  Finish the
+  // authentication process by attempting to obtain an access token.  If
+  // access was granted, the user will be logged in.  Otherwise,
+  // authentication has failed.
+  app.get('/auth/twitter/callback',
+    passport.authenticate('twitter', { successRedirect: '/',
+                                       failureRedirect: '/login' }));
 
   //Uncomment and use to create admin password, then comment out.
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );

@@ -34,7 +34,9 @@
     "request": "^2.5.5",
     "serve-favicon": "*",
     "twitter": "*",
-    "unshorten": "*"
+    "unshorten": "*",
+    "passport": "*",
+    "passport-twitter": "*"
   },
   "devDependencies": {
     "mocha": "*",
