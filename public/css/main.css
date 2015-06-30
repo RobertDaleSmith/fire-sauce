@@ -542,8 +542,7 @@ nav a:hover {
     position: relative;
     width: 100%;
     height: 100%;
-
-    max-height: calc(100% - 48px);
+    max-height: calc(100% - 116px);
     padding: 0; margin: 0px;
     overflow-x: hidden;
 }
@@ -554,7 +553,7 @@ nav a:hover {
         position: relative;
         width: 100%; height: auto;
         float: left; overflow: hidden;
-        padding: 0; margin: 0px;
+        padding: 0; margin: 0 0 15px 0;
     }
         #suggested_wrapper::before,
         #followed_wrapper::before,
@@ -569,8 +568,13 @@ nav a:hover {
             line-height: 30px;
             font-weight: 300;
         }
+        #suggested_wrapper::before{
+            content:'WHAT\'S HOT (SUGGESTIONS)';
+            display: inline-block;
+            position: relative;
+        }
         #followed_wrapper::before{
-            content:'FOLLOWED STREAMS';
+            content:'FOLLOWED CHANNELS';
             display: inline-block;
             position: relative;
         }
@@ -625,6 +629,16 @@ nav a:hover {
                     background-color:rgba(255, 0, 0, 0.7);
                 }
 
+            #channels_wrapper .channel .status{
+                display: inline-block;
+                position: absolute;
+                left: 0px; top: 0px;
+                width: 2px; height: 100%;
+                background-color: transparent;
+            }
+            #channels_wrapper .channel.active .status{
+                background-color: #59faad;
+            }
 
             #channels_wrapper .channel .info{
                 display: inline-block;
@@ -723,7 +737,7 @@ nav a:hover {
     display: inline-block;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 116px);
     text-align: center;
     padding: 24px 0 0 0;
 }
@@ -734,6 +748,28 @@ nav a:hover {
         font-size: 18px;
         font-weight: normal;
     }
+
+    #settings_wrapper .footer {
+        display: inline-block;
+        position: absolute;
+        bottom: 0px; left:0px;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 300;
+        -webkit-user-select: initial;
+         -khtml-user-select: initial;
+           -moz-user-select: initial;
+            -ms-user-select: initial; /* IE 10+ */
+                user-select: initial;
+
+    }
+        #settings_wrapper .footer a{
+            color: #ffffff;
+        }
 
 #search_wrapper{
     display: inline-block;
@@ -890,7 +926,7 @@ nav a:hover {
 #searching_wrapper{
     display: inline-block;
     position: absolute;
-    top: 68px;
+    top: 116px;
     left: 0px;
     z-index: 10;
     opacity: 0.9;
@@ -964,7 +1000,7 @@ nav a:hover {
 #failed_wrapper{
     display: inline-block;
     position: absolute;
-    top: 68px;
+    top: 116px;
     left: 0px;
     /*position: relative;
     float: left;*/
@@ -1034,7 +1070,7 @@ nav a:hover {
     background-color: #435264;
     overflow-x: hidden;
     border-style: solid;
-    border-width: 0 0 1px 0;
+    border-width: 0;
     border-color: #4f6074;
 
 }
@@ -1214,6 +1250,7 @@ nav a:hover {
                 opacity: 0.7;
                 margin: 0 4px 0 0;
                 cursor: pointer;
+                color: #ffffff;
             }
             .track .controls .btn:active{
                 opacity: 1;
@@ -1230,6 +1267,9 @@ nav a:hover {
             }
             .track .controls .btn.fav.diamond{
                 color: gold;
+            }
+            .track .controls .btn.resauce.resauced{
+                color: lightgreen;
             }
 
 
@@ -1399,6 +1439,36 @@ nav a:hover {
         left: 10px; top: 10px;
         width: 48px; height: 48px;
         border-radius: 48px;
+    }
+
+    #channel_info_wrapper .spinner{
+        display: inline-block;
+        position: absolute;
+        left: 10px; top: 10px;
+        width: 48px; height: 48px;
+        border-radius: 48px;
+        border-width: 4px;
+        border-style: solid;
+        border-color: #59faad transparent;
+        opacity: 0;
+        -webkit-transition: all 1500ms;
+           -moz-transition: all 1500ms;
+             -o-transition: all 1500ms;
+                transition: all 1500ms;
+        -webkit-animation: rotating 2s linear infinite;
+           -moz-animation: rotating 2s linear infinite;
+            -ms-animation: rotating 2s linear infinite;
+             -o-animation: rotating 2s linear infinite;
+                animation: rotating 2s linear infinite;
+    }
+    #channel_info_wrapper .spinner.rotating {
+
+        left: 7px; top: 7px;
+        width: 54px; height: 54px;
+        border-radius: 54px;
+        opacity: 1;
+
+        
     }
 
     #channel_info_wrapper .name{

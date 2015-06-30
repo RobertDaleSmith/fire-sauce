@@ -145,7 +145,20 @@ Index.prototype.twitterGetUserInfo = function( req, res ) {
 	twitter.get('users/show', {screen_name: user}, function(error, user, response) {
 
 		if(!error){
-			res.send(user);
+			res.send({
+				description: 				  user.description,
+				following: 					  user.following,
+				id: 						  user.id,
+				id_str: 					  user.id_str,
+				location: 					  user.location,
+				name: 						  user.name,
+				profile_background_color: 	  user.profile_background_color,
+				profile_background_image_url: user.profile_background_image_url,
+				profile_background_tile: 	  user.profile_background_tile,
+				profile_image_url: 			  user.profile_image_url,
+				profile_link_color: 		  user.profile_link_color,
+				screen_name: 				  user.screen_name
+			});
 		} else {
 			res.send({error:error});
 		}
@@ -179,12 +192,12 @@ Index.prototype.twitterSearchName = function( req, res ) {
 									text: tweet.text,
 									created_at: tweet.created_at,
 									url: tweet.entities.urls[i].expanded_url,
-									user: tweet.user,
+									user: tweet.user.screen_name,
 									retweet_count: tweet.retweet_count,
 									favorite_count: tweet.favorite_count,
-									favorited: tweet.favorited,
-									retweeted: tweet.retweeted,
-									source: tweet.source,
+									// favorited: tweet.favorited,
+									// retweeted: tweet.retweeted,
+									// source: tweet.source,
 									lang: tweet.lang
 								});
 							}
@@ -243,9 +256,9 @@ Index.prototype.twitterSearchName = function( req, res ) {
 										expandedTweetUrlArr.push(tweet);
 									}else{
 										// console.log(resultLongUrl.includes('upworthy'));
-										if( resultLongUrl.includes('upworthy.com') || 
-											resultLongUrl.includes('buzzfeed.com') || 
-											resultLongUrl.includes('topdocumentaryfilms.com') ){
+										// if( resultLongUrl.includes('upworthy.com') || 
+										// 	resultLongUrl.includes('buzzfeed.com') || 
+										// 	resultLongUrl.includes('topdocumentaryfilms.com') ){
 											//scrape html for iframe with youtube.com/embed in src.
 											//then grab that iframe's id
 											var $ = cheerio.load(html);
@@ -255,7 +268,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 												tweet.url = trimYouTubeURL(ytUrl);
 												expandedTweetUrlArr.push(tweet);
 											}
-										}
+										// }
 									}
 									thisCnt = cnt++;
 									// console.log(thisCnt + '\t' + 'success\t' + resultLongUrl);

@@ -21,10 +21,12 @@
 
             <div id="player_watermark"></div>
             
-            <div id="channel_info_wrapper" class="" style="display:none;">
-                <img class="avatar" src="//a0.twimg.com/sticky/default_profile_images/default_profile_6_normal.png">
-                <div class="name"></div>
-                <div class="screen_name"></div>
+            <div id="channel_info_wrapper" class="followed" style="">
+                <div class="spinner "></div>
+                <img class="avatar" src="/img/logo_io_sq.jpg">
+                <!-- //a0.twimg.com/sticky/default_profile_images/default_profile_6_normal.png -->
+                <div class="name">FireSauceTV</div>
+                <div class="screen_name">@FireSauceTV</div>
                 <div class="follow_btn"><span>FOLLOW</span></div>
             </div>
 
@@ -37,23 +39,25 @@
             <div id="titlebar_wrapper">
                 <div class="btn channels" for="channels_wrapper"><i class="fa fa-history"></i></div>
                 <div class="btn watching active" for="watch_wrapper"><i class="fa fa-eye"></i></div>
-                <div class="btn settings" for="settings_wrapper"><i class="fa fa-cogs"></i></div>
+                <div class="btn settings" for="settings_wrapper"><i class="fa fa-info-circle"></i></div>
             </div>
+
+            <div id="search_wrapper">
+                <input id="search_input" type="text" placeholder="" value="" maxlength="16">
+                <input id="search_button" type="button" value="watch">
+            </div>
+            <div id="failed_wrapper">
+                <div id="searching_spinner" class="dimming"></div>
+                <div id="failed_message">No recent video Tweets.</div>
+                <input id="close_failed_button" type="button" value="close">
+            </div>
+            <div id="searching_wrapper">
+                <div id="searching_spinner" class="dimming"></div>
+                <div id="searching_message">Please wait. Loading.</div>
+                <input id="cancel_search_button" type="button" value="cancel">
+            </div>
+
             <div class="panel" id="watch_wrapper">
-                <div id="search_wrapper">
-                    <input id="search_input" type="text" placeholder="" value="" maxlength="16">
-                    <input id="search_button" type="button" value="watch">
-                </div>
-                <div id="failed_wrapper">
-                    <div id="searching_spinner" class="dimming"></div>
-                    <div id="failed_message">No recent video Tweets.</div>
-                    <input id="close_failed_button" type="button" value="close">
-                </div>
-                <div id="searching_wrapper">
-                    <div id="searching_spinner" class="dimming"></div>
-                    <div id="searching_message">Please wait. Loading.</div>
-                    <input id="cancel_search_button" type="button" value="cancel">
-                </div>
                 <ul id="schedule_wrapper">
                     <!-- <li class="track">Feed me any Twitter username!</li> -->
                 </ul>
@@ -64,18 +68,18 @@
                 <ul id="history_wrapper"></ul>
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
-                <button id="twitter_signout_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign out</button>
+                <!-- <button id="twitter_signout_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign out</button> -->
+                <div class="footer">bitcoin<br>1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9<br><br><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015</div>
             </div>
         </div>
 
-        <div id="splash_wrapper">
+        <!-- <div id="splash_wrapper">
         	<div class="content">
 	        	<div class="logo"></div><br>
 	        	<span class="oneliner">Crowdsourced TV</span><br>
-                <!-- <a href="/auth/twitter" id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</a> -->
 	        	<button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button>
 	        </div>
-        </div>
+        </div> -->
 
     </div>
 

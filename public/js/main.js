@@ -121,14 +121,15 @@ $(window).bind("load", function() {
 		
 		if($(this).hasClass('followed')) {
 			$(this).removeClass('followed');
-			$("#channel__"+history.watching).removeClass('followed');
-			$("#channel__"+history.watching+" .follow").val("FOLLOW");
-			history.channels[history.watching].followed = false;
+			$("#channel__"+hist.watching).removeClass('followed');
+			$("#channel__"+hist.watching+" .follow").val("FOLLOW");
+			hist.channels[hist.watching].write('followed', false);
+
 		} else {
 			$(this).addClass('followed');
-			$("#channel__"+history.watching).addClass('followed');
-			$("#channel__"+history.watching+" .follow").val("FOLLOWED");
-			history.channels[history.watching].followed = true;
+			$("#channel__"+hist.watching).addClass('followed');
+			$("#channel__"+hist.watching+" .follow").val("FOLLOWED");
+			hist.channels[hist.watching].write('followed', true);
 		}
 
 	});
@@ -146,7 +147,7 @@ $(window).bind("load", function() {
 			$('#chrome_wrapper .panel#'+isFor).css('display','');
 
 			if(isFor=="channels_wrapper"){
-				renderChannels(history.channels);
+				renderChannels(hist.channels);
 			}else if(isFor=="watch_wrapper"){
 				scrollToTrack();
 			}
@@ -164,12 +165,12 @@ $(window).bind("load", function() {
 	});
 
 	$('#twitter_signin_btn').bind('click', function(e) {
-		$('#splash_wrapper').css('display','none');
+		// $('#splash_wrapper').css('display','none');
 		$('#titlebar_wrapper .btn.watching').click();
 	});
 
 	$('#twitter_signout_btn').bind('click', function(e) {
-		$('#splash_wrapper').css('display','');
+		// $('#splash_wrapper').css('display','');
 		// location.hash = "";
 		pauseVideo();
 	});
@@ -179,16 +180,23 @@ $(window).bind("load", function() {
     hash = hash.replace('#/','').replace('#','');
     if(hash.length>0){    	
     	watchUsername(hash);
-    	$('#splash_wrapper').css('display','none');
+    	// $('#splash_wrapper').css('display','none');
     }
 
 });
 
+var spinnerTimer;
+
 function showSearchSpinner() {
 	$('#searching_wrapper').addClass('searching');
+	$('#channel_info_wrapper .spinner').addClass('rotating');
 }
 function hideSearchSpinner() {
 	$('#searching_wrapper').removeClass('searching');
+	window.clearTimeout(spinnerTimer);
+	spinnerTimer = setTimeout(function(){
+		$('#channel_info_wrapper .spinner').removeClass('rotating');
+	},2000);
 }
 
 function showFailedAlert(msg) {
@@ -204,28 +212,27 @@ var searchRequest, getUserRequest;
 
 function watchUsername(screen_name){
 
-	
-
 	screen_name = screen_name.toLowerCase();
 
 	showSearchSpinner();
 
 	var sinceID = null;
 
-	if(history.channels[screen_name]){
-		if(history.channels[screen_name].trackList.length > 0){
+	if(hist.channels[screen_name]){
+		if(hist.channels[screen_name].trackList.length > 0){
 
 			console.log('Previously watched.. Pulling only since last id.');
 			//Get last id.
-			var listLength = history.channels[screen_name].trackList.length;
-			sinceID = history.channels[screen_name].trackList[listLength-1].id;
+			var listLength = hist.channels[screen_name].trackList.length;
+			sinceID = hist.channels[screen_name].trackList[listLength-1].id;
 
 			tracksLoaded = 0;
 			$("#schedule_wrapper").html('');
-			renderTweets(history.channels[screen_name].trackList);
+			renderTweets(hist.channels[screen_name].trackList);
 
 			$('input#search_input').val(screen_name);
-			history.watching = screen_name.toLowerCase();
+			hist.write('watching', screen_name.toLowerCase());
+
 			getTwitterUserInfo(screen_name, updateChannelInfo);
 		}
 	}
@@ -251,16 +258,17 @@ function watchUsername(screen_name){
 			$('input#search_input').val(screen_name);
 
 			$('input#search_input').val(screen_name);
-			history.watching = screen_name.toLowerCase();
+			hist.write('watching', screen_name.toLowerCase());
 			getTwitterUserInfo(screen_name, updateChannelInfo);
 			
 			if(!sinceID){
 				tracksLoaded = 0;
 				$("#schedule_wrapper").html('');
-				history.channels[history.watching] = {'trackList':tweets};
+				hist.channels.write(hist.watching, {'trackList':[]});
 			}else{
-				history.channels[history.watching].trackList = history.channels[history.watching].trackList.concat(tweets);
 			}
+
+			for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
 
 			renderTweets(tweets);
 						
@@ -275,8 +283,8 @@ function watchUsername(screen_name){
 
 			if(sinceID){
 
-				if(history.channels[history.watching].trackIndex>=0){
-					trackIndex = history.channels[history.watching].trackIndex;
+				if(hist.channels[hist.watching].trackIndex>=0){
+					trackIndex = hist.channels[hist.watching].trackIndex;
 					playTrack(trackIndex);
 				}else{
 					trackIndex = tweets.length;
@@ -297,12 +305,19 @@ function watchUsername(screen_name){
 
 function updateChannelInfo(user){
 	// console.log(user);
-	if(history.channels[history.watching].followed)$('#channel_info_wrapper').addClass('followed');
+	if(hist.channels[hist.watching].followed)$('#channel_info_wrapper').addClass('followed');
 	else $('#channel_info_wrapper').removeClass('followed');
 	$('#channel_info_wrapper').css('display','');
 	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url.replace('http:',''));
 	$('#channel_info_wrapper .name').text(user.name);
 	$('#channel_info_wrapper .screen_name').text('@'+user.screen_name);
+
+	var screen_name = user.screen_name.toLowerCase();
+	$('#channels_wrapper .channel').removeClass('active');
+	$('#channel__'+screen_name).addClass('active');
+	$('#channel__'+screen_name+' .avatar').attr('src',user.profile_image_url.replace('http:',''));
+	$('#channel__'+screen_name+' .name').text(user.name);
+	$('#channel__'+screen_name+' .screen_name').text('@'+user.screen_name);
 
 	location.hash = "/"+user.screen_name;
 }
@@ -351,26 +366,30 @@ function renderTweets(tweets){
 					.html("<i class='fa fa-play'></i>")
 					.attr('title','Start')
 				)
-				.append($('<div/>')
+				.append($('<a>')
 					.addClass("btn right fav")
-					.html("<i class='fa fa-diamond'></i>")
+					.html("<i class='fa fa-star'></i>")
 					.attr('title','Diamond in the rough')
+					.attr('href','https://twitter.com/intent/favorite?tweet_id='+tweet.id)
 				)
-				.append($('<div/>')
+				.append($('<a>')
 					.addClass("btn right resauce")
 					.html("<i class='fa fa-retweet'></i>")
 					.attr('title','Resauce to your stream')
+					.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id)
 				)
 			)
 		;
 		element.find('.btn.start').bind('click', videoStartClickEvent);
 		element.find('.btn.pause').bind('click', videoPauseClickEvent);
 		element.find('.btn.fav').bind('click', videoFavClickEvent);
+		element.find('.btn.resauce').bind('click', videoResauceClickEvent);
 		
 		if(tweet.percent>=0) {
 			element.find('div.progress').attr('style', "width: " + tweet.percent + "%");
 		}
-		if(tweet.favorited) element.find('div.fav').addClass('diamond');
+		if(tweet.retweeted) element.find('a.resauce').addClass('resauced');
+		if(tweet.favorited) element.find('a.fav').addClass('diamond');
 		if(tweet.watched) element.addClass('watched');
 		if(tweet.skipped) element.addClass('skipped');
 		if(tweet.error) element.addClass('error');
@@ -387,19 +406,12 @@ function renderTweets(tweets){
 
 }
 
-var history = { key: '', channels: null, watching: '' };
-	history.key = 'history';
-	history.channels = {};
 var trackIndex = -1;
 var tracksLoaded = 0;
 
-var store = new Lawnchair({name:'firesauce', adapter:'dom'}, function(store) {
-	// var me = {key:'a',firstName:'Clark',lastName:'Kent'};
-	// store.save(me);
-	store.get('history', function(obj) {
-		if(obj) history.channels = obj.channels;
-	});
-});
+var hist = Rhaboo.persistent("fire-sauce");
+if(!hist.channels) hist.write('channels', {});
+if(!hist.watching) hist.write('watching', '');
 
 // This code loads the IFrame Player API code asynchronously.
 var ytScriptTag = document.createElement('script');
@@ -412,7 +424,7 @@ var ytplayer, ytplayerReady, ytIframeAPIReady, playerState = 0;
 function onYouTubeIframeAPIReady() {
 	ytplayerReady = true;
 	// loadVideo("L-6LXhFNeGw");
-	setInterval(updatePlayerInfo, 100);
+	setInterval(updatePlayerInfo, 1000);
 }
 
 function initYouTubeIframeAPI(videoId, startTime) {
@@ -456,28 +468,26 @@ function onYtPlayerStateChange(event) {
 	playerState = event.data;
 	if (event.data == YT.PlayerState.ENDED) {
 		console.log("ENDED");
-		history.channels[history.watching].trackList[trackIndex].watched = true;
-		history.channels[history.watching].trackList[trackIndex].skipped = null;
-		history.channels[history.watching].trackList[trackIndex].percent = 100;
+		hist.channels[hist.watching].trackList[trackIndex].write('watched', true);
+		hist.channels[hist.watching].trackList[trackIndex].write('skipped', null);
+		hist.channels[hist.watching].trackList[trackIndex].write('percent', 100);
+
 		$('li.track#video__'+trackIndex).css('width','').addClass('watched')
 										.find('div.progress').attr('style', "");
 		playNextTrack();	
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {
 		console.log("PLAYING");
-		history.channels[history.watching].trackList[trackIndex].started = true;
-		history.channels[history.watching].trackList[trackIndex].skipped = null;
-		history.channels[history.watching].trackIndex = trackIndex;
-		history.channels[history.watching].lastWatched = (new Date()).toString();
+		hist.channels[hist.watching].trackList[trackIndex].write('started', true);
+		hist.channels[hist.watching].trackList[trackIndex].write('skipped', null);
+		hist.channels[hist.watching].write('trackIndex', trackIndex);
+		hist.channels[hist.watching].write('lastWatched', (new Date()).toString());
 
-		if(history.channels[history.watching].trackList[trackIndex].error){
-			history.channels[history.watching].trackList[trackIndex].error = null;
+		if(hist.channels[hist.watching].trackList[trackIndex].error){
+			hist.channels[hist.watching].trackList[trackIndex].erase('error');
 			$('li.track#video__'+trackIndex).removeClass('error');
 		}
 		
-		
-		store.save(history);
-
 		//Sets timeSlider max to the number of seconds in current video.
 		$( "#timeSlider" ).slider('option', 'max', ytplayer.getDuration() );
 
@@ -514,7 +524,8 @@ function onYtPlayerError(event) {
 	console.log("Error: " + event);
 	console.dir(event.data);
 
-	if(event.data == 150 || event.data == 2) history.channels[history.watching].trackList[trackIndex].error = event.data;
+	if(event.data == 150 || event.data == 2) hist.channels[hist.watching].trackList[trackIndex].write('error', event.data);
+
 	$('li.track#video__'+trackIndex).addClass('error');
 
 	playNextTrack();
@@ -590,11 +601,11 @@ function playNextTrack(){
 
 function playMostRecentUnfinished(){
 	
-	var listLength = history.channels[history.watching].trackList.length;
+	var listLength = hist.channels[hist.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[history.watching].trackList[idx].watched &&
-		   (!history.channels[history.watching].trackList[idx].skipped || idx <= trackIndex ) &&
-			!history.channels[history.watching].trackList[idx].error ){
+		if( !hist.channels[hist.watching].trackList[idx].watched &&
+		   (!hist.channels[hist.watching].trackList[idx].skipped || idx <= trackIndex ) &&
+			!hist.channels[hist.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
 		} else if(idx==0) playMostRecentSkipped();
@@ -605,12 +616,12 @@ function playMostRecentUnfinished(){
 var loopEnabled = true;
 
 function playMostRecentSkipped(){
-	
-	var listLength = history.channels[history.watching].trackList.length;
+
+	var listLength = hist.channels[hist.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
-		if( !history.channels[history.watching].trackList[idx].watched &&
-			 history.channels[history.watching].trackList[idx].skipped &&
-			!history.channels[history.watching].trackList[idx].error ){
+		if( !hist.channels[hist.watching].trackList[idx].watched &&
+			 hist.channels[hist.watching].trackList[idx].skipped &&
+			!hist.channels[hist.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
 		} else if(idx==0) {
@@ -623,21 +634,21 @@ function playMostRecentSkipped(){
 }
 
 function playTrack(index){
-	// console.log(index); console.log(history.watching);
+	// console.log(index); console.log(hist.watching);
 
 	try{
-		var videoID = getYouTubeID(history.channels[history.watching].trackList[index].url);
-		var percent = history.channels[history.watching].trackList[index].percent || 0;
-		var startTime = history.channels[history.watching].trackList[index].time || 0;
+		var videoID = getYouTubeID(hist.channels[hist.watching].trackList[index].url);
+		var percent = hist.channels[hist.watching].trackList[index].percent || 0;
+		var startTime = hist.channels[hist.watching].trackList[index].time || 0;
 		if( percent >= 100 ) startTime = 0;
 
 		ga('send', 'event', 'video', 'play', videoID);
-		ga('send', 'event', 'video', 'view', history.watching);
+		ga('send', 'event', 'video', 'view', hist.watching);
 
 		trackIndex = index;
 
 		if(index>=0) {
-			console.log("Starting next track... " + index + " : " + history.channels[history.watching].trackList[index].url);
+			console.log("Starting next track... " + index + " : " + hist.channels[hist.watching].trackList[index].url);
 			loadVideo(videoID, startTime);
 		}
 		$('li.track').removeClass('playing');
@@ -660,7 +671,7 @@ function playTrack(index){
 		$('#video__' + index + ' .btn.start').addClass('restart');
 
 		//Show tweet in overlay.
-		$('#track_tweet_wrapper').html(history.channels[history.watching].trackList[index].text.linkify_tweet());
+		$('#track_tweet_wrapper').html(hist.channels[hist.watching].trackList[index].text.linkify_tweet());
 	}catch(e){
 		console.log('error caught for playTrack('+index+')');
 	}
@@ -681,7 +692,9 @@ function videoStartClickEvent(e){
 		playVideo();
 	}else{
 		var index = parseInt( $(this).parent().parent().attr('id').replace('video__','') );
-		if(trackIndex>=0) history.channels[history.watching].trackList[trackIndex].skipped = true;
+
+		if(trackIndex>=0) hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
+
 		playTrack(index);	
 	}
 	
@@ -705,21 +718,42 @@ function videoFavClickEvent(e){
 
 	if($(this).hasClass('diamond')){
 		$(this).removeClass('diamond');
-		history.channels[history.watching].trackList[index].favorited = false;
+
+		hist.channels[hist.watching].trackList[index].write('favorited', false);
 	}else{
 		$(this).addClass('diamond');
-		history.channels[history.watching].trackList[index].favorited = true;
+
+		hist.channels[hist.watching].trackList[index].write('favorited', true);
+	}
+
+}
+
+function videoResauceClickEvent(e){
+
+	var index = $(this).parent().parent().attr('id');
+		index = index.replace('video__','');
+		index = parseInt(index);
+
+	if($(this).hasClass('resauced')){
+		$(this).removeClass('resauced');
+
+		hist.channels[hist.watching].trackList[index].write('retweeted', false);
+	}else{
+		$(this).addClass('resauced');
+
+		hist.channels[hist.watching].trackList[index].write('retweeted', true);
 	}
 
 }
 
 function getTwitterUserInfo(screen_name, cb){
 
-	console.log(history.watching);
-	if(history.channels[history.watching]){
-		if(history.channels[history.watching].info) {
-			cb(history.channels[history.watching].info);
-			return history.channels[history.watching].info;
+	console.log(hist.watching);
+	if(hist.channels[hist.watching]){
+		if(hist.channels[hist.watching].info && 
+		   hist.channels[hist.watching].updated_at) {
+			cb(hist.channels[hist.watching].info);
+			return hist.channels[hist.watching].info;
 		}
 	}
 	
@@ -727,12 +761,14 @@ function getTwitterUserInfo(screen_name, cb){
 	var reqUrl = "/userInfo/?screen_name="+screen_name;
 	getUserRequest = $.getJSON(reqUrl,function(user){ 
 		console.log('Fetched Twitter user\'s data');
-		if(user)history.channels[history.watching].info = user;
+		user.updated_at = new Date();
+		if(user){
+			hist.channels[hist.watching].write('info', user);
+		}
 		if(cb)cb(user);
 	});
 
 }
-
 
 var markerWidth = 0, 
 	prevCurrentTime = 0, 
@@ -763,9 +799,9 @@ function updatePlayerInfo() {
         	completedPercent = ((tempCurrentTime*100)/tempDuration).toFixed(2);
         	$('li.track#video__'+trackIndex+' .progress').css("width",completedPercent+"%");
 
-    		if(history.channels[history.watching].trackList[trackIndex]){
-    			history.channels[history.watching].trackList[trackIndex].percent = completedPercent;
-    			history.channels[history.watching].trackList[trackIndex].time = tempCurrentTime;
+    		if(hist.channels[hist.watching].trackList[trackIndex]){
+    			hist.channels[hist.watching].trackList[trackIndex].write('percent', completedPercent);
+    			hist.channels[hist.watching].trackList[trackIndex].write('time', tempCurrentTime);
     		}
 
             //update seeker
@@ -791,8 +827,6 @@ function updatePlayerInfo() {
 
     }
 
-    store.save(history);
-
 }
 
 function renderChannels(channels){
@@ -803,7 +837,7 @@ function renderChannels(channels){
 	var sortable = [];
 	for (var channel in channels) {
 		channels[channel].id = channel;
-		sortable.push(channels[channel]);
+		if(channel != "_rhaboo")sortable.push(channels[channel]);
 	}
 	sortable.sort(function(a,b) { return (new Date(a.lastWatched)) - (new Date(b.lastWatched)) } );
 
@@ -814,6 +848,9 @@ function renderChannels(channels){
 			.addClass("channel")
 			.attr('id', "channel__"+channel.id)
 			.attr('channel', channel.id)
+			.append($('<div/>')
+				.addClass("status")
+			)
 			.append($('<div/>')
 				.addClass("options")
 				.append($('<div/>')
@@ -859,23 +896,28 @@ function renderChannels(channels){
 			var channel = $(this).parent().parent().attr('channel');
 			console.log('delete '+ channel);
 
-			delete history.channels[channel];
+			hist.channels.erase(channel);
+
 			$(this).parent().parent().remove();
 		});
 		element.find('input.follow').bind('click', function(){ 
 			var channel = $(this).parent().attr('channel');
 
-			// console.log(history.watching+"=="+channel);
+			// console.log(hist.watching+"=="+channel);
 			if(!$(this).parent().hasClass("followed")){
 				$(this).parent().addClass("followed");
 				$(this).val("FOLLOWED");
-				history.channels[channel].followed = true;
-				if(history.watching==channel)$("#channel_info_wrapper").addClass("followed");
+
+				hist.channels[channel].write('followed', true);
+
+				if(hist.watching==channel)$("#channel_info_wrapper").addClass("followed");
 			}else{
 				$(this).parent().removeClass("followed");
 				$(this).val("FOLLOW");
-				history.channels[channel].followed = false;
-				if(history.watching==channel)$("#channel_info_wrapper").removeClass("followed");
+			
+				hist.channels[channel].write('followed', false);
+
+				if(hist.watching==channel)$("#channel_info_wrapper").removeClass("followed");
 			}
 		});
 		if(channel.followed){
@@ -883,7 +925,7 @@ function renderChannels(channels){
 			element.find('input.follow').val("FOLLOWED");
 		}
 		// if(channel.info) element.html('@'+channel.info.screen_name);
-
+		if(channel.id == hist.watching) element.addClass('active');
 		if(channel.followed) $("#followed_wrapper").prepend(element);
 		else $("#history_wrapper").prepend(element);
 		
