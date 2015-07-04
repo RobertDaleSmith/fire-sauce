@@ -167,7 +167,6 @@ Index.prototype.twitterGetUserInfo = function( req, res ) {
 
 };
 
-
 Index.prototype.twitterSearchName = function( req, res ) {
 	// console.log('twitterSearchName');
 	var shorts = [], longs = [], shortFunctions = [];
@@ -177,8 +176,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 
 	var params = {screen_name: user, count: 200, since_id: since, include_rts: true}; 
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
-	// var params = {q: user, count: 100};
-	// twitter.get('search/tweets', params, function(error, tweets, response) {
+
 		if (!error) {
 
 			// console.log(tweets);
@@ -305,7 +303,5 @@ Index.prototype.twitterSearchName = function( req, res ) {
 
 		}
 	});
-
-
 
 };

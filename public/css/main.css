@@ -14,6 +14,7 @@
 
 html {
     width: 100%; height: 100%;
+    min-height: 320px; min-width: 640px;
     background-color: #000000;
     color: #000000;
         
@@ -72,7 +73,10 @@ textarea {
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
 
-body {      
+body {
+    display: inline-block;
+    position: relative;
+    float: left;
     width: 100%; height: 100%;
     margin: 0px; padding: 0px;
     font: 16px/26px 'Open Sans', sans-serif, Helvetica, Helvetica Neue, Arial;
@@ -534,15 +538,14 @@ nav a:hover {
     display: inline-block;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 116px);
 }
 
 #channels_wrapper{
     display: inline-block;
     position: relative;
     width: 100%;
-    height: 100%;
-    max-height: calc(100% - 116px);
+    height: calc(100% - 116px);
     padding: 0; margin: 0px;
     overflow-x: hidden;
 }
@@ -569,7 +572,7 @@ nav a:hover {
             font-weight: 300;
         }
         #suggested_wrapper::before{
-            content:'WHAT\'S HOT (SUGGESTIONS)';
+            content:'POPULAR CHANNELS';
             display: inline-block;
             position: relative;
         }
@@ -771,6 +774,16 @@ nav a:hover {
             color: #ffffff;
         }
 
+#search_container{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    float: left;
+    /*overflow: hidden;*/
+}
+
+
 #search_wrapper{
     display: inline-block;
     position: relative;
@@ -926,7 +939,7 @@ nav a:hover {
 #searching_wrapper{
     display: inline-block;
     position: absolute;
-    top: 116px;
+    top: 64px;
     left: 0px;
     z-index: 10;
     opacity: 0.9;
@@ -1000,7 +1013,7 @@ nav a:hover {
 #failed_wrapper{
     display: inline-block;
     position: absolute;
-    top: 116px;
+    top: 64px;
     left: 0px;
     /*position: relative;
     float: left;*/
@@ -1062,8 +1075,7 @@ nav a:hover {
     display: inline-block;
     position: relative;
     width: 100%;
-    height: auto;
-    max-height: calc(100% - 116px);
+    height: 100%;
     float: left;
     padding: 0px;
     margin: 0px;
@@ -1432,6 +1444,13 @@ nav a:hover {
             transition: border-radius 500ms;
 
 }
+     #channel_info_wrapper .click_area{
+        display: inline-block;
+        position: absolute;
+        left: 0px; top: 0px;
+        width: 100%; height: 100%;
+        border-radius: 48px;
+    }
 
     #channel_info_wrapper .avatar{
         display: inline-block;
@@ -1481,16 +1500,23 @@ nav a:hover {
 
     }
 
-    #channel_info_wrapper .screen_name{
+    #channel_info_wrapper .profile_link{
         display: block;
         position: relative;
         width: auto; height: auto;
-        color: rgba(255,255,255,0.75);
         font-size: 15px;
         font-weight: 300;
         line-height: 21px;
-
+        text-decoration: none;
+        color: rgba(255,255,255,0.75);
     }
+    #channel_info_wrapper .profile_link:hover{
+        text-decoration: underline;
+    }
+
+        #channel_info_wrapper .screen_name{
+
+        }
 
     #channel_info_wrapper .follow_btn{
         display: block;
@@ -1544,6 +1570,9 @@ nav a:hover {
     color: rgba(255,255,255,0.66);
     font-size: 14px;
     line-height: 20px;
+
+    min-width: 200px; max-height: 105px;
+    overflow: hidden;
 }
     #track_tweet_wrapper a{
         color: rgba(255,255,255,0.66);
@@ -1553,6 +1582,12 @@ nav a:hover {
         color: #59faad;
         /*text-decoration: underline;*/
     }
+
+@media only screen and (max-width: 900px) {
+    #track_tweet_wrapper{
+        display: none;
+    }
+}
 
 #toggle_sidebar_btn{
     display: inline-block;

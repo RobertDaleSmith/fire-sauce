@@ -115,18 +115,18 @@ $(window).bind("load", function() {
 			// console.log( $( "#timeSlider" ).slider("value") );
 
 		}
-    });
+	});
 
-    $('#channel_info_wrapper').bind('click', function(e) {
-		
-		if($(this).hasClass('followed')) {
-			$(this).removeClass('followed');
+    $('#channel_info_wrapper .click_area, #channel_info_wrapper .follow_btn').bind('click', function(e) {
+		var parent = $(this).parent();
+		if(parent.hasClass('followed')) {
+			parent.removeClass('followed');
 			$("#channel__"+hist.watching).removeClass('followed');
 			$("#channel__"+hist.watching+" .follow").val("FOLLOW");
 			hist.channels[hist.watching].write('followed', false);
 
 		} else {
-			$(this).addClass('followed');
+			parent.addClass('followed');
 			$("#channel__"+hist.watching).addClass('followed');
 			$("#channel__"+hist.watching+" .follow").val("FOLLOWED");
 			hist.channels[hist.watching].write('followed', true);
@@ -151,6 +151,12 @@ $(window).bind("load", function() {
 			}else if(isFor=="watch_wrapper"){
 				scrollToTrack();
 			}
+
+			// if(isFor=="settings_wrapper"){
+			// 	$('#search_container').css('width','1px');
+			// }else{
+			// 	$('#search_container').css('width','');
+			// }
 		}
 
 	});
@@ -178,12 +184,21 @@ $(window).bind("load", function() {
     // Check hash and load it.
     var hash = location.hash || "";
     hash = hash.replace('#/','').replace('#','');
-    if(hash.length>0){    	
+    if(hash.length>0){
     	watchUsername(hash);
     	// $('#splash_wrapper').css('display','none');
     }
 
+    loadPopularSuggestions();
+
+
 });
+
+var suggestCache = {};
+function loadPopularSuggestions(){
+	if(getPopRequest) getPopRequest.abort();
+	getPopRequest = $.getJSON('/popular',function(res){ suggestCache = res; });
+}
 
 var spinnerTimer;
 
@@ -208,7 +223,7 @@ function hideFailedAlert() {
 	$('#failed_wrapper').removeClass('failed');
 }
 
-var searchRequest, getUserRequest;
+var searchRequest, getUserRequest, getPopRequest;
 
 function watchUsername(screen_name){
 
@@ -274,7 +289,8 @@ function watchUsername(screen_name){
 						
 			// Play most recent.
 			trackIndex = tweets.length;
-			playNextTrack();
+			// playNextTrack();
+			playMostRecentUnfinished();
 			
 
 		} else {
@@ -288,12 +304,15 @@ function watchUsername(screen_name){
 					playTrack(trackIndex);
 				}else{
 					trackIndex = tweets.length;
-					playNextTrack();	
+					// playNextTrack();
+					playMostRecentUnfinished();
 				}
 				
 			}
 
 		}
+
+		if(!$('.btn.watching').hasClass('active'))$('.btn.watching').click();
 
 	}).fail(function(jqXHR, textStatus, errorThrown){
 
@@ -309,6 +328,7 @@ function updateChannelInfo(user){
 	else $('#channel_info_wrapper').removeClass('followed');
 	$('#channel_info_wrapper').css('display','');
 	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url.replace('http:',''));
+	$('#channel_info_wrapper .profile_link').attr('href',"https://twitter.com/intent/user?screen_name="+user.screen_name);
 	$('#channel_info_wrapper .name').text(user.name);
 	$('#channel_info_wrapper .screen_name').text('@'+user.screen_name);
 
@@ -370,13 +390,13 @@ function renderTweets(tweets){
 					.addClass("btn right fav")
 					.html("<i class='fa fa-star'></i>")
 					.attr('title','Diamond in the rough')
-					.attr('href','https://twitter.com/intent/favorite?tweet_id='+tweet.id)
+					.attr('href','https://twitter.com/intent/favorite?tweet_id='+tweet.id+'&related=firesaucetv')
 				)
 				.append($('<a>')
 					.addClass("btn right resauce")
 					.html("<i class='fa fa-retweet'></i>")
 					.attr('title','Resauce to your stream')
-					.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id)
+					.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id+'&related=firesaucetv')
 				)
 			)
 		;
@@ -594,8 +614,8 @@ function playNextTrack(){
 
 	trackIndex--;
 	playerState = 0;
-	// playTrack(trackIndex);
-	playMostRecentUnfinished();
+	playTrack(trackIndex);
+	// playMostRecentUnfinished();
 
 }
 
@@ -829,16 +849,27 @@ function updatePlayerInfo() {
 
 }
 
+// var suggestCache = {};
+
 function renderChannels(channels){
 
-	$("#followed_wrapper").html('');
-	$("#history_wrapper").html('');
+	$("#suggested_wrapper").html('').css('display','');
+	$("#followed_wrapper").html('').css('display','');
+	$("#history_wrapper").html('').css('display','');
 
+	var suggestCount = 0, followedCount = 0, watchedCount = 0;
+	var suggested = $.extend(true, {}, suggestCache);
 	var sortable = [];
 	for (var channel in channels) {
 		channels[channel].id = channel;
 		if(channel != "_rhaboo")sortable.push(channels[channel]);
+
+		delete suggested[channel];
 	}
+	for (var track in suggested) {
+		sortable.push(suggested[track]);
+	}
+
 	sortable.sort(function(a,b) { return (new Date(a.lastWatched)) - (new Date(b.lastWatched)) } );
 
 	$.each( sortable, function( idx, channel ) {
@@ -926,10 +957,25 @@ function renderChannels(channels){
 		}
 		// if(channel.info) element.html('@'+channel.info.screen_name);
 		if(channel.id == hist.watching) element.addClass('active');
-		if(channel.followed) $("#followed_wrapper").prepend(element);
-		else $("#history_wrapper").prepend(element);
+
+		if(channel.suggested) {
+			$("#suggested_wrapper").prepend(element);
+			suggestCount++;
+		}
+		else if(channel.followed) {
+			$("#followed_wrapper").prepend(element);
+			followedCount++;
+		}
+		else {
+			$("#history_wrapper").prepend(element);
+			watchedCount++;
+		}
 		
 	});
+
+	if(suggestCount<1)$("#suggested_wrapper").css('display','none');
+	if(followedCount<1)$("#followed_wrapper").css('display','none');
+	if(watchedCount<1)$("#history_wrapper").css('display','none');
 
 }
 

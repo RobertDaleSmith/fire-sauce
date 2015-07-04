@@ -6,9 +6,11 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>FireSauceTV - Turning Twitter feeds into crowd TV{+title}{/title}</title>
+        <title>FireSauce.TV - Turning Twitter feeds into TV{+title}{/title}</title>
         <meta name="description" content="Firesauce TV turns any Twitter feed into an asynchronous stream of curated video content.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <!-- Fonts -->
@@ -38,12 +40,11 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="js/vendor/jquery-ui.min.js"></script>
-        <!-- <script src="js/vendor/lawnchair-0.6.1.min.js"></script> -->
         <script src="js/vendor/rhaboo.min.js"></script>
         <script src="js/vendor/moment.min.js"></script>
         <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
         <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
-        
+            
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 

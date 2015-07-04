@@ -138,6 +138,8 @@ mongo.connect(function(err) {
 
   app.get( '/', function( req, res, next ) { routes.Index.home( req, res, next ); } );
 
+  app.get( '/popular', function( req, res, next ) { res.sendFile(__dirname+'/public/js/pop.json'); } );
+
   app.get( '/search/:query', function( req, res, next ) { routes.Index.twitterSearch( req, res, next ); } );
   app.get( '/search/', function( req, res, next ) { routes.Index.twitterSearchName( req, res, next ); } );
   app.get( '/userInfo/', function( req, res, next ) { routes.Index.twitterGetUserInfo( req, res, next ); } );

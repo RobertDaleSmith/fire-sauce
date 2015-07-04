@@ -1,0 +1,118 @@
+{
+
+	"reason" : {
+		"id": "reason",
+		"suggested": true,
+		"info": {
+			"description": "Reason is the monthly magazine and website of “free minds and free markets.”",
+			"following": false,
+			"id": 16467567,
+			"id_str": "16467567",
+			"location": "Washington, DC and Los Angeles",
+			"name": "reason",
+			"profile_background_color": "F44F10",
+			"profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+			"profile_background_tile": false,
+			"profile_image_url": "http://pbs.twimg.com/profile_images/80238643/reason_normal.png",
+			"profile_link_color": "F44F10",
+			"screen_name": "reason",
+			"updated_at": null
+		},
+		"trackIndex": 0,
+		"lastWatched": null,
+		"trackList": 	[]
+	},
+
+	"singularityhub" : {
+		"id": "singularityhub",
+		"suggested": true,
+		"info": {
+			"description": "Singularity University's independent blog & news network covering science, technology & the future of humanity.",
+			"following": true,
+			"id": 15249166,
+			"id_str": "15249166",
+			"location": "NASA Research Park",
+			"name": "Singularity Hub",
+			"profile_background_color": "FFFFFF",
+			"profile_background_image_url": "http://pbs.twimg.com/profile_background_images/670989392/f16b12d0f0f084c3fa9ef719f06ce0f2.png",
+			"profile_background_tile": true,
+			"profile_image_url": "http://pbs.twimg.com/profile_images/566807303798538241/CkNwubms_normal.png",
+			"profile_link_color": "0084B4",
+			"screen_name": "singularityhub",
+			"updated_at": null
+		},
+		"trackIndex": 0,
+		"lastWatched": null,
+		"trackList": 	[]
+	},
+
+	"techcrunch" : {
+		"id": "techcrunch",
+		"suggested": true,
+		"info": {
+			"description": "Breaking technology news, analysis, and opinions from TechCrunch. The number one guide for all things tech.",
+			"following": false,
+			"id": 816653,
+			"id_str": "816653",
+			"location": "San Francisco, CA",
+			"name": "TechCrunch",
+			"profile_background_color": "149500",
+			"profile_background_image_url": "http://pbs.twimg.com/profile_background_images/542331481398317056/81Rbm71g.png",
+			"profile_background_tile": false,
+			"profile_image_url": "http://pbs.twimg.com/profile_images/615392662233808896/EtxjSSKk_normal.jpg",
+			"profile_link_color": "097000",
+			"screen_name": "TechCrunch",
+			"updated_at": null
+		},
+		"trackIndex": 0,
+		"lastWatched": null,
+		"trackList": 	[]
+	},
+
+	"upworthy" : {
+		"id": "upworthy",
+		"suggested": true,
+		"info": {
+			"description": "Things that matter. Pass 'em on.",
+			"following": false,
+			"id": 524396430,
+			"id_str": "524396430",
+			"location": "The Internet",
+			"name": "Upworthy",
+			"profile_background_color": "EB7010",
+			"profile_background_image_url": "http://pbs.twimg.com/profile_background_images/378800000096112740/8fb3d3a69cc57a3b6788e30f4a05f3f1.jpeg",
+			"profile_background_tile": false,
+			"profile_image_url": "//pbs.twimg.com/profile_images/616611135878471680/J2Qctbjj_normal.png",
+			"profile_link_color": "225A7A",
+			"screen_name": "Upworthy",
+			"updated_at": null
+		},
+		"trackIndex": 0,
+		"lastWatched": null,
+		"trackList": 	[]
+	},
+
+	"youtube" : {
+		"id": "youtube",
+		"suggested": true,
+		"info": {
+			"description": "Tweets on music, trends and all that is awesome in the world of YouTube.",
+			"following": true,
+			"id": 10228272,
+			"id_str": "10228272",
+			"location": "San Bruno, CA",
+			"name": "YouTube",
+			"profile_background_color": "AF0000",
+			"profile_background_image_url": "http://pbs.twimg.com/profile_background_images/451389902429491200/Rrlh09IC.png",
+			"profile_background_tile": true,
+			"profile_image_url": "http://pbs.twimg.com/profile_images/616266035423940608/lWPZNDw8_normal.png",
+			"profile_link_color": "C9191D",
+			"screen_name": "YouTube",
+			"updated_at": null
+		},
+		"trackIndex": 0,
+		"lastWatched": null,
+		"trackList": 	[]
+	}
+
+}
