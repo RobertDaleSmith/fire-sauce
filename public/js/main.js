@@ -191,8 +191,31 @@ $(window).bind("load", function() {
 
     loadPopularSuggestions();
 
+    fadeSplash();
+
 
 });
+
+
+function fadeSplash(){
+	setTimeout(function(){
+		$('#splash_wrapper .logo .iris').removeClass('spinning');
+		$('#splash_wrapper').addClass('done');
+		setTimeout(function(){
+			$('#splash_wrapper').css('display','none');
+		},500);
+	},500);
+};
+
+var isPortrait = null;
+window.onresize = function onResizeEvent(event) {
+	var  isNowPortrait = null;
+	if ( window.innerHeight > window.innerWidth ) 
+		 isNowPortrait = true;
+	else isNowPortrait = false;
+	if ( isNowPortrait != isPortrait ) updateTweetOverLayWidth();
+	isPortrait = isNowPortrait;
+}
 
 var suggestCache = {};
 function loadPopularSuggestions(){
@@ -332,6 +355,8 @@ function updateChannelInfo(user){
 	$('#channel_info_wrapper .name').text(user.name);
 	$('#channel_info_wrapper .screen_name').text('@'+user.screen_name);
 
+	updateTweetOverLayWidth();
+
 	var screen_name = user.screen_name.toLowerCase();
 	$('#channels_wrapper .channel').removeClass('active');
 	$('#channel__'+screen_name).addClass('active');
@@ -340,6 +365,13 @@ function updateChannelInfo(user){
 	$('#channel__'+screen_name+' .screen_name').text('@'+user.screen_name);
 
 	location.hash = "/"+user.screen_name;
+}
+
+function updateTweetOverLayWidth(){
+
+	var offset = 40 + parseInt( $('#channel_info_wrapper').css('width').replace('px','') ) + parseInt( $('#channel_info_wrapper').css('left').replace('px','') );
+	$('#track_tweet_wrapper').css('max-width', 'calc(100% - '+ offset +'px)');
+
 }
 
 function renderTweets(tweets){
@@ -467,7 +499,7 @@ function initYouTubeIframeAPI(videoId, startTime) {
 				origin: window.location.host,
 				playsinline: 1,
 				rel: 0,
-				theme: 'light',
+				theme: 'dark',
 				showinfo: 1
 			},
 			events: {
@@ -700,7 +732,8 @@ function playTrack(index){
 function scrollToTrack(){
 	if( $("#schedule_wrapper .playing") ){
 		if( $("#schedule_wrapper .playing").offset() ){
-			$("#schedule_wrapper").animate({scrollTop:$("#schedule_wrapper").scrollTop() + $("#schedule_wrapper .playing").offset().top-116},500);
+			var topOffset = $('#watch_wrapper').offset().top;
+			$("#schedule_wrapper").animate({scrollTop:$("#schedule_wrapper").scrollTop() + $("#schedule_wrapper .playing").offset().top-topOffset},500);
 		}
 	}
 }

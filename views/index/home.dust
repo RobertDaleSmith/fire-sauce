@@ -34,7 +34,12 @@
 
             <div id="track_tweet_wrapper"></div>
 
-            <div id="toggle_sidebar_btn"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i></div>
+            <div id="toggle_sidebar_btn">
+                <i class="fa fa-chevron-left"></i>
+                <i class="fa fa-chevron-right"></i>
+                <i class="fa fa-chevron-up"></i>
+                <i class="fa fa-chevron-down"></i>
+            </div>
 
         </div>
         <div id="chrome_wrapper">
@@ -50,9 +55,14 @@
                     <input id="search_input" type="text" placeholder="" value="" maxlength="16">
                     <input id="search_button" type="button" value="watch">
                 </div>
+
+            </div>
+
+            <div id="status_container">
+               
                 <div id="failed_wrapper">
                     <div id="searching_spinner" class="dimming"></div>
-                    <div id="failed_message">No recent video Tweets.</div>
+                    <div id="failed_message">No new video Tweets.</div>
                     <input id="close_failed_button" type="button" value="close">
                 </div>
                 <div id="searching_wrapper">
@@ -60,7 +70,7 @@
                     <div id="searching_message">Please wait. Loading.</div>
                     <input id="cancel_search_button" type="button" value="cancel">
                 </div>
-
+                
             </div>
 
             <div class="panel" id="watch_wrapper">
@@ -75,17 +85,18 @@
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
                 <!-- <button id="twitter_signout_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign out</button> -->
-                <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</div>
+                <div class="about">FireSauce.TV turns and Twitter feed in a human curated scheduled video playlists.</div>
+                <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</a></div>
             </div>
         </div>
 
-        <!-- <div id="splash_wrapper">
-        	<div class="content">
-	        	<div class="logo"></div><br>
-	        	<span class="oneliner">Crowdsourced TV</span><br>
-	        	<button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button>
+        <div id="splash_wrapper">
+        	<div class="content"> 
+	        	<div class="logo"><div class="iris spinning"></div></div>
+	        	<span class="oneliner">FireSauce TV</span>
+	        	<!-- <button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button> -->
 	        </div>
-        </div> -->
+        </div>
 
     </div>
 

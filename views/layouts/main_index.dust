@@ -6,12 +6,39 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>FireSauce.TV - Turning Twitter feeds into TV{+title}{/title}</title>
-        <meta name="description" content="Firesauce TV turns any Twitter feed into an asynchronous stream of curated video content.">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>FireSauce.TV - Turning Twitter into TV{+title}{/title}</title>
+        <meta name="description" content="FireSauce.TV turns any Twitter feed into an human curated TV channel.">
+        
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <meta name="apple-touch-fullscreen" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="FireSauce.TV">
+
+        <!-- Twitter Card data -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@FireSauceTV">
+        <meta name="twitter:title" content="FireSauce.TV">
+        <meta name="twitter:description" content="Turning Twitter into TV">
+        <meta name="twitter:creator" content="@RobertDaleSmith">
+        <!-- Twitter summary card with large image must be at least 280x150px -->
+        <meta name="twitter:image:src" content="http://firesauce.tv/twitter_card.png">
+
+        <!-- Open Graph data -->
+        <meta property="og:title" content="FireSauce.TV" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://firesauce.tv/" />
+        <meta property="og:image" content="http://firesauce.tv/twitter_card.png" />
+        <meta property="og:description" content="FireSauce.TV turns any Twitter feed into an human curated TV channel." />
+        <meta property="og:site_name" content="FireSauce.TV" />
+
+        <meta property="fb:admins" content="537257174" />
+        
+        <link rel="shortcut icon" href="/favicon.ico"/>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" sizes="192x192" href="/launcher-icon-3x.png">
+        <link rel="manifest" href="manifest.json">
 
         <!-- Fonts -->
         <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800'>
