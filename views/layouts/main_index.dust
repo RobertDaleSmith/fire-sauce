@@ -29,7 +29,7 @@
         <meta property="og:title" content="FireSauce.TV" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://firesauce.tv/" />
-        <meta property="og:image" content="http://firesauce.tv/twitter_card.png" />
+        <meta property="og:image" content="http://firesauce.tv/og-image.png" />
         <meta property="og:description" content="FireSauce.TV turns any Twitter feed into an human curated TV channel." />
         <meta property="og:site_name" content="FireSauce.TV" />
 
