@@ -32,7 +32,7 @@
                 <div class="follow_btn"><span>FOLLOW</span></div>
             </div>
 
-            <div id="track_tweet_wrapper"></div>
+            <div id="track_tweet_wrapper"><span class="text"></span></div>
 
             <div id="toggle_sidebar_btn">
                 <i class="fa fa-chevron-left"></i>
@@ -44,16 +44,16 @@
         </div>
         <div id="chrome_wrapper">
             <div id="titlebar_wrapper">
-                <div class="btn channels" for="channels_wrapper"><i class="fa fa-history"></i></div>
-                <div class="btn watching active" for="watch_wrapper"><i class="fa fa-eye"></i></div>
-                <div class="btn settings" for="settings_wrapper"><i class="fa fa-info-circle"></i></div>
+                <div class="btn channels" for="channels_wrapper" title="Channels"><i class="fa fa-history"></i></div>
+                <div class="btn watching active" for="watch_wrapper" title="Tracks"><i class="fa fa-eye"></i></div>
+                <div class="btn settings" for="settings_wrapper" title="About"><i class="fa fa-info-circle"></i></div>
             </div>
 
             <div id="search_container">
                
                 <div id="search_wrapper">
                     <input id="search_input" type="text" placeholder="" value="" maxlength="16">
-                    <input id="search_button" type="button" value="watch">
+                    <div id="search_button" title="Fetch channel's video tweets.">watch</div>
                 </div>
 
             </div>
@@ -75,7 +75,7 @@
 
             <div class="panel" id="watch_wrapper">
                 <ul id="schedule_wrapper">
-                    <!-- <li class="track">Feed me any Twitter username!</li> -->
+                    <li class="track">Feed me any Twitter username!</li>
                 </ul>
             </div>
             <div class="panel" id="channels_wrapper" style="display:none;">
@@ -84,17 +84,17 @@
                 <ul id="history_wrapper"></ul>
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
-                <!-- <button id="twitter_signout_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign out</button> -->
-                <div class="about">FireSauce.TV turns and Twitter feed in a human curated scheduled video playlists.</div>
-                <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</a></div>
+                <div class="about_container">
+                    <div class="about"><span class="title">Welcome to FireSauce.TV v.0.0.1</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
+                    <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</a></div>
+                </div>
             </div>
         </div>
 
         <div id="splash_wrapper">
         	<div class="content"> 
 	        	<div class="logo"><div class="iris spinning"></div></div>
-	        	<span class="oneliner">FireSauce TV</span>
-	        	<!-- <button id="twitter_signin_btn" class="button-twitter pure-button"><i class="fa fa-twitter"></i> Sign in with Twitter</button> -->
+	        	<span class="oneliner">FireSauce.TV</span>
 	        </div>
         </div>
 

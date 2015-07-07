@@ -40,5 +40,5 @@
   ],
   "start_url": "http://firesauce.tv/",
   "display": "standalone",
-  "orientation": "landscape"
+  "orientation": ""
 }

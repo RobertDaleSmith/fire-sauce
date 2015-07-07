@@ -1,3 +1,6 @@
+var ua = navigator.userAgent.toLowerCase();
+var isAndroid = ua.indexOf("android") > -1;
+
 // Page and resources have loaded.
 $(window).bind("load", function() {
 	
@@ -17,7 +20,7 @@ $(window).bind("load", function() {
 			}
 		}
 		if(e.keyCode == 13){ // Enter key fires submit.
-			$('input#search_button').click();
+			$('div#search_button').click();
 		}
 	});
 
@@ -53,11 +56,12 @@ $(window).bind("load", function() {
 			c--;
 		}
 		if(this.value.length > 15) this.value = this.value.slice(0,-1);
-		this.setSelectionRange(c, c);
+		if(!isAndroid)this.setSelectionRange(c, c);
+
 	});
 
 	// Twitter username submission to render feed.
-	$('input#search_button').bind('click', function(e) {
+	$('div#search_button').bind('click', function(e) {
 		var query = $('input#search_input').val();
 		if(query.length > 0){
 			console.log("fire: " + query);
@@ -136,9 +140,9 @@ $(window).bind("load", function() {
 
 	$('#titlebar_wrapper .btn').bind('click', function(e) {
 		
-		if(!$(this).hasClass('active')){
+		var isFor = $(this).attr('for');
 
-			var isFor = $(this).attr('for');
+		if(!$(this).hasClass('active')){
 		
 			$('#titlebar_wrapper .btn').removeClass('active');
 			$(this).addClass('active');
@@ -152,11 +156,10 @@ $(window).bind("load", function() {
 				scrollToTrack();
 			}
 
-			// if(isFor=="settings_wrapper"){
-			// 	$('#search_container').css('width','1px');
-			// }else{
-			// 	$('#search_container').css('width','');
-			// }
+		} else {
+			if(isFor=="watch_wrapper"){
+				scrollToTrack();
+			}
 		}
 
 	});
@@ -723,7 +726,7 @@ function playTrack(index){
 		$('#video__' + index + ' .btn.start').addClass('restart');
 
 		//Show tweet in overlay.
-		$('#track_tweet_wrapper').html(hist.channels[hist.watching].trackList[index].text.linkify_tweet());
+		$('#track_tweet_wrapper span.text').html(hist.channels[hist.watching].trackList[index].text.linkify_tweet());
 	}catch(e){
 		console.log('error caught for playTrack('+index+')');
 	}

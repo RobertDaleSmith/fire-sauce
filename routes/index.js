@@ -178,7 +178,6 @@ Index.prototype.twitterSearchName = function( req, res ) {
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 		if (!error) {
-
 			// console.log(tweets);
 			async.auto({
 				getTweetLinks: function(done) {
@@ -301,7 +300,11 @@ Index.prototype.twitterSearchName = function( req, res ) {
 				res.send(results.expandUrls);
 			});
 
+		} else {
+			console.log('BOOM!');
+			//TODO: handle the error dude.
 		}
+
 	});
 
 };
