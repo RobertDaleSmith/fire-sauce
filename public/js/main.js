@@ -312,6 +312,7 @@ function watchUsername(screen_name){
 			}else{
 			}
 
+			if(channelData.info) hist.channels[hist.watching].write('info', channelData.info);
 			getTwitterUserInfo(screen_name, updateChannelInfo);
 
 			for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
@@ -341,10 +342,6 @@ function watchUsername(screen_name){
 				
 			}
 
-		}
-
-		if(channelData.info){
-			hist.channels[hist.watching].write('info', channelData.info);
 		}
 
 		if(!$('.btn.watching').hasClass('active'))$('.btn.watching').click();
@@ -448,7 +445,8 @@ function renderTweets(tweets){
 					.attr('href','https://twitter.com/intent/tweet?in-reply-to='+tweet.id+
 									'&related=firesaucetv%3AFire%20Sauce.TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
 									'&via='+tweet.user+
-									'&hashtags=firesaucetv'									
+									'&hashtags=firesaucetv'
+									
 									)
 				)
 			)
@@ -909,7 +907,7 @@ function updatePlayerInfo() {
 
 function renderChannels(channels){
 
-	console.log(channels);
+	// console.log(channels);
 
 	$("#suggested_wrapper").html('').css('display','');
 	$("#followed_wrapper").html('').css('display','');

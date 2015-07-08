@@ -276,6 +276,7 @@ Index.prototype.getChannel = function( req, res ) {
 			if(isNewUser){
 				//Add user with tracks.
 				channelData.trackList = newTracks;
+
 				self._channels.addChannel(channelData, function( err, result ){
 					console.log(channelData.name + " is a new FireSauce.TV channel. :)");
 				});
@@ -285,7 +286,7 @@ Index.prototype.getChannel = function( req, res ) {
 			} else {
 				//Just update this users tracks.
 				if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
-				
+
 				self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
 					console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
 				});
