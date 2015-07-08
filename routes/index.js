@@ -97,7 +97,7 @@ function trimYouTubeURL(url){
 	
 	if( base.indexOf("youtube.com/embed/") > -1 ) {
 		params.v = base.split("/embed/")[1];
-		base = "http://www.youtube.com/watch/";
+		base = "http://www.youtube.com/watch";
 	}
 
 	url = base + '?v=' + params.v;

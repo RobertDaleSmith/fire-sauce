@@ -589,8 +589,7 @@ var errorCodes = {
 }
 
 function onYtPlayerError(event) {
-	console.log("Error: " + event);
-	console.dir(event.data);
+	console.log("Error: " + event.data);
 
 	if(event.data == 150 || event.data == 2) hist.channels[hist.watching].trackList[trackIndex].write('error', event.data);
 
