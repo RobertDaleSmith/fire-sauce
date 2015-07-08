@@ -397,7 +397,9 @@ nav a:hover {
 
 
 
-
+.ui-loader{
+    display: none;
+}
 
 #main_wrapper{
     display: block;
@@ -1279,6 +1281,14 @@ nav a:hover {
                 width: 16px;
             }
 
+            .text .errMsg{
+                display: block;
+                position: relative;
+                width: 100%; height: auto;
+                color: #ffffff;
+                font-weight: 500;
+            }
+
         .track .url{
             display: inline-block;
             position: relative;
@@ -1310,7 +1320,7 @@ nav a:hover {
         .track.error .text a,
         .track.error .started{
             color: lightcoral;
-            opacity: 0.5;
+            opacity: 0.70;
         }
 
             .track .controls .btn{
@@ -1489,7 +1499,7 @@ nav a:hover {
 #channel_info_wrapper{
     display: inline-block;
     position: absolute;
-    top: 30px;
+    top: 40px;
     left: 30px;
     width: auto;
     height: 68px;
@@ -1620,7 +1630,7 @@ nav a:hover {
 #track_tweet_wrapper{
     display: inline-block;
     position: absolute;
-    top: 30px;   right: 30px;
+    top: 40px;   right: 30px;
     width: auto; height: auto;
     max-width: calc(100% - 340px);
 

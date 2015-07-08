@@ -284,13 +284,12 @@ function watchUsername(screen_name){
 
 	if(searchRequest) searchRequest.abort();
 
-	var reqUrl = "/channel/tracks/?screen_name="+screen_name;
+	var reqUrl = "/search/?screen_name="+screen_name;
 
-	if(sinceID) reqUrl = reqUrl + "&since_id="+sinceID;
+	if(sinceID) reqUrl = reqUrl + "&sinceID="+sinceID;
 
-	searchRequest = $.getJSON(reqUrl, function( channelData ) {
+	searchRequest = $.getJSON(reqUrl, function( tweets ) {
 		
-		var tweets = channelData.trackList;
 		// console.log(tweets);
 
 		hideSearchSpinner();
@@ -302,17 +301,17 @@ function watchUsername(screen_name){
 			ga('send', 'event', 'watch', 'screen_name', screen_name);
 
 			$('input#search_input').val(screen_name);
+
+			$('input#search_input').val(screen_name);
 			hist.write('watching', screen_name.toLowerCase());
+			getTwitterUserInfo(screen_name, updateChannelInfo);
 			
 			if(!sinceID){
 				tracksLoaded = 0;
 				$("#schedule_wrapper").html('');
 				hist.channels.write(hist.watching, {'trackList':[]});
-				
 			}else{
 			}
-
-			getTwitterUserInfo(screen_name, updateChannelInfo);
 
 			for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
 
@@ -325,8 +324,8 @@ function watchUsername(screen_name){
 			
 
 		} else {
-			console.log('No new vids found...');
-			showFailedAlert("No new videos found.");
+			console.log('No compatible content found...');
+			showFailedAlert("No new recent videos.");
 
 			if(sinceID){
 
@@ -343,10 +342,6 @@ function watchUsername(screen_name){
 
 		}
 
-		if(channelData.info){
-			hist.channels[hist.watching].write('info', channelData.info);
-		}
-
 		if(!$('.btn.watching').hasClass('active'))$('.btn.watching').click();
 
 	}).fail(function(jqXHR, textStatus, errorThrown){
@@ -359,7 +354,7 @@ function watchUsername(screen_name){
 
 function updateChannelInfo(user){
 	// console.log(user);
-	if(hist.channels[hist.watching])if(hist.channels[hist.watching].followed)$('#channel_info_wrapper').addClass('followed');
+	if(hist.channels[hist.watching].followed)$('#channel_info_wrapper').addClass('followed');
 	else $('#channel_info_wrapper').removeClass('followed');
 	$('#channel_info_wrapper').css('display','');
 	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url.replace('http:',''));
@@ -596,7 +591,7 @@ function onYtPlayerError(event) {
 
 	$('li.track#video__'+trackIndex).addClass('error');
 	$('li.track#video__'+trackIndex+' .text').append($('<span/>').addClass("errMsg").html("Embedded playback is disabled."));
-
+	
 	playNextTrack();
 }
 
@@ -818,21 +813,23 @@ function videoResauceClickEvent(e){
 
 function getTwitterUserInfo(screen_name, cb){
 
-	// console.log(hist.watching);
+	console.log(hist.watching);
 	if(hist.channels[hist.watching]){
-		if(hist.channels[hist.watching].info 
-		// && !(Date.parse(new Date()) - Date.parse(hist.channels[hist.watching].info.updated) < (5 * 60 * 1000))
-		){
+		if(hist.channels[hist.watching].info && 
+		   hist.channels[hist.watching].updated_at) {
 			cb(hist.channels[hist.watching].info);
 			return hist.channels[hist.watching].info;
 		}
 	}
 	
 	if(getUserRequest) getUserRequest.abort();
-	var reqUrl = "/channel/?screen_name="+screen_name;
-	getUserRequest = $.getJSON(reqUrl, function(user){ 
+	var reqUrl = "/userInfo/?screen_name="+screen_name;
+	getUserRequest = $.getJSON(reqUrl,function(user){ 
 		console.log('Fetched Twitter user\'s data');
-		if(user) hist.channels[hist.watching].write('info', user);
+		user.updated_at = new Date();
+		if(user){
+			hist.channels[hist.watching].write('info', user);
+		}
 		if(cb)cb(user);
 	});
 
@@ -897,11 +894,7 @@ function updatePlayerInfo() {
 
 }
 
-// var suggestCache = {};
-
 function renderChannels(channels){
-
-	console.log(channels);
 
 	$("#suggested_wrapper").html('').css('display','');
 	$("#followed_wrapper").html('').css('display','');

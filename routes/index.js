@@ -15,8 +15,13 @@ var async = require("async")
 	;
 
 var Index = function( mongo ) {
+
 	var self = this;
 	if( typeof mongo === 'undefined' ) { console.log( 'Index( undefined )!'); }
+
+	var ChannelsMongo = require("../libs/ChannelsMongo").ChannelsMongo;
+	self._channels = new ChannelsMongo( {mongo:mongo} );
+
 };
 
 exports.initIndex = function( mongo ){
@@ -79,6 +84,8 @@ function isTargetedContentType(url){
 	else if(url)if(url.indexOf("youtu.be") > -1) isIt = true;
 	// else if(url.indexOf("vimeo.com") > -1) isIt = true;
 
+	if(url)if(url.indexOf("mQ00zwkK9Og") > -1) isIt = false;
+
 	return isIt;
 
 }
@@ -86,14 +93,20 @@ function isTargetedContentType(url){
 function trimYouTubeURL(url){
 
 	var base = url.split('?')[0],
-	  params = getParamsArray(url);
+		params = getParamsArray(url);
 	
+	if( base.indexOf("youtube.com/embed/") > -1 ) {
+		params.v = base.split("/embed/")[1];
+		base = "http://www.youtube.com/watch/";
+	}
+
 	url = base + '?v=' + params.v;
 	if(params.t) url += '&t=' + params.t;
 
 	// if(url.indexOf("vimeo.com") > -1) url = url.split('?')[0];
 
 	return url;
+	
 }
 
 function getParamsArray(url){
@@ -138,7 +151,6 @@ Index.prototype.twitterSearch = function( req, res ) {
 
 Index.prototype.twitterGetUserInfo = function( req, res ) {
 	// console.log('twitterSearchName');
-	var shorts = [], longs = [], shortFunctions = [];
 	var user = req.query.screen_name;
 	console.log("Fetching user: " + user);
 
@@ -167,18 +179,172 @@ Index.prototype.twitterGetUserInfo = function( req, res ) {
 
 };
 
+Index.prototype.getChannelInfo = function( req, res ) {
+
+	var self = this;
+	var name = req.query.screen_name || ""; name = name.toLowerCase();
+
+	self._channels.findOneChannel(name, function( err, channel ){
+		res.send(channel.info);
+	});
+
+};
+
+Index.prototype.getChannel = function( req, res ) {
+
+	var self = this;
+	var name = req.query.screen_name || ""; name = name.toLowerCase();
+	var since = req.query.since_id;
+	var channelData = { name: name, info: { screen_name: name }, trackList: [], trackSince: null }, 
+		errorObj = {error:true}, isNewUser = false, newTracks;
+
+	async.series([
+		function(next){
+			//Get channel data from our DB.
+			self._channels.findOneChannel(name, function( err, result ){
+				if(result)channelData=result;
+				else isNewUser = true;
+				next();
+			});
+		},
+		function(next){
+			//Has this channel been created on FireSauce before?
+			if(Date.parse(new Date()) - Date.parse(channelData.info.updated) < (5 * 60 * 1000)){
+				// Info was found and is up to date, skip fetching user info from Twitter API.
+				next();
+			} else {
+				// New FireSauce channel or prevous is due for an update.
+				console.log('getting twitter user info');
+				twitter.get('users/show', {screen_name: name}, function(error, user, response) {
+
+					if(!error){
+						channelData.info = {
+							screen_name: 				  user.screen_name,
+							name: 						  user.name,
+							id: 						  user.id,
+							id_str: 					  user.id_str,
+							description: 				  user.description,
+							location: 					  user.location,
+							profile_background_color: 	  user.profile_background_color,
+							profile_background_image_url: user.profile_background_image_url,
+							profile_background_tile: 	  user.profile_background_tile,
+							profile_image_url: 			  user.profile_image_url,
+							profile_link_color: 		  user.profile_link_color,
+							updated: 					  new Date()
+						};
+						//Update channels info object in db..
+						self._channels.updateInfo(channelData.name, channelData.info, function( err, result ){
+							console.log(channelData.name + "'s info has been updated.");
+						});
+					} else {
+						//TODO: Error or Twitter user doesn't exist.
+						errorObj = error;
+					}
+
+					next();
+
+				});
+			}
+		},
+		function(next){
+			
+			var sinceTweetId;
+
+			if(channelData){
+
+				if(channelData.trackSince) sinceTweetId = channelData.trackSince;
+				
+				getUsersTweets(channelData.name, sinceTweetId, function(tracks, lastId){
+					
+					if(tracks)if(tracks.length > 0) newTracks = tracks;
+
+					if(lastId) channelData.trackSince = lastId;
+					
+					next();
+
+				});
+
+			} else {
+
+				next();
+
+			}
+
+		},
+		function(next){
+			
+			if(isNewUser){
+				//Add user with tracks.
+				channelData.trackList = newTracks;
+
+				self._channels.addChannel(channelData, function( err, result ){
+					console.log(channelData.name + " is a new FireSauce.TV channel. :)");
+				});
+
+				next();
+
+			} else {
+				//Just update this users tracks.
+				if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
+
+				self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
+					console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
+				});
+
+				next();
+			}
+
+		},
+		function(next){
+			if(since){
+
+				var sinceIndex = 0;
+				for(var i=0; i<channelData.trackList.length; i++){
+					if(channelData.trackList[i].id == since) {
+						sinceIndex = i+1;
+						break;
+					}
+				}
+
+				channelData.trackList.splice(0, sinceIndex);
+
+			}
+			next();
+		}
+	],
+	function(){
+
+		if(channelData) res.send(channelData);
+		else res.send(errorObj);
+
+	});
+
+};
+
 Index.prototype.twitterSearchName = function( req, res ) {
 	// console.log('twitterSearchName');
-	var shorts = [], longs = [], shortFunctions = [];
 	var user = req.query.screen_name,
 		since = req.query.sinceID;
 	console.log("Fetching user: " + user);
 
-	var params = {screen_name: user, count: 200, since_id: since, include_rts: true}; 
+	getUsersTweets(user, since, function(tracks){
+		if(tracks) res.send(tracks);
+		else res.send([]);
+	});
+
+};
+
+function getUsersTweets(user, since, cb){
+
+	var lastCheckedId;
+	var params = {screen_name: user, count: 200, since_id: since, include_rts: true};
 	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 		if (!error) {
 			// console.log(tweets);
+			if(tweets)if(tweets.length>0)lastCheckedId = tweets[0].id_str;
+
+
 			async.auto({
 				getTweetLinks: function(done) {
 					var tempArr = tweets.reduce(function(arr, tweet) {
@@ -208,20 +374,21 @@ Index.prototype.twitterSearchName = function( req, res ) {
 					var tweetLinks = results.getTweetLinks;
 					var expandedTweetUrlArr = [];
 
-					console.log(tweetLinks.length);
+					// console.log(tweetLinks.length);
 					var cnt = 0;
 
 					// will do 20 at a time
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
 						var thisCnt = 0;
 						
-						console.log(tweet.url);
+						// console.log(tweet.url);
 
 						//Skip request check
 						if(	tweet.url.includes('youtube.com/watch')		||
 							tweet.url.includes('youtu.be')   	  		){
 
-							console.log(isTargetedContentType(tweet.url));
+							console.log(tweet.url);
+
 							if( isTargetedContentType(tweet.url) != 0 ){
 								tweet.url = trimYouTubeURL(tweet.url);
 								expandedTweetUrlArr.push(tweet);
@@ -261,7 +428,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 											var $ = cheerio.load(html);
 											var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
 											if( isTargetedContentType(ytUrl) != 0 ){
-												console.log(ytUrl);
+												// console.log(ytUrl);
 												tweet.url = trimYouTubeURL(ytUrl);
 												expandedTweetUrlArr.push(tweet);
 											}
@@ -276,7 +443,7 @@ Index.prototype.twitterSearchName = function( req, res ) {
 						}
 
 					}, function(err) {
-						console.log('done filtering urls');
+						// console.log('done filtering urls');
 						if (err) {
 							console.log(err);
 							return done(err);
@@ -293,18 +460,21 @@ Index.prototype.twitterSearchName = function( req, res ) {
 				}]
 			}, function(err, results) {
 				if (err) {
-					res.send(err);
+					// res.send(err);
+					cb(null);
 				}
 
 				console.log('returning results');
-				res.send(results.expandUrls);
+				// res.send();
+				cb(results.expandUrls, lastCheckedId);
 			});
 
 		} else {
-			console.log('BOOM!');
+			// console.log('BOOM!');
 			//TODO: handle the error dude.
+			cb(null);
 		}
 
 	});
 
-};
+}
