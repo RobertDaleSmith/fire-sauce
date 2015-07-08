@@ -52,6 +52,9 @@ ChannelsMongo.prototype.findChannels = function( queryIn, callback ){
 
 ChannelsMongo.prototype.addChannel = function ( channel, callback ){
 
+	channel.added = new Date();
+	channel.updated = new Date();
+
 	this.channels.insert( channel, function (error, channels) {
 		// console.log(error);
 		// console.log(channels);
@@ -74,7 +77,7 @@ ChannelsMongo.prototype.addTracks = function ( channel, newTracks, sinceId, call
 
 	this.channels.update(
 	   { name: channel },
-	   { $set: { "trackSince" : sinceId } },
+	   { $set: { "trackSince" : sinceId, "updated": new Date() } },
 	   { $addToSet: { trackList: { $each: newTracks } } }
 	);
 

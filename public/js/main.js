@@ -441,6 +441,15 @@ function renderTweets(tweets){
 					.html("<i class='fa fa-retweet'></i>")
 					.attr('title','Resauce to your stream')
 					.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id+'&related=firesaucetv')
+				).append($('<a>')
+					.addClass("btn right reply")
+					.html("<i class='fa fa-reply'></i>")
+					.attr('title','Say something about it')
+					.attr('href','https://twitter.com/intent/tweet?in-reply-to='+tweet.id+
+									'&related=firesaucetv%3AFire%20Sauce.TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
+									'&via='+tweet.user+
+									'&hashtags=firesaucetv'									
+									)
 				)
 			)
 		;
