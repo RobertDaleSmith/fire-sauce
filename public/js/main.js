@@ -196,7 +196,7 @@ $(window).bind("load", function() {
     	// $('#splash_wrapper').css('display','none');
     }
 
-    // loadPopularSuggestions();
+    loadPopularSuggestions();
 
     fadeSplash();
 
