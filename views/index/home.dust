@@ -21,7 +21,7 @@
 
             <div id="player_watermark"></div>
             
-            <div id="channel_info_wrapper" class="followed" style="">
+            <div id="channel_info_wrapper" class="default followed" style="">
                 <div class="spinner "></div>
                 <div class="name">FireSauceTV</div>
                 <img class="avatar" src="/img/logo_io_sq.jpg">
@@ -85,7 +85,7 @@
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
                 <div class="about_container">
-                    <div class="about"><span class="title">Welcome to FireSauce.TV v.0.0.1</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
+                    <div class="about"><span class="title">Welcome to FireSauce.TV v.0.0.2</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
                     <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</a></div>
                 </div>
             </div>

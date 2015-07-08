@@ -193,10 +193,15 @@ Index.prototype.getChannelInfo = function( req, res ) {
 Index.prototype.getChannel = function( req, res ) {
 
 	var self = this;
-	var name = req.query.screen_name || ""; name = name.toLowerCase();
+	var name = req.query.screen_name || "";
 	var since = req.query.since_id;
 	var channelData = { name: name, info: { screen_name: name }, trackList: [], trackSince: null }, 
-		errorObj = {error:true}, isNewUser = false, newTracks;
+		errorObj = {error:true}, isNewUser = false, newTracks = [];
+
+	//Cleanup screen_name first
+	var r = /[^a-z0-9_]/gi,	v = name;
+	if(r.test(v)) name = v.replace(r, '');
+	name = name.toLowerCase();
 
 	async.series([
 		function(next){
@@ -273,26 +278,29 @@ Index.prototype.getChannel = function( req, res ) {
 		},
 		function(next){
 			
-			if(isNewUser){
-				//Add user with tracks.
-				channelData.trackList = newTracks;
+			if(newTracks.length>0){
 
-				self._channels.addChannel(channelData, function( err, result ){
-					console.log(channelData.name + " is a new FireSauce.TV channel. :)");
-				});
+				if(isNewUser){ //Add user with tracks.
 
-				next();
+					channelData.trackList = newTracks;
 
-			} else {
-				//Just update this users tracks.
-				if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
+					self._channels.addChannel(channelData, function( err, result ){
+						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
+					});
 
-				self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
-					console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
-				});
+				} else { //Just update this users tracks.
 
-				next();
+					if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
+
+					self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
+						console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
+					});
+					
+				}
+
 			}
+
+			next();
 
 		},
 		function(next){
@@ -314,7 +322,8 @@ Index.prototype.getChannel = function( req, res ) {
 	],
 	function(){
 
-		if(channelData) res.send(channelData);
+		if( !isNewUser || (isNewUser && channelData.trackList.length > 0)) 
+			 res.send(channelData);
 		else res.send(errorObj);
 
 	});

@@ -1514,6 +1514,9 @@ nav a:hover {
             transition: border-radius 500ms;
 
 }
+#channel_info_wrapper.default{
+    cursor: default;
+}
      #channel_info_wrapper .click_area{
         display: inline-block;
         position: absolute;

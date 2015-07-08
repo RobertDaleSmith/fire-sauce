@@ -127,18 +127,22 @@ $(window).bind("load", function() {
 
     $('#channel_info_wrapper .click_area, #channel_info_wrapper .follow_btn').bind('click', function(e) {
 		var parent = $(this).parent();
-		if(parent.hasClass('followed')) {
-			parent.removeClass('followed');
-			$("#channel__"+hist.watching).removeClass('followed');
-			$("#channel__"+hist.watching+" .follow").val("FOLLOW");
-			hist.channels[hist.watching].write('followed', false);
 
-		} else {
-			parent.addClass('followed');
-			$("#channel__"+hist.watching).addClass('followed');
-			$("#channel__"+hist.watching+" .follow").val("FOLLOWED");
-			hist.channels[hist.watching].write('followed', true);
+		if(!parent.hasClass('default')){
+			if(parent.hasClass('followed')) {
+				parent.removeClass('followed');
+				$("#channel__"+hist.watching).removeClass('followed');
+				$("#channel__"+hist.watching+" .follow").val("FOLLOW");
+				hist.channels[hist.watching].write('followed', false);
+
+			} else {
+				parent.addClass('followed');
+				$("#channel__"+hist.watching).addClass('followed');
+				$("#channel__"+hist.watching+" .follow").val("FOLLOWED");
+				hist.channels[hist.watching].write('followed', true);
+			}
 		}
+		
 
 	});
 
@@ -191,6 +195,12 @@ $(window).bind("load", function() {
     // Check hash and load it.
     var hash = location.hash || "";
     hash = hash.replace('#/','').replace('#','');
+
+    //Cleanup screen_name further
+	var r = /[^a-z0-9_]/gi,	v = hash;
+	if(r.test(v)) hash = v.replace(r, '');
+	hash = hash.toLowerCase();
+    
     if(hash.length>0){
     	watchUsername(hash);
     	// $('#splash_wrapper').css('display','none');
@@ -244,10 +254,13 @@ function hideSearchSpinner() {
 	},2000);
 }
 
+var alertTimer;
+
 function showFailedAlert(msg) {
 	$('#failed_wrapper').addClass('failed');
 	$('#failed_message').text(msg);
-	setTimeout(function(){	hideFailedAlert();	}, 5000);
+	window.clearTimeout(alertTimer);
+	alertTimer = setTimeout(function(){	hideFailedAlert();	}, 5000);
 }
 function hideFailedAlert() {
 	$('#failed_wrapper').removeClass('failed');
@@ -275,7 +288,7 @@ function watchUsername(screen_name){
 			$("#schedule_wrapper").html('');
 			renderTweets(hist.channels[screen_name].trackList);
 
-			$('input#search_input').val(screen_name);
+			
 			hist.write('watching', screen_name.toLowerCase());
 
 			getTwitterUserInfo(screen_name, updateChannelInfo);
@@ -290,64 +303,74 @@ function watchUsername(screen_name){
 
 	searchRequest = $.getJSON(reqUrl, function( channelData ) {
 		
-		var tweets = channelData.trackList;
-		// console.log(tweets);
+		if(!channelData.error && channelData.trackList){
+			var tweets = channelData.trackList || [];
+		
+			// console.log(channelData);
 
-		hideSearchSpinner();
+			hideSearchSpinner();
 
-		hideFailedAlert();
+			hideFailedAlert();
 
-		if(tweets.length > 0){
+			if(tweets.length > 0){
 
-			ga('send', 'event', 'watch', 'screen_name', screen_name);
+				ga('send', 'event', 'watch', 'screen_name', screen_name);
 
-			$('input#search_input').val(screen_name);
-			hist.write('watching', screen_name.toLowerCase());
-			
-			if(!sinceID){
-				tracksLoaded = 0;
-				$("#schedule_wrapper").html('');
-				hist.channels.write(hist.watching, {'trackList':[]});
 				
-			}else{
-			}
-
-			if(channelData.info) hist.channels[hist.watching].write('info', channelData.info);
-			getTwitterUserInfo(screen_name, updateChannelInfo);
-
-			for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
-
-			renderTweets(tweets);
-						
-			// Play most recent.
-			trackIndex = tweets.length;
-			// playNextTrack();
-			playMostRecentUnfinished();
-			
-
-		} else {
-			console.log('No new vids found...');
-			showFailedAlert("No new videos found.");
-
-			if(sinceID){
-
-				if(hist.channels[hist.watching].trackIndex>=0){
-					trackIndex = hist.channels[hist.watching].trackIndex;
-					playTrack(trackIndex);
+				hist.write('watching', screen_name.toLowerCase());
+				
+				if(!sinceID){
+					tracksLoaded = 0;
+					$("#schedule_wrapper").html('');
+					hist.channels.write(hist.watching, {'trackList':[]});
+					
 				}else{
-					trackIndex = tweets.length;
-					// playNextTrack();
-					playMostRecentUnfinished();
 				}
+
+				if(channelData.info) hist.channels[hist.watching].write('info', channelData.info);
+				getTwitterUserInfo(screen_name, updateChannelInfo);
+
+				for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
+
+				renderTweets(tweets);
+							
+				// Play most recent.
+				trackIndex = tweets.length;
+				// playNextTrack();
+				playMostRecentUnfinished();
 				
+
+			} else {
+				console.log('No new vids found...');
+				showFailedAlert("No new videos found.");
+
+				if(sinceID){
+
+					if(hist.channels[hist.watching].trackIndex>=0){
+						trackIndex = hist.channels[hist.watching].trackIndex;
+						playTrack(trackIndex);
+					}else{
+						trackIndex = tweets.length;
+						// playNextTrack();
+						playMostRecentUnfinished();
+					}
+					
+				}
+
 			}
 
+			if(!$('.btn.watching').hasClass('active'))$('.btn.watching').click();
+		}else {
+			// hideFailedAlert();
+			hideSearchSpinner();
+			showFailedAlert("Channel not found.");
+			console.log("Channel not found.");
 		}
-
-		if(!$('.btn.watching').hasClass('active'))$('.btn.watching').click();
 
 	}).fail(function(jqXHR, textStatus, errorThrown){
 
+		hideSearchSpinner();
+		showFailedAlert("Server may be down. :( ");
 		console.log(textStatus + ": " + errorThrown);
 
 	});
@@ -358,11 +381,14 @@ function updateChannelInfo(user){
 	// console.log(user);
 	if(hist.channels[hist.watching])if(hist.channels[hist.watching].followed)$('#channel_info_wrapper').addClass('followed');
 	else $('#channel_info_wrapper').removeClass('followed');
+	$('#channel_info_wrapper').removeClass('default');
 	$('#channel_info_wrapper').css('display','');
 	$('#channel_info_wrapper .avatar').attr('src',user.profile_image_url.replace('http:',''));
 	$('#channel_info_wrapper .profile_link').attr('href',"https://twitter.com/intent/user?screen_name="+user.screen_name);
 	$('#channel_info_wrapper .name').text(user.name);
 	$('#channel_info_wrapper .screen_name').text('@'+user.screen_name);
+
+	$('input#search_input').val(user.screen_name);
 
 	updateTweetOverLayWidth();
 
@@ -465,15 +491,14 @@ function renderTweets(tweets){
 		if(tweet.skipped) element.addClass('skipped');
 		if(tweet.error) {
 			element.addClass('error');
-			element.find('.text').append($('<span/>').addClass("errMsg").html("Embedded playback is disabled."));
+			element.find('.text .errMsg').remove();
+			element.find('.text').append($('<span/>').addClass("errMsg").html("Embedded video unable to play."));
 		}
 
 		$("#schedule_wrapper").append(element);
 		tracksLoaded++;
 		
-		if(idx == tweets.length-1){
-
-		}
+		// if(idx == tweets.length-1){ }
 	});
 	
 	scrollToTrack();
@@ -497,7 +522,7 @@ var firstScriptTag = document.getElementsByTagName('script')[0];
 var ytplayer, ytplayerReady, ytIframeAPIReady, playerState = 0;
 function onYouTubeIframeAPIReady() {
 	ytplayerReady = true;
-	// loadVideo("L-6LXhFNeGw");
+	// loadVideo("");
 	setInterval(updatePlayerInfo, 1000);
 }
 
@@ -601,7 +626,8 @@ function onYtPlayerError(event) {
 	if(event.data == 150 || event.data == 2) hist.channels[hist.watching].trackList[trackIndex].write('error', event.data);
 
 	$('li.track#video__'+trackIndex).addClass('error');
-	$('li.track#video__'+trackIndex+' .text').append($('<span/>').addClass("errMsg").html("Embedded playback is disabled."));
+	$('li.track#video__'+trackIndex+' .text .errMsg').remove();
+	$('li.track#video__'+trackIndex+' .text').append($('<span/>').addClass("errMsg").html("Embedded video unable to play."));
 
 	playNextTrack();
 }
@@ -902,8 +928,6 @@ function updatePlayerInfo() {
     }
 
 }
-
-// var suggestCache = {};
 
 function renderChannels(channels){
 

@@ -167,7 +167,9 @@ mongo.connect(function(err) {
   app.get( '/admin/css/:styleFileName' , requiresLoginAjax, function( req, res, next ) { routes.Admin.privateStyle( req, res, next );  } ); 
   app.get( '/admin/images/:imageFileName', requiresLoginAjax, function( req, res, next ) { routes.Admin.privateImage( req, res, next );  } ); 
 
-  app.get("/*", function(req, res, next) { res.redirect('/'); }); //Handle 404
+
+
+  app.get("/*", function(req, res, next) { console.log(); res.redirect('/#'+req.originalUrl); }); //Handle 404
   app.listen(conf.port);
   console.log('Express server listening on port ' + conf.port);
 
