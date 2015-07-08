@@ -573,6 +573,8 @@ function onYtPlayerStateChange(event) {
 
 		$('li.track#video__'+trackIndex).css('width','').addClass('watched')
 										.find('div.progress').attr('style', "");
+		
+		$.post('/channel/tracks?screen_name='+hist.watching);
 		playNextTrack();	
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {

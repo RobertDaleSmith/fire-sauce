@@ -146,6 +146,7 @@ mongo.connect(function(err) {
 
   app.get( '/channel', function( req, res, next ) { routes.Index.getChannelInfo( req, res, next ); } );
   app.get( '/channel/tracks', function( req, res, next ) { routes.Index.getChannel( req, res, next ); } );
+  app.post('/channel/tracks', function( req, res, next ) { routes.Index.incTracksPlayed( req, res, next ); } );
 
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );
 

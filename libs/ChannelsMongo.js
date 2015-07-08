@@ -91,3 +91,21 @@ ChannelsMongo.prototype.updateInfo = function ( channel, info, callback ){
 	);
 
 }
+
+ChannelsMongo.prototype.incTunedInCount = function ( channel, callback ){
+
+	this.channels.update(
+	   { name: channel },
+	   { $inc: { "counts.tunedInTotal" : 1, "counts.tunedInToday" : 1 } }
+	);
+
+}
+
+ChannelsMongo.prototype.incTracksPlayedCount = function ( channel, callback ){
+
+	this.channels.update(
+	   { name: channel },
+	   { $inc: { "counts.tracksPlayedTotal" : 1, "counts.tracksPlayedToday" : 1 } }
+	);
+
+}

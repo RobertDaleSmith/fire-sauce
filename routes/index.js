@@ -179,6 +179,16 @@ Index.prototype.twitterGetUserInfo = function( req, res ) {
 
 };
 
+Index.prototype.incTracksPlayed = function( req, res ) {
+
+	var self = this;
+	var name = req.query.screen_name || ""; name = name.toLowerCase();
+
+	self._channels.incTracksPlayedCount(name, function( err, result ){});
+	console.log("+1 added to "+ name + "'s tracksPlayedCount.");
+
+};
+
 Index.prototype.getChannelInfo = function( req, res ) {
 
 	var self = this;
@@ -283,7 +293,11 @@ Index.prototype.getChannel = function( req, res ) {
 				if(isNewUser){ //Add user with tracks.
 
 					channelData.trackList = newTracks;
-
+					channelData.counts = {
+						tunedInTotal: 1, tracksPlayedToday: 0,
+						tunedInToday: 1, tracksPlayedTotal: 0
+					};
+					
 					self._channels.addChannel(channelData, function( err, result ){
 						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
 					});
@@ -298,6 +312,12 @@ Index.prototype.getChannel = function( req, res ) {
 					
 				}
 
+			}
+
+			if(!isNewUser){
+				self._channels.incTunedInCount(channelData.name, function( err, result ){
+					console.log("+1 added to "+ channelData.name + "'s tunedInCount.");
+				});
 			}
 
 			next();
