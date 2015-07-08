@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>FireSauce.TV - Turning Twitter into TV{+title}{/title}</title>
+        <title>FireSauce.TV - simple video discovery{+title}{/title}</title>
         <meta name="description" content="FireSauce.TV turns any Twitter feed into an human curated TV channel.">
         
         <meta name="mobile-web-app-capable" content="yes">
