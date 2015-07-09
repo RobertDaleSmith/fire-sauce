@@ -944,7 +944,7 @@ function renderChannels(channels){
 		suggested[name] = suggestCache[i];
 		suggested[name].suggested = true;
 	}
-		console.log(suggested);
+	// console.log(suggested);
 	var sortable = [];
 	for (var channel in channels) {
 		channels[channel].id = channel;
