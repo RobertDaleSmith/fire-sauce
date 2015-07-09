@@ -94,6 +94,11 @@ function isTargetedContentType(url){
 }
 
 function trimYouTubeURL(url){
+	console.log(url);
+
+	if( url.indexOf("youtube.com/embed/") > -1 ) {
+		url = url.split("?")[0];
+	}
 
 	var base = url.split('?')[0],
 		params = getParamsArray(url);
