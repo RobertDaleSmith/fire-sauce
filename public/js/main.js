@@ -234,10 +234,18 @@ window.onresize = function onResizeEvent(event) {
 	isPortrait = isNowPortrait;
 }
 
-var suggestCache = [];
+var suggestCache = {};
 function loadPopularSuggestions(){
 	if(getPopRequest) getPopRequest.abort();
-	getPopRequest = $.getJSON('/popular',function(res){ suggestCache = res; });
+	getPopRequest = $.getJSON('/popular',function(res){ 
+
+		for(var i=0; i<res.length; i++){ 
+			// console.log(res[i].name);
+			var name = res[i].name;
+			suggestCache[name] = res[i];
+			suggestCache[name].suggested = true;
+		}
+	});
 }
 
 var spinnerTimer;
@@ -938,22 +946,16 @@ function renderChannels(channels){
 	$("#history_wrapper").html('').css('display','');
 
 	var suggestCount = 0, followedCount = 0, watchedCount = 0;
-	var suggested = {}; 
-	for(var i=0; i<suggestCache.length; i++){ 
-		var name = suggestCache[i].name;
-		suggested[name] = suggestCache[i];
-		suggested[name].suggested = true;
-	}
-	// console.log(suggested);
+	var suggested = JSON.parse(JSON.stringify(suggestCache));
 	var sortable = [];
 	for (var channel in channels) {
-		channels[channel].id = channel;
+		channels[channel].name = channel;
 		if(channel != "_rhaboo")sortable.push(channels[channel]);
 
 		delete suggested[channel];
 	}
 	for (var track in suggested) {
-		sortable.push(suggested[track]);
+		sortable.unshift(suggested[track]);
 	}
 
 	sortable.sort(function(a,b) { return (new Date(a.lastWatched)) - (new Date(b.lastWatched)) } );
@@ -965,8 +967,8 @@ function renderChannels(channels){
 
 		var element = $('<li/>')
 			.addClass("channel")
-			.attr('id', "channel__"+channel.id)
-			.attr('channel', channel.id)
+			.attr('id', "channel__"+channel.name)
+			.attr('channel', channel.name)
 			.append($('<div/>')
 				.addClass("status")
 			)
@@ -1008,18 +1010,24 @@ function renderChannels(channels){
 			watchUsername(channel);
 		});
 		element.find('div.info').bind('contextmenu', function(e){ 
-			e.preventDefault();
-			$(this).parent().toggleClass('edit');
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				$(this).parent().toggleClass('edit');
+			}
 		});
 		element.find('div.info').bind('swiperight', function(e){ 
-			e.preventDefault();
-			console.log('swiperight');
-			$(this).parent().addClass('edit');
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				console.log('swiperight');
+				$(this).parent().addClass('edit');
+			}			
 		});
 		element.find('div.info').bind('swipeleft', function(e){ 
-			e.preventDefault();
-			console.log('swipeleft');
-			$(this).parent().removeClass('edit');
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				console.log('swipeleft');
+				$(this).parent().removeClass('edit');
+			}
 		});
 		element.find('div.btn.delete').bind('click', function(){ 
 			var channel = $(this).parent().parent().attr('channel');
@@ -1053,8 +1061,11 @@ function renderChannels(channels){
 			element.addClass("followed");
 			element.find('input.follow').val("FOLLOWED");
 		}
+		if(channel.suggested){
+			element.addClass("suggested");
+		}
 		// if(channel.info) element.html('@'+channel.info.screen_name);
-		if(channel.id == hist.watching) element.addClass('active');
+		if(channel.name == hist.watching) element.addClass('active');
 
 		if(channel.suggested) {
 			$("#suggested_wrapper").prepend(element);

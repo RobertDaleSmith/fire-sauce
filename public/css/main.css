@@ -710,6 +710,9 @@ nav a:hover {
                     background-color: rgba(0,0,0,0.2);
                     border-radius: 30px;
                 }
+                #channels_wrapper .channel.suggested .views{
+                    display: none;
+                }
 
             input.follow{
                 display: inline-block;
@@ -740,6 +743,9 @@ nav a:hover {
                 color: #f4f4f4;
                 background-color: #53D063;
                 border-color: #53D063;
+            }
+            #channels_wrapper .channel.suggested input.follow{
+                display: none;
             }
 #settings_wrapper{
     display: inline-block;
