@@ -40,6 +40,7 @@ Index.prototype.home = function( req, res ) {
 		title:  '',
 		production: prod
 	});
+
 };
 
 if (!String.prototype.includes) {
@@ -60,6 +61,7 @@ function youtube_parser(url) {
         //alert("Url incorrecta");
         return 0;
     }
+
 }
 
 function vimeo_parser(url) {
@@ -73,7 +75,8 @@ function vimeo_parser(url) {
     } else {
         //console.log(0);
         return 0;
-    };
+    }
+
 }
 
 function isTargetedContentType(url){
@@ -146,7 +149,6 @@ Index.prototype.twitterSearch = function( req, res ) {
 
 	});
 
-	
 };
 
 Index.prototype.twitterGetUserInfo = function( req, res ) {
@@ -506,4 +508,28 @@ function getUsersTweets(user, since, cb){
 
 	});
 
-}
+};
+
+Index.prototype.leaderboard = function( req, res ) {
+
+	var self = this;
+
+	self._channels.getLeaderboardChannels(function( err, channels ){
+
+		res.render( 'index/leaderboard', {
+			channels: channels
+		});
+
+	});
+
+};
+
+Index.prototype.popular = function( req, res ) {
+
+	var self = this;
+
+	self._channels.getPopChannels(function( err, channels ){
+		res.send(channels);
+	});
+
+};

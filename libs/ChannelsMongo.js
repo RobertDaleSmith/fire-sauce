@@ -50,6 +50,40 @@ ChannelsMongo.prototype.findChannels = function( queryIn, callback ){
 	});
 }
 
+ChannelsMongo.prototype.getLeaderboardChannels = function( callback ){
+	var self = this;
+
+	self.channels.find( {}, { sort: { "counts.tunedInTotal":-1 }, limit:100, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+
+		if( err ) return callback( err );
+
+		cursor.toArray( function( err, docs ){
+
+			if( err ) return callback( err );
+
+			return callback( err, docs );
+
+		})
+	});
+}
+
+ChannelsMongo.prototype.getPopChannels = function( callback ){
+	var self = this;
+
+	self.channels.find( {}, { sort: { "counts.tunedInTotal":-1 }, limit:5, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+
+		if( err ) return callback( err );
+
+		cursor.toArray( function( err, docs ){
+
+			if( err ) return callback( err );
+
+			return callback( err, docs );
+
+		})
+	});
+}
+
 ChannelsMongo.prototype.addChannel = function ( channel, callback ){
 
 	channel.added = new Date();

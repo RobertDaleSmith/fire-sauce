@@ -234,7 +234,7 @@ window.onresize = function onResizeEvent(event) {
 	isPortrait = isNowPortrait;
 }
 
-var suggestCache = {};
+var suggestCache = [];
 function loadPopularSuggestions(){
 	if(getPopRequest) getPopRequest.abort();
 	getPopRequest = $.getJSON('/popular',function(res){ suggestCache = res; });
@@ -933,14 +933,18 @@ function updatePlayerInfo() {
 
 function renderChannels(channels){
 
-	// console.log(channels);
-
 	$("#suggested_wrapper").html('').css('display','');
 	$("#followed_wrapper").html('').css('display','');
 	$("#history_wrapper").html('').css('display','');
 
 	var suggestCount = 0, followedCount = 0, watchedCount = 0;
-	var suggested = $.extend(true, {}, suggestCache);
+	var suggested = {}; 
+	for(var i=0; i<suggestCache.length; i++){ 
+		var name = suggestCache[i].name;
+		suggested[name] = suggestCache[i];
+		suggested[name].suggested = true;
+	}
+		console.log(suggested);
 	var sortable = [];
 	for (var channel in channels) {
 		channels[channel].id = channel;
@@ -956,6 +960,8 @@ function renderChannels(channels){
 
 	$.each( sortable, function( idx, channel ) {
 		// console.log(channel);
+
+		if(!channel.trackList) channel.trackList = [];
 
 		var element = $('<li/>')
 			.addClass("channel")

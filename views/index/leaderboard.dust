@@ -1,0 +1,37 @@
+{>"layouts/main_index2"/}
+
+{<title}{title}{/title}
+
+{<html_body}
+
+	<!-- index/leaderboard.dust -->
+	<div id="main_wrapper">
+        <h1>FireSauce.TV Leaderboard</h1>
+
+        <table class="pure-table">
+        <thead>
+            <tr>
+                <th>Channel</th>
+                <th>Viewed (Total)</th>
+                <!-- <th>Viewed (Today)</th> -->
+                <th>Tracks Played (Total)</th>
+                <!-- <th>Tracks Played (Today)</th> -->
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {#channels}
+            <tr class="channel">
+                <td><img src="{.info.profile_image_url}" class="avatar"><span class="name">{.info.name}<br>@{.info.screen_name}</span></td>
+                <td>{.counts.tunedInTotal}</td>
+                <!-- <td>{.counts.tunedInToday}</td> -->
+                <td>{.counts.tracksPlayedTotal}</td>
+                <!-- <td>{.counts.tracksPlayedToday}</td> -->
+            </tr>
+            {/channels}
+
+        </tbody>
+    </div>
+
+{/html_body}
