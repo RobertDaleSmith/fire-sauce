@@ -44,8 +44,8 @@
         </div>
         <div id="chrome_wrapper">
             <div id="titlebar_wrapper">
-                <div class="btn channels active" for="channels_wrapper" title="Channels"><i class="fa fa-history"></i></div>
-                <div class="btn watching" for="watch_wrapper" title="Tracks"><i class="fa fa-eye"></i></div>
+                <div class="btn channels" for="channels_wrapper" title="Channels"><i class="fa fa-history"></i></div>
+                <div class="btn watching active" for="watch_wrapper" title="Tracks"><i class="fa fa-eye"></i></div>
                 <div class="btn settings" for="settings_wrapper" title="About"><i class="fa fa-info-circle"></i></div>
             </div>
 
