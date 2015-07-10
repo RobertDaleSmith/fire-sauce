@@ -94,7 +94,6 @@ function isTargetedContentType(url){
 }
 
 function trimYouTubeURL(url){
-	console.log(url);
 
 	if( url.indexOf("youtube.com/embed/") > -1 ) {
 		url = url.split("?")[0];
@@ -307,6 +306,12 @@ Index.prototype.getChannel = function( req, res ) {
 					
 					self._channels.addChannel(channelData, function( err, result ){
 						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
+
+						var shoutOutMsg = "The @" + channelData.info.screen_name + " Channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
+						twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){
+							// if (!error) {console.log(tweet); }
+						});
+
 					});
 
 				} else { //Just update this users tracks.
