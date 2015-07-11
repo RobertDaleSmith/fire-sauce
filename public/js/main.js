@@ -259,7 +259,7 @@ function hideSearchSpinner() {
 	window.clearTimeout(spinnerTimer);
 	spinnerTimer = setTimeout(function(){
 		$('#channel_info_wrapper .spinner').removeClass('rotating');
-	},2000);
+	},1000);
 }
 
 var alertTimer;
