@@ -528,6 +528,15 @@ Index.prototype.leaderboard = function( req, res ) {
 			channels: channels
 		});
 
+		// Some code used once to reset trackSince ids to last one saved.
+		// for(var i=0; i<channels.length; i++){
+		// 	console.log(channels[i].name);
+		// 	var trackSince = channels[i].trackList[channels[i].trackList.length-1].id;
+		// 	self._channels.addTracks(channels[i].name, [], trackSince, function( err, result ){
+		// 		console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
+		// 	});
+		// }
+
 	});
 
 };
