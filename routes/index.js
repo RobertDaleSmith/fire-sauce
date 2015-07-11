@@ -194,6 +194,7 @@ Index.prototype.incTracksPlayed = function( req, res ) {
 	self._channels.incTracksPlayedCount(name, track, function( err, result ){});
 	console.log("+1 added to "+ name + "'s tracksPlayedCount.");
 
+	res.send({succes: true, error: false});
 };
 
 Index.prototype.getChannelInfo = function( req, res ) {
