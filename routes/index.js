@@ -396,9 +396,11 @@ function getUsersTweets(user, since, cb){
 									created_at: tweet.created_at,
 									url: tweet.entities.urls[i].expanded_url,
 									user: tweet.user.screen_name,
-									reply_count: tweet.reply_count,
 									retweet_count: tweet.retweet_count,
 									favorite_count: tweet.favorite_count,
+									// favorited: tweet.favorited,
+									// retweeted: tweet.retweeted,
+									// source: tweet.source,
 									lang: tweet.lang
 								});
 							}
