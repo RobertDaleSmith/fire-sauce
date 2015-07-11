@@ -115,8 +115,18 @@ ChannelsMongo.prototype.addTracks = function ( channel, newTracks, sinceId, call
 		{ name: channel },
 		{
 			$addToSet: { trackList: { $each: newTracks } },
-			$set: { "trackSince" : sinceId, "updated": new Date() }
+			$set: { "trackSince" : sinceId, "updated": new Date() },
+			$inc: { "trackCount" : newTracks.length}
 		}
+	);
+
+}
+
+ChannelsMongo.prototype.updateTrackCounts = function ( channel, trackCount, callback ){
+
+	this.channels.update(
+		{ name: channel },
+		{ $set: { "trackCount" : trackCount } }
 	);
 
 }

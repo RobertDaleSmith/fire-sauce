@@ -533,8 +533,13 @@ Index.prototype.leaderboard = function( req, res ) {
 		// 	console.log(channels[i].name);
 		// 	var trackSince = channels[i].trackList[channels[i].trackList.length-1].id;
 		// 	self._channels.addTracks(channels[i].name, [], trackSince, function( err, result ){
-		// 		console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
 		// 	});
+		// }
+
+		// Used to update trackCount on all channels if out of sync.
+		// for(var i=0; i<channels.length; i++){
+		// 	var trackCount = channels[i].trackList.length;
+		// 	self._channels.updateTrackCounts(channels[i].name, trackCount, function( err, result ){});
 		// }
 
 	});

@@ -12,9 +12,11 @@
         <thead>
             <tr>
                 <th>Channel</th>
-                <th>Viewed (Total)</th>
+                <th>Tuned In</th>
+                <th>Watched</th>
+                <th>Videos</th>
+
                 <!-- <th>Viewed (Today)</th> -->
-                <th>Tracks Played (Total)</th>
                 <!-- <th>Tracks Played (Today)</th> -->
             </tr>
         </thead>
@@ -33,8 +35,10 @@
                     </a>
                 </td>
                 <td>{.counts.tunedInTotal}</td>
-                <!-- <td>{.counts.tunedInToday}</td> -->
                 <td>{.counts.tracksPlayedTotal}</td>
+                <td>{.trackCount}</td>
+
+                <!-- <td>{.counts.tunedInToday}</td> -->
                 <!-- <td>{.counts.tracksPlayedToday}</td> -->
             </tr>
             {/channels}

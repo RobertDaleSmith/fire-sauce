@@ -581,8 +581,7 @@ function onYtPlayerStateChange(event) {
 
 		$('li.track#video__'+trackIndex).css('width','').addClass('watched')
 										.find('div.progress').attr('style', "");
-		
-		$.post('/channel/tracks?screen_name='+hist.watching);
+				
 		playNextTrack();	
 	}
 	else if (event.data == YT.PlayerState.PLAYING) {
@@ -761,6 +760,7 @@ function playTrack(index){
 		if(index>=0) {
 			console.log("Starting next track... " + index + " : " + hist.channels[hist.watching].trackList[index].url);
 			loadVideo(videoID, startTime);
+			$.post('/channel/tracks?screen_name='+hist.watching);
 		}
 		$('li.track').removeClass('playing');
 		$('li.track#video__'+index).addClass('playing');
