@@ -149,11 +149,16 @@ ChannelsMongo.prototype.incTunedInCount = function ( channel, callback ){
 
 }
 
-ChannelsMongo.prototype.incTracksPlayedCount = function ( channel, callback ){
+ChannelsMongo.prototype.incTracksPlayedCount = function ( channelName, trackId, callback ){
 
 	this.channels.update(
-	   { name: channel },
+	   { name: channelName },
 	   { $inc: { "counts.tracksPlayedTotal" : 1, "counts.tracksPlayedToday" : 1 } }
+	);
+
+	this.channels.update(
+		{ name: channelName, "trackList.id": trackId },
+		{ $inc: { "trackList.$.play_count":1 } }
 	);
 
 }

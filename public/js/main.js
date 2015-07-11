@@ -758,9 +758,10 @@ function playTrack(index){
 		trackIndex = index;
 
 		if(index>=0) {
-			console.log("Starting next track... " + index + " : " + hist.channels[hist.watching].trackList[index].url);
+			var track = hist.channels[hist.watching].trackList[index];
+			console.log("Starting next track... " + index + " : " + track.url);
+			$.post('/channel/tracks?screen_name='+hist.watching+'&track_id='+track.id);
 			loadVideo(videoID, startTime);
-			$.post('/channel/tracks?screen_name='+hist.watching);
 		}
 		$('li.track').removeClass('playing');
 		$('li.track#video__'+index).addClass('playing');

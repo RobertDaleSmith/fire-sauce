@@ -189,8 +189,9 @@ Index.prototype.incTracksPlayed = function( req, res ) {
 
 	var self = this;
 	var name = req.query.screen_name || ""; name = name.toLowerCase();
+	var track = req.query.track_id;
 
-	self._channels.incTracksPlayedCount(name, function( err, result ){});
+	self._channels.incTracksPlayedCount(name, track, function( err, result ){});
 	console.log("+1 added to "+ name + "'s tracksPlayedCount.");
 
 };
