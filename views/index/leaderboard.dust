@@ -24,11 +24,13 @@
             {#channels}
             <tr class="channel">
                 <td>
-                    <img src="{.info.profile_image_url}" class="avatar">
-                    <span class="name">
-                        <a href="/{.info.name}">{.info.name}</a>
-                        <br>@{.info.screen_name}
-                    </span>
+                    <a href="/{.name}">
+                        <img src="{.info.profile_image_url}" class="avatar">
+                        <span class="name">
+                            {.info.name}
+                            <br>@{.info.screen_name}
+                        </span>
+                    </a>
                 </td>
                 <td>{.counts.tunedInTotal}</td>
                 <!-- <td>{.counts.tunedInToday}</td> -->
