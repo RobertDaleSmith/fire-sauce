@@ -308,9 +308,7 @@ Index.prototype.getChannel = function( req, res ) {
 						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
 
 						var shoutOutMsg = "The @" + channelData.info.screen_name + " Channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
-						twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){
-							// if (!error) {console.log(tweet); }
-						});
+						twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 
 					});
 

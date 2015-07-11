@@ -109,10 +109,14 @@ ChannelsMongo.prototype.findOneChannel = function ( channel, callback ){
 
 ChannelsMongo.prototype.addTracks = function ( channel, newTracks, sinceId, callback ){
 
+	this.channels.ensureIndex( { 'trackList.id': 1 }, { unique: true } );
+
 	this.channels.update(
-	   { name: channel },
-	   { $set: { "trackSince" : sinceId, "updated": new Date() } },
-	   { $addToSet: { trackList: { $each: newTracks } } }
+		{ name: channel },
+		{
+			$addToSet: { trackList: { $each: newTracks } },
+			$set: { "trackSince" : sinceId, "updated": new Date() }
+		}
 	);
 
 }
