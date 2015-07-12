@@ -508,7 +508,7 @@ nav a:hover {
         display: inline-block;
         position: relative;
         float: left;
-        width: calc(33.333% - 2px);
+        width: calc(25% - 4px);
         height: 100%;
         text-align: center;
         cursor: pointer;
