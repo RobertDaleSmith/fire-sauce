@@ -497,21 +497,32 @@ function renderTracks(tweets){
 			var self = this;
 			var classString = $(e.toElement).attr('class');
 			var preventClasses = [ "fa", "btn", "link", "channel", "exactDate" ];
+
+			console.log(e);
+			console.log(classString);
+
 			function needPreventing(classString){
 				for(var i=0; i<preventClasses.length; i++) { 
 					if(classString.indexOf(preventClasses[i]) > -1 ) {
-						return true; break;
+						return true;
+						break;
 					}
 				}
 				return false;
 			}
 			if(!needPreventing(classString)){
-				// console.log('PING');
-				if($(e.toElement).closest('.track').hasClass('playing'))
+
+				console.log('PING');
+
+				var isPlaying = $(e.toElement).closest('.track').hasClass('playing');
+				if(isPlaying)
 					videoPauseClickEvent(e);
 				else
 					videoStartClickEvent(e);
+
 			}
+			
+
 		});
 		element.find('.btn.start').bind('click', videoStartClickEvent);
 		element.find('.btn.pause').bind('click', videoPauseClickEvent);
@@ -827,6 +838,7 @@ function scrollToTrack(){
 }
 
 function videoStartClickEvent(e){
+	
 	if($(this).hasClass('restart')){
 		seekVideoTo(0);
 		playVideo();
@@ -835,6 +847,7 @@ function videoStartClickEvent(e){
 		if(trackIndex>=0) hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
 		playTrack(index);	
 	}
+	
 }
 
 function videoPauseClickEvent(e){
