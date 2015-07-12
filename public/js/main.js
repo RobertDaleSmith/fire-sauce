@@ -85,10 +85,11 @@ $(window).bind("load", function() {
 		
 		// if($(this).hasClass('live')) $(this).removeClass('live');
 		// else $(this).addClass('live');
-		if(trackIndex>0){
-			hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
-			playNextTrack();
-		}
+		// if(trackIndex>0){
+		// 	hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
+		// 	playNextTrack();
+		// }
+		playMostRecentUnfinished();
 
 	});
 	
@@ -259,7 +260,7 @@ function hideSearchSpinner() {
 	window.clearTimeout(spinnerTimer);
 	spinnerTimer = setTimeout(function(){
 		$('#channel_info_wrapper .spinner').removeClass('rotating');
-	},1000);
+	},250);
 }
 
 var alertTimer;
@@ -294,7 +295,7 @@ function watchUsername(screen_name){
 
 			tracksLoaded = 0;
 			$("#schedule_wrapper").html('');
-			renderTweets(hist.channels[screen_name].trackList);
+			renderTracks(hist.channels[screen_name].trackList);
 
 			
 			hist.write('watching', screen_name.toLowerCase());
@@ -340,7 +341,7 @@ function watchUsername(screen_name){
 
 				for(var i=0; i<tweets.length; i++){ hist.channels[hist.watching].trackList.push(tweets[i]); }
 
-				renderTweets(tweets);
+				renderTracks(tweets);
 							
 				// Play most recent.
 				trackIndex = tweets.length;
@@ -417,7 +418,7 @@ function updateTweetOverLayWidth(){
 
 }
 
-function renderTweets(tweets){
+function renderTracks(tweets){
 
 	// var tweetElements = [];
 	$.each( tweets, function( idx, tweet ) {
@@ -461,30 +462,67 @@ function renderTweets(tweets){
 					.html("<i class='fa fa-play'></i>")
 					.attr('title','Start')
 				)
-				.append($('<a>')
-					.addClass("btn right fav")
-					.html("<i class='fa fa-star'></i>")
-					.attr('title','Diamond in the rough')
-					.attr('href','https://twitter.com/intent/favorite?tweet_id='+tweet.id+'&related=firesaucetv')
-				)
-				.append($('<a>')
-					.addClass("btn right resauce")
-					.html("<i class='fa fa-retweet'></i>")
-					.attr('title','Resauce to your stream')
-					.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id+'&related=firesaucetv')
-				).append($('<a>')
-					.addClass("btn right reply")
-					.html("<i class='fa fa-reply'></i>")
-					.attr('title','Say something about it')
-					.attr('href','https://twitter.com/intent/tweet?in-reply-to='+tweet.id+
-									'&related=firesaucetv%3AFire%20Sauce.TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
-									'&via='+tweet.user+
-									'&hashtags=firesaucetv'
-									
-									)
+				.append($('<div/>')
+					.addClass("group social")
+					.append($('<a>')
+						.addClass("btn right fav")
+						.html("<i class='fa fa-star'></i>")
+						.attr('title','Diamond in the rough')
+						.attr('href','https://twitter.com/intent/favorite?tweet_id='+tweet.id+'&related=firesaucetv')
+					)
+					.append($('<a>')
+						.addClass("btn right resauce")
+						.html("<i class='fa fa-retweet'></i>")
+						.attr('title','Resauce to your stream')
+						.attr('href','https://twitter.com/intent/retweet?tweet_id='+tweet.id+'&related=firesaucetv')
+					).append($('<a>')
+						.addClass("btn right reply")
+						.html("<i class='fa fa-reply'></i>")
+						.attr('title','Say something about it')
+						.attr('href','https://twitter.com/intent/tweet?in-reply-to='+tweet.id+
+									 '&related=firesaucetv%3AFire%20Sauce.TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
+									 '&via='+tweet.user+
+									 '&hashtags=firesaucetv'
+						)
+					)
 				)
 			)
+			// .append($('<div/>')
+			// 	.addClass("btn options")
+			// 	.html("<i class='fa fa-ellipsis-v'></i>")
+			// 	.attr('title','Options')
+			// )
 		;
+		element.bind('click', function(e){
+			var self = this;
+			var classString = $(e.toElement).attr('class');
+			var preventClasses = [ "fa", "btn", "link", "channel", "exactDate" ];
+
+			console.log(classString);
+
+			function needPreventing(classString){
+				for(var i=0; i<preventClasses.length; i++) { 
+					if(classString.indexOf(preventClasses[i]) > -1 ) {
+						break;
+						return true; 
+					}
+				}
+				return false;
+			}
+			if(!needPreventing(classString)){
+
+				console.log('PING');
+
+				var isPlaying = $(e.toElement).closest('.track').hasClass('playing');
+				if(isPlaying)
+					$(e.toElement).closest('.track').find('.btn.pause').click();
+				else
+					$(e.toElement).closest('.track').find('.btn.start').click();
+
+			}			
+			
+
+		});
 		element.find('.btn.start').bind('click', videoStartClickEvent);
 		element.find('.btn.pause').bind('click', videoPauseClickEvent);
 		element.find('.btn.fav').bind('click', videoFavClickEvent);
@@ -825,7 +863,7 @@ function videoPauseClickEvent(e){
 
 function videoFavClickEvent(e){
 
-	var index = $(this).parent().parent().attr('id');
+	var index = $(this).parent().parent().parent().attr('id');
 		index = index.replace('video__','');
 		index = parseInt(index);
 
@@ -843,7 +881,7 @@ function videoFavClickEvent(e){
 
 function videoResauceClickEvent(e){
 
-	var index = $(this).parent().parent().attr('id');
+	var index = $(this).parent().parent().parent().attr('id');
 		index = index.replace('video__','');
 		index = parseInt(index);
 

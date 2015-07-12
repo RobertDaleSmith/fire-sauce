@@ -129,15 +129,16 @@ String.prototype.linkify_tweet = function() {
         var wrap = document.createElement('div');
         var anch = document.createElement('a');
         anch.href = url;
+        anch.className = "link";
         anch.target = "_blank";
         anch.innerHTML = url;
         wrap.appendChild(anch);
         return wrap.innerHTML;
     });
-        
-    tweet = tweet.replace(/(^|\s)“@(\w+)/g, '$1“@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
-    tweet = tweet.replace(/(^|\s).@(\w+)/g, '$1@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
-    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<a href="javascript:void(0);" onClick="watchUsername(\'$2\')" class="channel" target="_blank">$2</a>');
+
+    tweet = tweet.replace(/(^|\s)“@(\w+)/g, '$1“@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
+    tweet = tweet.replace(/(^|\s).@(\w+)/g, '$1@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
+    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
     // tweet = tweet.replace(/(^|\s)#(\w+)/g, '$1#<a href="http://search.twitter.com/search?q=%23$2" target="_blank">$2</a>');
     return tweet;
 };
