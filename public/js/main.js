@@ -89,6 +89,8 @@ $(window).bind("load", function() {
 		// 	hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
 		// 	playNextTrack();
 		// }
+
+		hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
 		playMostRecentUnfinished();
 
 	});
@@ -513,12 +515,15 @@ function renderTracks(tweets){
 			if(!needPreventing(classString)){
 
 				console.log('PING');
+				var parentEl;
 
-				var isPlaying = $(e.toElement).closest('.track').hasClass('playing');
-				if(isPlaying)
-					videoPauseClickEvent(e);
+				if($(e.toElement).hasClass('track')) parentEl = $(e.toElement);
+				else parentEl = $(e.toElement).closest('li.track');
+				console.log(parentEl);
+				if(parentEl.hasClass('playing'))
+					videoPauseClickEvent(e, self);
 				else
-					videoStartClickEvent(e);
+					videoStartClickEvent(e, self);
 
 			}
 			
@@ -753,7 +758,7 @@ function playMostRecentUnfinished(){
 	var listLength = hist.channels[hist.watching].trackList.length;
 	for(var idx = listLength-1; idx >= 0; idx--){
 		if( !hist.channels[hist.watching].trackList[idx].watched &&
-		   (!hist.channels[hist.watching].trackList[idx].skipped || idx <= trackIndex ) &&
+		   (!hist.channels[hist.watching].trackList[idx].skipped || idx < trackIndex ) &&
 			!hist.channels[hist.watching].trackList[idx].error ){
 			playTrack(idx);
 			break;
@@ -837,20 +842,30 @@ function scrollToTrack(){
 	}
 }
 
-function videoStartClickEvent(e){
+function videoStartClickEvent(e, self){
+
+	var parentEl;
+	if(!self)self=this;
+	if($(e.toElement).hasClass('track')) parentEl = $(e.toElement);
+	else parentEl = $(e.toElement).closest('li.track');
+
 	
-	if($(this).hasClass('restart')){
+	if($(self).hasClass('restart')){
 		seekVideoTo(0);
 		playVideo();
 	}else{
-		var index = parseInt( $(this).closest('li.track').attr('id').replace('video__','') );
+		var index = parseInt( parentEl.attr('id').replace('video__','') );
+
 		if(trackIndex>=0) hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
 		playTrack(index);	
 	}
 	
 }
 
-function videoPauseClickEvent(e){
+function videoPauseClickEvent(e, self){
+	
+	if(!self)self=this;
+	
 	if( playerState == 1 ){
 		pauseVideo();
 		
@@ -858,6 +873,7 @@ function videoPauseClickEvent(e){
 		playVideo();
 		$('li.track.playing div.btn.pause i.fa').removeClass('fa-play').addClass('fa-pause');
 	}
+
 }
 
 function videoFavClickEvent(e){
