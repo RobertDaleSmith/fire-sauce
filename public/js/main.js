@@ -497,31 +497,21 @@ function renderTracks(tweets){
 			var self = this;
 			var classString = $(e.toElement).attr('class');
 			var preventClasses = [ "fa", "btn", "link", "channel", "exactDate" ];
-
-			console.log(classString);
-
 			function needPreventing(classString){
 				for(var i=0; i<preventClasses.length; i++) { 
 					if(classString.indexOf(preventClasses[i]) > -1 ) {
-						break;
-						return true; 
+						return true; break;
 					}
 				}
 				return false;
 			}
 			if(!needPreventing(classString)){
-
-				console.log('PING');
-
-				var isPlaying = $(e.toElement).closest('.track').hasClass('playing');
-				if(isPlaying)
-					$(e.toElement).closest('.track').find('.btn.pause').click();
+				// console.log('PING');
+				if($(e.toElement).closest('.track').hasClass('playing'))
+					videoPauseClickEvent(e);
 				else
-					$(e.toElement).closest('.track').find('.btn.start').click();
-
-			}			
-			
-
+					videoStartClickEvent(e);
+			}
 		});
 		element.find('.btn.start').bind('click', videoStartClickEvent);
 		element.find('.btn.pause').bind('click', videoPauseClickEvent);
@@ -837,18 +827,14 @@ function scrollToTrack(){
 }
 
 function videoStartClickEvent(e){
-	
 	if($(this).hasClass('restart')){
 		seekVideoTo(0);
 		playVideo();
 	}else{
-		var index = parseInt( $(this).parent().parent().attr('id').replace('video__','') );
-
+		var index = parseInt( $(this).closest('li.track').attr('id').replace('video__','') );
 		if(trackIndex>=0) hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
-
 		playTrack(index);	
 	}
-	
 }
 
 function videoPauseClickEvent(e){
