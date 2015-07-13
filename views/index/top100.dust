@@ -1,0 +1,19 @@
+{#channels}
+    <tr class="channel">
+        <td>
+            <a href="/{.name}">
+                <img src="{.info.profile_image_url}" class="avatar">
+                <span class="name">
+                    {.info.name}
+                    <br>@{.info.screen_name}
+                </span>
+            </a>
+        </td>
+        <td>{.counts.tunedInTotal}</td>
+        <td>{.counts.tracksPlayedTotal}</td>
+        <td>{.trackCount}</td>
+
+        <!-- <td>{.counts.tunedInToday}</td> -->
+        <!-- <td>{.counts.tracksPlayedToday}</td> -->
+    </tr>
+{/channels}
