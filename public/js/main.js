@@ -90,8 +90,10 @@ $(window).bind("load", function() {
 		// 	playNextTrack();
 		// }
 
-		hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
-		playMostRecentUnfinished();
+		if(trackIndex>=0){
+			hist.channels[hist.watching].trackList[trackIndex].write('skipped', true);
+			playMostRecentUnfinished();	
+		}
 
 	});
 	
