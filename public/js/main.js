@@ -590,11 +590,13 @@ function initYouTubeIframeAPI(videoId, startTime) {
 			width: '100%',
 			videoId: videoId,
 			playerVars : {
+				autohide: 1,
 				start: parseInt(startTime),
 				cc_load_policy: 0,
 				controls : 1,
 				enablejsapi: 1,
 				disablekb: 1,
+				fs: 1,
 				html5: 1,
 				iv_load_policy: 3,
 				modestbranding: 1,

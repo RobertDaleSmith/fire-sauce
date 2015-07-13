@@ -51,16 +51,12 @@ if (!String.prototype.includes) {
 function youtube_parser(url) {
     url = url.replace("player_embedded&v=", "watch?v=");
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-
-    if (match && match[7].length == 11) {
-
-        return match[7];
-    } else {
-        //alert("Url incorrecta");
-        return 0;
-    }
-
+	var match = url.match(regExp);
+	if (match&&match[7].length==11){
+		return match[7];
+	}else{
+		return null;
+	}
 }
 
 function vimeo_parser(url) {
@@ -83,7 +79,13 @@ function isTargetedContentType(url){
 	var isIt = false;
 	if(url){
 		if(url.indexOf("youtube.com") > -1 || url.indexOf("youtu.be") > -1) isIt = true;
-		if(url.indexOf("mQ00zwkK9Og") > -1 || url.indexOf("youtube.com/channel") > -1) isIt = false;
+		if(url.indexOf("mQ00zwkK9Og") > -1 
+		|| url.indexOf("youtube.com/channel") > -1
+		|| url.indexOf("youtube.com/playlist") > -1
+		) isIt = false;
+
+		if(isIt && youtube_parser(url)) isIt = true;
+		else isIt = false;
 	}
 	return isIt;
 
@@ -305,7 +307,7 @@ Index.prototype.getChannel = function( req, res ) {
 					self._channels.addChannel(channelData, function( err, result ){
 						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
 
-						var shoutOutMsg = "The @" + channelData.info.screen_name + " Channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
+						var shoutOutMsg = "The @" + channelData.info.screen_name + " channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
 						twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 
 					});
