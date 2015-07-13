@@ -161,9 +161,11 @@ $(window).bind("load", function() {
 			$('#chrome_wrapper .panel').css('display','none');
 			$('#chrome_wrapper .panel#'+isFor).css('display','');
 
-			if(isFor=="channels_wrapper"){
-				renderChannels(hist.channels);
+			if(isFor=="history_wrapper"){
+				renderHistory(hist.channels);
 			}else if(isFor=="watch_wrapper"){
+				scrollToTrack();
+			}else if(isFor=="channels_wrapper"){
 				scrollToTrack();
 			}
 
@@ -213,7 +215,6 @@ $(window).bind("load", function() {
 
     fadeSplash();
 
-
 });
 
 
@@ -224,7 +225,7 @@ function fadeSplash(){
 		setTimeout(function(){
 			$('#splash_wrapper').css('display','none');
 		},500);
-	},500);
+	},100);
 };
 
 var isPortrait = null;
@@ -404,7 +405,7 @@ function updateChannelInfo(user){
 	updateTweetOverLayWidth();
 
 	var screen_name = user.screen_name.toLowerCase();
-	$('#channels_wrapper .channel').removeClass('active');
+	$('#history_wrapper .channel').removeClass('active');
 	$('#channel__'+screen_name).addClass('active');
 	$('#channel__'+screen_name+' .avatar').attr('src',user.profile_image_url.replace('http:',''));
 	$('#channel__'+screen_name+' .name').text(user.name);
@@ -500,8 +501,8 @@ function renderTracks(tweets){
 			var classString = $(e.toElement).attr('class');
 			var preventClasses = [ "fa", "btn", "link", "channel", "exactDate" ];
 
-			console.log(e);
-			console.log(classString);
+			// console.log(e);
+			// console.log(classString);
 
 			function needPreventing(classString){
 				for(var i=0; i<preventClasses.length; i++) { 
@@ -514,12 +515,12 @@ function renderTracks(tweets){
 			}
 			if(!needPreventing(classString)){
 
-				console.log('PING');
+				// console.log('PING');
 				var parentEl;
 
 				if($(e.toElement).hasClass('track')) parentEl = $(e.toElement);
 				else parentEl = $(e.toElement).closest('li.track');
-				console.log(parentEl);
+				// console.log(parentEl);
 				if(parentEl.hasClass('playing'))
 					videoPauseClickEvent(e, self);
 				else
@@ -993,11 +994,11 @@ function updatePlayerInfo() {
 
 }
 
-function renderChannels(channels){
+function renderHistory(channels){
 
 	$("#suggested_wrapper").html('').css('display','');
 	$("#followed_wrapper").html('').css('display','');
-	$("#history_wrapper").html('').css('display','');
+	$("#watched_wrapper").html('').css('display','');
 
 	var suggestCount = 0, followedCount = 0, watchedCount = 0;
 	var suggested = JSON.parse(JSON.stringify(suggestCache));
@@ -1130,7 +1131,7 @@ function renderChannels(channels){
 			followedCount++;
 		}
 		else {
-			$("#history_wrapper").prepend(element);
+			$("#watched_wrapper").prepend(element);
 			watchedCount++;
 		}
 		
@@ -1138,7 +1139,130 @@ function renderChannels(channels){
 
 	if(suggestCount<1)$("#suggested_wrapper").css('display','none');
 	if(followedCount<1)$("#followed_wrapper").css('display','none');
-	if(watchedCount<1)$("#history_wrapper").css('display','none');
+	if(watchedCount<1)$("#watched_wrapper").css('display','none');
+
+}
+
+function renderChannels(channels){
+
+	$("#top100_wrapper").html('').css('display','');
+
+	var suggestCount = 0;
+
+	$.each( sortable, function( idx, channel ) {
+		// console.log(channel);
+
+		if(!channel.trackList) channel.trackList = [];
+
+		var element = $('<li/>')
+			.addClass("channel")
+			.attr('id', "channel__"+channel.name)
+			.attr('channel', channel.name)
+			.append($('<div/>')
+				.addClass("status")
+			)
+			.append($('<div/>')
+				.addClass("options")
+				.append($('<div/>')
+					.addClass("btn delete")
+					.html('<i class="fa fa-remove"></i>')
+				)
+			)
+			.append($('<div/>')
+				.addClass("info")
+				.append($('<img>')
+					.addClass("avatar")
+					.attr('src', channel.info.profile_image_url.replace('http:',''))
+				)		
+				.append($('<div/>')
+					.addClass("name")
+					.html(channel.info.name)
+				)
+				.append($('<div/>')
+					.addClass("screen_name")
+					.html('@'+channel.info.screen_name)
+				)
+				.append($('<div/>')
+					.addClass("views")
+					.html('&nbsp;'+getWatchedCount(channel.trackList)+' / '+channel.trackList.length+'&nbsp;')
+				)
+			)
+			.append($('<input>')
+				.addClass("follow")
+				.attr('type','button')
+				.val("FOLLOW")
+			)
+			
+		;
+		element.find('div.info').bind('click', function(){ 
+			var channel = $(this).parent().attr('channel');
+			watchUsername(channel);
+		});
+		element.find('div.info').bind('contextmenu', function(e){ 
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				$(this).parent().toggleClass('edit');
+			}
+		});
+		element.find('div.info').bind('swiperight', function(e){ 
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				console.log('swiperight');
+				$(this).parent().addClass('edit');
+			}			
+		});
+		element.find('div.info').bind('swipeleft', function(e){ 
+			if(!$(this).parent().hasClass('suggested')){
+				e.preventDefault();
+				console.log('swipeleft');
+				$(this).parent().removeClass('edit');
+			}
+		});
+		element.find('div.btn.delete').bind('click', function(){ 
+			var channel = $(this).parent().parent().attr('channel');
+			console.log('delete '+ channel);
+
+			hist.channels.erase(channel);
+
+			$(this).parent().parent().remove();
+		});
+		element.find('input.follow').bind('click', function(){ 
+			var channel = $(this).parent().attr('channel');
+
+			// console.log(hist.watching+"=="+channel);
+			if(!$(this).parent().hasClass("followed")){
+				$(this).parent().addClass("followed");
+				$(this).val("FOLLOWED");
+
+				hist.channels[channel].write('followed', true);
+
+				if(hist.watching==channel)$("#channel_info_wrapper").addClass("followed");
+			}else{
+				$(this).parent().removeClass("followed");
+				$(this).val("FOLLOW");
+			
+				hist.channels[channel].write('followed', false);
+
+				if(hist.watching==channel)$("#channel_info_wrapper").removeClass("followed");
+			}
+		});
+		if(channel.followed){
+			element.addClass("followed");
+			element.find('input.follow').val("FOLLOWED");
+		}
+		if(channel.suggested){
+			element.addClass("suggested");
+		}
+		// if(channel.info) element.html('@'+channel.info.screen_name);
+		if(channel.name == hist.watching) element.addClass('active');
+
+		$("#top100_wrapper").prepend(element);
+		
+		
+		
+	});
+
+	if(suggestCount<1)$("#top100_wrapper").css('display','none');
 
 }
 

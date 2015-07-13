@@ -153,22 +153,22 @@ mongo.connect(function(err) {
   // app.get( '/createPwd/:pwd', function( req, res, next ) { routes.Admin.createPwd( req, res, next ); } );
 
   // Admin dashboard routes.
-  app.get( '/admin/login', function( req, res, next ) { routes.Admin.login(     req, res, next ); } );
-  app.post('/admin/login', function( req, res, next ) { routes.Admin.postLogin( req, res, next ); } );
-  app.get( '/admin/logout',function( req, res, next ) { routes.Admin.logOut(    req, res, next ); } );  
+  // app.get( '/admin/login', function( req, res, next ) { routes.Admin.login(     req, res, next ); } );
+  // app.post('/admin/login', function( req, res, next ) { routes.Admin.postLogin( req, res, next ); } );
+  // app.get( '/admin/logout',function( req, res, next ) { routes.Admin.logOut(    req, res, next ); } );  
   
-  app.get( '/admin', requiresAdminLogin, function( req, res, next ) { routes.Admin.home(  req, res, next ); } );
-  app.get( '/admin/admins', requiresAdminLogin, function( req, res, next ) { routes.Admin.adminUsers( req, res, next ); } );
-  app.get( '/admin/users',  requiresAdminLogin, function( req, res, next ) { routes.Admin.endUsers( req, res, next ); } );
+  // app.get( '/admin', requiresAdminLogin, function( req, res, next ) { routes.Admin.home(  req, res, next ); } );
+  // app.get( '/admin/admins', requiresAdminLogin, function( req, res, next ) { routes.Admin.adminUsers( req, res, next ); } );
+  // app.get( '/admin/users',  requiresAdminLogin, function( req, res, next ) { routes.Admin.endUsers( req, res, next ); } );
 
-  app.post( '/admin/admins/add', requiresLoginAjax, function( req, res, next ) { routes.Admin.addAdmin( req, res, next ); } );
-  app.post( '/admin/admins/update', requiresLoginAjax, function( req, res, next ) { routes.Admin.updateAdmin( req, res, next ); } );
-  app.get( '/admin/admins/remove/:id', requiresAdminLogin, function( req, res, next ) { routes.Admin.removeAdmin( req, res, next ); } );
+  // app.post( '/admin/admins/add', requiresLoginAjax, function( req, res, next ) { routes.Admin.addAdmin( req, res, next ); } );
+  // app.post( '/admin/admins/update', requiresLoginAjax, function( req, res, next ) { routes.Admin.updateAdmin( req, res, next ); } );
+  // app.get( '/admin/admins/remove/:id', requiresAdminLogin, function( req, res, next ) { routes.Admin.removeAdmin( req, res, next ); } );
   // app.get( '/admin/bcrypt/:pwd', requiresAdminLogin, function( req, res, next ) { routes.Admin.createPwd(req, res, next ); } );
 
-  app.get( '/admin/js/:scriptFileName', requiresLoginAjax, function( req, res, next ) { routes.Admin.privateScript( req, res, next ); } ); 
-  app.get( '/admin/css/:styleFileName' , requiresLoginAjax, function( req, res, next ) { routes.Admin.privateStyle( req, res, next );  } ); 
-  app.get( '/admin/images/:imageFileName', requiresLoginAjax, function( req, res, next ) { routes.Admin.privateImage( req, res, next );  } ); 
+  // app.get( '/admin/js/:scriptFileName', requiresLoginAjax, function( req, res, next ) { routes.Admin.privateScript( req, res, next ); } ); 
+  // app.get( '/admin/css/:styleFileName' , requiresLoginAjax, function( req, res, next ) { routes.Admin.privateStyle( req, res, next );  } ); 
+  // app.get( '/admin/images/:imageFileName', requiresLoginAjax, function( req, res, next ) { routes.Admin.privateImage( req, res, next );  } ); 
 
 
 

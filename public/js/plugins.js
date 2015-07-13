@@ -136,9 +136,9 @@ String.prototype.linkify_tweet = function() {
         return wrap.innerHTML;
     });
 
-    tweet = tweet.replace(/(^|\s)“@(\w+)/g, '$1“@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
-    tweet = tweet.replace(/(^|\s).@(\w+)/g, '$1@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
-    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1@<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
+    tweet = tweet.replace(/(^|\s)“@(\w+)/g,'$1“<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
+    tweet = tweet.replace(/(^|\s).@(\w+)/g,'$1<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
+    tweet = tweet.replace(/(^|\s)@(\w+)/g, '$1<span channel="$2" class="channel" onClick="watchUsername(\'$2\')">$2</span>');
     // tweet = tweet.replace(/(^|\s)#(\w+)/g, '$1#<a href="http://search.twitter.com/search?q=%23$2" target="_blank">$2</a>');
     return tweet;
 };

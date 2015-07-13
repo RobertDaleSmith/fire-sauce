@@ -546,7 +546,7 @@ nav a:hover {
     height: calc(100% - 116px);
 }
 
-#channels_wrapper{
+#history_wrapper, #channels_wrapper{
     display: inline-block;
     position: relative;
     width: 100%;
@@ -556,7 +556,8 @@ nav a:hover {
 }
     #suggested_wrapper,
     #followed_wrapper,
-    #history_wrapper{
+    #watched_wrapper,
+    #top100_wrapper{
         display: inline-block;
         position: relative;
         width: 100%; height: auto;
@@ -565,7 +566,8 @@ nav a:hover {
     }
         #suggested_wrapper::before,
         #followed_wrapper::before,
-        #history_wrapper::before{
+        #watched_wrapper::before,
+        #top100_wrapper::before{
             content: '';
             display: inline-block;
             position: relative;
@@ -577,7 +579,7 @@ nav a:hover {
             font-weight: 300;
         }
         #suggested_wrapper::before{
-            content:'POPULAR CHANNELS';
+            content:'SUGGESTED CHANNELS';
             display: inline-block;
             position: relative;
         }
@@ -586,12 +588,18 @@ nav a:hover {
             display: inline-block;
             position: relative;
         }
-        #history_wrapper::before{
+        #watched_wrapper::before{
             content:'PREVIOUSLY WATCHED';
             display: inline-block;
             position: relative;
         }
+        #top100_wrapper::before{
+            content:'LEADERBOARD';
+            display: inline-block;
+            position: relative;
+        }
 
+        #history_wrapper .channel, 
         #channels_wrapper .channel{
             display: inline-block;
             position: relative;
@@ -614,10 +622,12 @@ nav a:hover {
 
         }
         
+        #history_wrapper .channel.edit,
         #channels_wrapper .channel.edit{
             left:50px;
         }
 
+            #history_wrapper .channel .options,
             #channels_wrapper .channel .options{
                 display: inline-block;
                 position: absolute;
@@ -627,16 +637,19 @@ nav a:hover {
                 text-align: center;
                 line-height: 72px;
             }
+                #history_wrapper .channel .options .btn.delete,
                 #channels_wrapper .channel .options .btn.delete{
                     display: inline-block;
                     position: relative;
                     width: 100%; height: 100%;
                     color:#ffffff;
                 }
+                #history_wrapper .channel .options .btn.delete:active,
                 #channels_wrapper .channel .options .btn.delete:active{
                     background-color:rgba(255, 0, 0, 0.7);
                 }
 
+            #history_wrapper .channel .status,
             #channels_wrapper .channel .status{
                 display: inline-block;
                 position: absolute;
@@ -644,10 +657,12 @@ nav a:hover {
                 width: 2px; height: 100%;
                 background-color: transparent;
             }
+            #history_wrapper .channel.active .status,
             #channels_wrapper .channel.active .status{
                 background-color: #59faad;
             }
 
+            #history_wrapper .channel .info,
             #channels_wrapper .channel .info{
                 display: inline-block;
                 position: absolute;
@@ -655,13 +670,16 @@ nav a:hover {
                 width: 100%; height: 100%;
                 padding: inherit; 
             }
+            #history_wrapper .channel .info:hover,
             #channels_wrapper .channel .info:hover{
                 background-color: rgba(255,255,255,0.05);
             }
+            #history_wrapper .channel .info:active,
             #channels_wrapper .channel .info:active{
                 background-color: rgba(255,255,255,0.1);
             }
 
+                #history_wrapper .channel .avatar,
                 #channels_wrapper .channel .avatar{
                     display: inline-block;
                     position: absolute;
@@ -669,6 +687,7 @@ nav a:hover {
                     width: 48px; height: 48px;
                     border-radius: 48px;
                 }
+                #history_wrapper .channel .name,
                 #channels_wrapper .channel .name{
                     display: inline-block;
                     position: relative;
@@ -682,6 +701,7 @@ nav a:hover {
                     margin: 0px 0 8px 0;
 
                 }
+                #history_wrapper .channel .screen_name,
                 #channels_wrapper .channel .screen_name{
                     display: inline-block;
                     position: relative;
@@ -695,6 +715,7 @@ nav a:hover {
                     color: rgba(255,255,255,0.7);
                     margin: 0px 0 8px 0;
                 }
+                #history_wrapper .channel .views,
                 #channels_wrapper .channel .views{
                     display: inline-block;
                     position: absolute;
@@ -710,6 +731,10 @@ nav a:hover {
                     background-color: rgba(0,0,0,0.2);
                     border-radius: 30px;
                 }
+                #channels_wrapper .channel .views{
+                    /*font-size: 18px;*/
+                }
+                #history_wrapper .channel.suggested .views,
                 #channels_wrapper .channel.suggested .views{
                     display: none;
                 }
@@ -739,11 +764,13 @@ nav a:hover {
                 outline:0;
                 border-color: rgba(83, 208, 99, 0.35);
             }
+            #history_wrapper .channel.followed input.follow,
             #channels_wrapper .channel.followed input.follow{
                 color: #f4f4f4;
                 background-color: #53D063;
                 border-color: #53D063;
             }
+            #history_wrapper .channel.suggested input.follow,
             #channels_wrapper .channel.suggested input.follow{
                 display: none;
             }
@@ -1190,6 +1217,9 @@ nav a:hover {
     .track:active{
         /*background-color: rgba(0, 0, 0, 0.1);*/
     }
+    .track.placeholder{
+        cursor: default;
+    }
         .track .indicator{
             display: inline-block;
             position: absolute;
@@ -1302,6 +1332,15 @@ nav a:hover {
                 -ms-user-select: initial;
                     user-select: initial;
         }
+
+        .track .text .link:hover{
+            text-decoration: underline;
+        }
+
+        .track .text .channel::before {
+            content: '@';
+        }
+
             .text a{
                 text-decoration: none;
                 color: #ffffff;
@@ -1713,6 +1752,10 @@ nav a:hover {
         /*text-decoration: underline;*/
     }
 
+    #track_tweet_wrapper span.text .channel::before {
+        content: '@';
+    }
+
     #track_tweet_wrapper span.text,
     #track_tweet_wrapper span.text .channel,
     #track_tweet_wrapper span.text .link{
@@ -1725,6 +1768,9 @@ nav a:hover {
     #track_tweet_wrapper span.text .channel,
     #track_tweet_wrapper span.text .link{
         cursor: pointer;
+    }
+    #track_tweet_wrapper span.text .link:hover{
+        text-decoration: underline;
     }
 
 @media only screen and (max-width: 900px) and (orientation: landscape) {
@@ -1883,6 +1929,8 @@ nav a:hover {
         left: 0px;
         width: 100%;
         height: 60%;
+
+        z-index: 10002;
 
         -webkit-transition: bottom 500ms;
            -moz-transition: bottom 500ms;

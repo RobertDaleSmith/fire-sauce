@@ -31,14 +31,13 @@ exports.initIndex = function( mongo ){
 Index.prototype.home = function( req, res ) {
 	console.log('home');
 
-	var prod = process.env.production;
-	if(!prod)prod=false;
+	// var prod = process.env.production;
+	// if(!prod)prod=false;
 
-	res.render( 'index/home', {
-		pageId: 'home',
-		subId:  '',
-		title:  '',
-		production: prod
+	this._channels.getPopChannels(100, function( err, channels ){
+		res.render( 'index/home', {
+			channels: channels
+		});
 	});
 
 };
@@ -552,8 +551,20 @@ Index.prototype.popular = function( req, res ) {
 
 	var self = this;
 
-	self._channels.getPopChannels(function( err, channels ){
+	self._channels.getPopChannels(5, function( err, channels ){
 		res.send(channels);
+	});
+
+};
+
+Index.prototype.leaderboardHTML = function( req, res ) {
+
+	var self = this;
+
+	self._channels.getPopChannels(100, function( err, channels ){
+		res.render( 'index/top100', {
+			channels: channels
+		});
 	});
 
 };

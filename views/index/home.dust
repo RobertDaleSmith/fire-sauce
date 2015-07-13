@@ -45,8 +45,8 @@
         <div id="chrome_wrapper">
             <div id="titlebar_wrapper">
                 <div class="btn watching active" for="watch_wrapper" title="Channel Tracks"><i class="fa fa-eye"></i></div>
-                <div class="btn channels" for="channels_wrapper" title="Top Channels"><i class="fa fa-rocket"></i></div>
-                <div class="btn history" for="channels_wrapper" title="Channel History"><i class="fa fa-history"></i></div>
+                <div class="btn history" for="history_wrapper" title="Channel History"><i class="fa fa-history"></i></div>
+                <div class="btn channels" for="channels_wrapper" title="Top Channels"><i class="fa fa-bar-chart"></i></div>
                 <div class="btn settings" for="settings_wrapper" title="About the sauce"><i class="fa fa-info-circle"></i></div>
             </div>
 
@@ -76,13 +76,26 @@
 
             <div class="panel" id="watch_wrapper">
                 <ul id="schedule_wrapper">
-                    <li class="track">Feed me any Twitter username!</li>
+                    <li class="track placeholder">Submit anyone's Twitter username<br>to discover videos they tweet.</li>
                 </ul>
             </div>
-            <div class="panel" id="channels_wrapper" style="display:none;">
+            <div class="panel" id="history_wrapper" style="display:none;">
                 <ul id="suggested_wrapper"></ul>
                 <ul id="followed_wrapper"></ul>
-                <ul id="history_wrapper"></ul>
+                <ul id="watched_wrapper"></ul>
+            </div>
+            <div class="panel" id="channels_wrapper" style="display:none;">
+                <ul id="top100_wrapper">
+                    {#channels}
+                        <li class="channel" channel="{.name}" onClick="watchUsername('{.name}');">
+                            <div class="info">
+                                <img class="avatar" src="{.info.profile_image_url}"><div class="name">{.info.name}</div>
+                                <div class="screen_name">@{.info.screen_name}</div>
+                                <div class="views">{.counts.tunedInTotal} view{@select key="{.counts.tunedInTotal}"}{@gt value=1}s{/gt}{/select}</div>
+                            </div>
+                        </li>
+                    {/channels}
+                </ul>
             </div>
             <div class="panel" id="settings_wrapper" style="display:none;">
                 <div class="about_container">

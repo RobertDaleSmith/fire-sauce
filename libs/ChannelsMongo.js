@@ -67,10 +67,10 @@ ChannelsMongo.prototype.getLeaderboardChannels = function( callback ){
 	});
 }
 
-ChannelsMongo.prototype.getPopChannels = function( callback ){
+ChannelsMongo.prototype.getPopChannels = function( count, callback ){
 	var self = this;
 
-	self.channels.find( {}, { sort: { "counts.tunedInTotal":-1 }, limit:5, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+	self.channels.find( {}, { sort: { "counts.tunedInTotal":-1 }, limit:count, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
 
 		if( err ) return callback( err );
 
