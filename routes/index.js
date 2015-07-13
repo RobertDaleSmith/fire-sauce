@@ -81,13 +81,10 @@ function vimeo_parser(url) {
 function isTargetedContentType(url){
 
 	var isIt = false;
-
-	if(url)if(url.indexOf("youtube.com") > -1) isIt = true;
-	else if(url)if(url.indexOf("youtu.be") > -1) isIt = true;
-	// else if(url.indexOf("vimeo.com") > -1) isIt = true;
-
-	if(url)if(url.indexOf("mQ00zwkK9Og") > -1) isIt = false;
-
+	if(url){
+		if(url.indexOf("youtube.com") > -1 || url.indexOf("youtu.be") > -1) isIt = true;
+		if(url.indexOf("mQ00zwkK9Og") > -1 || url.indexOf("youtube.com/channel") > -1) isIt = false;
+	}
 	return isIt;
 
 }
