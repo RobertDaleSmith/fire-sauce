@@ -303,6 +303,7 @@ Index.prototype.getChannel = function( req, res ) {
 						tunedInTotal: 1, tracksPlayedToday: 0,
 						tunedInToday: 1, tracksPlayedTotal: 0
 					};
+					channelData.trackCount = newTracks.length;
 					
 					self._channels.addChannel(channelData, function( err, result ){
 						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
@@ -458,20 +459,22 @@ function getUsersTweets(user, since, cb){
 										tweet.url = trimYouTubeURL(resultLongUrl);
 										expandedTweetUrlArr.push(tweet);
 									}else{
-										// console.log(resultLongUrl.includes('upworthy'));
-										// if( resultLongUrl.includes('upworthy.com') || 
-										// 	resultLongUrl.includes('buzzfeed.com') || 
-										// 	resultLongUrl.includes('topdocumentaryfilms.com') ){
-											//scrape html for iframe with youtube.com/embed in src.
-											//then grab that iframe's id
-											var $ = cheerio.load(html);
-											var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
-											if( isTargetedContentType(ytUrl) != 0 ){
-												// console.log(ytUrl);
-												tweet.url = trimYouTubeURL(ytUrl);
-												expandedTweetUrlArr.push(tweet);
-											}
-										// }
+
+										var $ = cheerio.load(html);
+										var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
+
+										if( resultLongUrl.includes('buzzfeed.com') && !ytUrl){
+											try{
+												if($('.video-embed-area').attr('rel:bf_bucket_data'))													
+													ytUrl = JSON.parse($('.video-embed-area').attr('rel:bf_bucket_data')).video.url;
+											}catch(e){}
+										}
+
+										if( isTargetedContentType(ytUrl) != 0 ){
+											tweet.url = trimYouTubeURL(ytUrl);
+											expandedTweetUrlArr.push(tweet);
+										}
+
 									}
 									thisCnt = cnt++;
 									// console.log(thisCnt + '\t' + 'success\t' + resultLongUrl);
