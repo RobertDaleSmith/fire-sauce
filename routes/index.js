@@ -425,7 +425,7 @@ function getUsersTweets(user, since, cb){
 						if(	tweet.url.includes('youtube.com/watch')		||
 							tweet.url.includes('youtu.be')   	  		){
 
-							console.log(tweet.url);
+							// console.log(tweet.url);
 
 							if( isTargetedContentType(tweet.url) != 0 ){
 								tweet.url = trimYouTubeURL(tweet.url);
@@ -454,7 +454,7 @@ function getUsersTweets(user, since, cb){
 									next();
 
 								} else {
-									var contentType = response.headers["content-type"];
+									var contentType = response.headers["content-type"] || "";
 									var isHTMLType = contentType.indexOf("text/html")>-1?true:false;
 
 									if(isHTMLType) {
