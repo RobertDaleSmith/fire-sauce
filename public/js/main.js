@@ -382,8 +382,8 @@ function watchUsername(screen_name){
 		}else {
 			// hideFailedAlert();
 			hideSearchSpinner();
-			showFailedAlert("Channel not found.");
-			console.log("Channel not found.");
+			showFailedAlert("No recent video Tweets.");
+			console.log("No recent video Tweets.");
 		}
 
 	}).fail(function(jqXHR, textStatus, errorThrown){
