@@ -46,7 +46,7 @@
             <div id="titlebar_wrapper">
                 <div class="btn watching active" for="watch_wrapper" title="Channel Tracks"><i class="fa fa-eye"></i></div>
                 <div class="btn history" for="history_wrapper" title="Channel History"><i class="fa fa-history"></i></div>
-                <div class="btn channels" for="channels_wrapper" title="Top Channels"><i class="fa fa-bar-chart"></i></div>
+                <div class="btn channels" for="channels_wrapper" title="Top Channels"><i class="fa fa-trophy"></i></div>
                 <div class="btn settings" for="settings_wrapper" title="About the sauce"><i class="fa fa-info-circle"></i></div>
             </div>
 

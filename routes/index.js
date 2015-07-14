@@ -34,7 +34,7 @@ Index.prototype.home = function( req, res ) {
 	// var prod = process.env.production;
 	// if(!prod)prod=false;
 
-	this._channels.getPopChannels(100, function( err, channels ){
+	this._channels.getPopChannels(50, function( err, channels ){
 		res.render( 'index/home', {
 			channels: channels
 		});
@@ -93,22 +93,20 @@ function isTargetedContentType(url){
 
 function trimYouTubeURL(url){
 
-	if( url.indexOf("youtube.com/embed/") > -1 ) {
-		url = url.split("?")[0];
-	}
+	//Clean up embed URL. Removes junk after the YTid.	
+	if( url.indexOf("youtube.com/embed/") > -1 ) url = url.split("?")[0];
 
 	var base = url.split('?')[0],
 		params = getParamsArray(url);
 	
 	if( base.indexOf("youtube.com/embed/") > -1 ) {
 		params.v = base.split("/embed/")[1];
-		base = "http://www.youtube.com/watch";
-	}
-
+		
+	}else if(!params.v) params.v = youtube_parser(url);			
+	
+	base = "http://www.youtube.com/watch";
 	url = base + '?v=' + params.v;
 	if(params.t) url += '&t=' + params.t;
-
-	// if(url.indexOf("vimeo.com") > -1) url = url.split('?')[0];
 
 	return url;
 	
@@ -442,42 +440,53 @@ function getUsersTweets(user, since, cb){
 							request({
 								method: "HEAD",
 								url: tweet.url,
-								followAllRedirects: true,
+								followRedirects: true,
+								removeRefererHeader: true,
 								maxRedirects: 5,
 								timeout: 3000
 							}, function(error, response, html) {
+								
 								if (error) {
 									// not sure how to handle a bad url...continue for now
 									thisCnt = cnt++;
-									// console.log(thisCnt + '\terror getting long from short\t' + error);
-									// console.log(thisCnt + '\t' + 'errored\t' + tweet.url);
+									console.log(thisCnt + '\terror getting long from short\t' + error);
+									console.log(thisCnt + '\t' + 'errored\t' + tweet.url);
 									next();
+
 								} else {
-									var resultLongUrl = response.request.href;
+									var contentType = response.headers["content-type"];
+									var isHTMLType = contentType.indexOf("text/html")>-1?true:false;
 
-									if( isTargetedContentType(resultLongUrl) != 0 ){
-										tweet.url = trimYouTubeURL(resultLongUrl);
-										expandedTweetUrlArr.push(tweet);
-									}else{
+									if(isHTMLType) {
 
-										var $ = cheerio.load(html);
-										var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
+										var resultLongUrl = response.request.href;
 
-										if( resultLongUrl.includes('buzzfeed.com') && !ytUrl){
-											try{
-												if($('.video-embed-area').attr('rel:bf_bucket_data'))													
-													ytUrl = JSON.parse($('.video-embed-area').attr('rel:bf_bucket_data')).video.url;
-											}catch(e){}
-										}
-
-										if( isTargetedContentType(ytUrl) != 0 ){
-											tweet.url = trimYouTubeURL(ytUrl);
+										if( isTargetedContentType(resultLongUrl) != 0 ){
+											tweet.url = trimYouTubeURL(resultLongUrl);
 											expandedTweetUrlArr.push(tweet);
+										}else{
+
+											var $ = cheerio.load(html);
+											var ytUrl = $('iframe[src*="//www.youtube.com/embed"]').attr('src');
+
+											if( resultLongUrl.includes('buzzfeed.com') && !ytUrl){
+												try{
+													if($('.video-embed-area').attr('rel:bf_bucket_data'))													
+														ytUrl = JSON.parse($('.video-embed-area').attr('rel:bf_bucket_data')).video.url;
+												}catch(e){}
+											}
+
+											if( isTargetedContentType(ytUrl) != 0 ){
+												tweet.url = trimYouTubeURL(ytUrl);
+												expandedTweetUrlArr.push(tweet);
+											}
+
 										}
+										thisCnt = cnt++;
+										// console.log(thisCnt + '\t' + 'success\t' + resultLongUrl);
 
 									}
-									thisCnt = cnt++;
-									// console.log(thisCnt + '\t' + 'success\t' + resultLongUrl);
+
 									next();
 								}
 							});
