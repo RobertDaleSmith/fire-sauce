@@ -100,8 +100,13 @@
             <div class="panel" id="settings_wrapper" style="display:none;">
                 <div class="about_container">
                     <div class="about"><span class="title">Welcome to FireSauce.TV alpha</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
+                    
+                    <div class="extension">
+                        <a class="pure-button" href="http://rdal.es/fsTVcrX" target="_blank">Get the Extension</a>
+                    </div>
+
                     <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin<br><a href="bitcoin:1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9" target="_blank">1GGv5Zi2uWeHhsGj38Ee9TGXZwaWnAGKW9</a></div>
-                </div>
+                </div>                
             </div>
         </div>
 
