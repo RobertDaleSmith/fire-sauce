@@ -419,7 +419,7 @@ function getUsersTweets(user, since, cb){
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
 						var thisCnt = 0;
 						
-						// console.log(tweet.url);
+						console.log(tweet.url);
 
 						//Skip request check
 						if(	tweet.url.includes('youtube.com/watch')		||
@@ -440,9 +440,9 @@ function getUsersTweets(user, since, cb){
 							request({
 								method: "HEAD",
 								url: tweet.url,
-								followRedirects: true,
-								removeRefererHeader: true,
-								maxRedirects: 5,
+								followAllRedirects: true,
+								// removeRefererHeader: true,
+								maxRedirects: 10,
 								timeout: 3000
 							}, function(error, response, html) {
 								
