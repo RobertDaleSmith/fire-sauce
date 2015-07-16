@@ -91,9 +91,10 @@
                             <div class="info">
                                 <img class="avatar" src="{.info.profile_image_url}"><div class="name">{.info.name}</div>
                                 <div class="screen_name">@{.info.screen_name}</div>
-                                <div class="views">{.counts.tunedInTotal} view{@select key="{.counts.tunedInTotal}"}{@gt value=1}s{/gt}{/select}</div>
+                                <div class="views">#{@math key=$idx method="add" operand="1" /}</div>
                             </div>
                         </li>
+
                     {/channels}
                 </ul>
             </div>
