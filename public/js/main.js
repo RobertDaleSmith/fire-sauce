@@ -218,6 +218,18 @@ $(window).bind("load", function() {
     	// $('#splash_wrapper').css('display','none');
     }
 
+    $(window).on('hashchange', function() {
+    	var newHash = location.hash.replace('#/','').replace('#','') || ""; 
+    		newHash = newHash.toLowerCase();
+    	var curChan = hist.watching || null;
+    		curChan = curChan.toLowerCase();
+
+		// console.log(newHash + " ?= " + curChan);
+		if(newHash != curChan){
+			watchUsername(newHash);
+		}
+	});
+
     loadPopularSuggestions();
 
     fadeSplash();
