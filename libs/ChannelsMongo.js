@@ -53,7 +53,10 @@ ChannelsMongo.prototype.findChannels = function( queryIn, callback ){
 ChannelsMongo.prototype.getLeaderboardChannels = function( callback ){
 	var self = this;
 
-	self.channels.find( {}, { sort: { "counts.tunedInTotal":-1 },/*limit:100,*/ fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+	var sort = { "counts.tunedInTotal":-1 };
+		sort = { "added":1 };
+
+	self.channels.find( {}, { sort: sort,/*limit:100,*/ fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
 
 		if( err ) return callback( err );
 

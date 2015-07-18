@@ -26,13 +26,11 @@
             {#channels}
             <tr class="channel">
                 <td>
-                    <a href="/{.name}">
-                        <img src="{.info.profile_image_url}" class="avatar">
-                        <span class="name">
-                            {.info.name}
-                            <br>@{.info.screen_name}
-                        </span>
-                    </a>
+                    <img src="{.info.profile_image_url}" class="avatar">
+                    <span class="name">
+                         <a href="/{.name}">{.info.name}</a>
+                        <br>@{.info.screen_name}
+                    </span>
                 </td>
                 <td>{.counts.tunedInTotal}</td>
                 <td>{.counts.tracksPlayedTotal}</td>
