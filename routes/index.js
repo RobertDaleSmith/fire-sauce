@@ -217,149 +217,152 @@ Index.prototype.getChannel = function( req, res ) {
 	if(r.test(v)) name = v.replace(r, '');
 	name = name.toLowerCase();
 
-	async.series([
-		function(next){
-			//Get channel data from our DB.
-			self._channels.findOneChannel(name, function( err, result ){
-				if(result)channelData=result;
-				else isNewUser = true;
-				next();
-			});
-		},
-		function(next){
-			//Has this channel been created on FireSauce before?
-			if(Date.parse(new Date()) - Date.parse(channelData.info.updated) < (5 * 60 * 1000)){
-				// Info was found and is up to date, skip fetching user info from Twitter API.
-				next();
-			} else {
-				// New FireSauce channel or prevous is due for an update.
-				console.log('getting twitter user info');
-				twitter.get('users/show', {screen_name: name}, function(error, user, response) {
+	if(name.length<=0){
 
-					if(!error){
-						channelData.info = {
-							screen_name: 				  user.screen_name,
-							name: 						  user.name,
-							id: 						  user.id,
-							id_str: 					  user.id_str,
-							description: 				  user.description,
-							location: 					  user.location,
-							profile_background_color: 	  user.profile_background_color,
-							profile_background_image_url: user.profile_background_image_url,
-							profile_background_tile: 	  user.profile_background_tile,
-							profile_image_url: 			  user.profile_image_url,
-							profile_link_color: 		  user.profile_link_color,
-							updated: 					  new Date()
-						};
-						//Update channels info object in db..
-						self._channels.updateInfo(channelData.name, channelData.info, function( err, result ){
-							console.log(channelData.name + "'s info has been updated.");
-						});
-					} else {
-						//TODO: Error or Twitter user doesn't exist.
-						errorObj = error;
-					}
-
+		res.send({error: true});
+		
+	}else{
+		async.series([
+			function(next){
+				//Get channel data from our DB.
+				self._channels.findOneChannel(name, function( err, result ){
+					if(result)channelData=result;
+					else isNewUser = true;
 					next();
-
 				});
-			}
-		},
-		function(next){
-			
-			var sinceTweetId;
+			},
+			function(next){
+				//Has this channel been created on FireSauce before?
+				if(Date.parse(new Date()) - Date.parse(channelData.info.updated) < (5 * 60 * 1000)){
+					// Info was found and is up to date, skip fetching user info from Twitter API.
+					next();
+				} else {
+					// New FireSauce channel or prevous is due for an update.
+					console.log('getting twitter user info');
+					twitter.get('users/show', {screen_name: name}, function(error, user, response) {
 
-			if(channelData){
+						if(!error){
+							channelData.info = {
+								screen_name: 				  user.screen_name,
+								name: 						  user.name,
+								id: 						  user.id,
+								id_str: 					  user.id_str,
+								description: 				  user.description,
+								location: 					  user.location,
+								profile_background_color: 	  user.profile_background_color,
+								profile_background_image_url: user.profile_background_image_url,
+								profile_background_tile: 	  user.profile_background_tile,
+								profile_image_url: 			  user.profile_image_url,
+								profile_link_color: 		  user.profile_link_color,
+								updated: 					  new Date()
+							};
+							//Update channels info object in db..
+							self._channels.updateInfo(channelData.name, channelData.info, function( err, result ){
+								console.log(channelData.name + "'s info has been updated.");
+							});
+						} else {
+							//TODO: Error or Twitter user doesn't exist.
+							errorObj = error;
+						}
 
-				if(channelData.trackSince) sinceTweetId = channelData.trackSince;
+						next();
+
+					});
+				}
+			},
+			function(next){
 				
-				getUsersTweets(channelData.name, sinceTweetId, function(tracks, lastId){
-					
-					if(tracks)if(tracks.length > 0) newTracks = tracks;
+				var sinceTweetId;
 
-					if(lastId) channelData.trackSince = lastId;
+				if(channelData){
+
+					if(channelData.trackSince) sinceTweetId = channelData.trackSince;
 					
+					getUsersTweets(channelData.name, sinceTweetId, function(tracks, lastId){
+						
+						if(tracks)if(tracks.length > 0) newTracks = tracks;
+
+						if(lastId) channelData.trackSince = lastId;
+						
+						next();
+
+					});
+
+				} else {
+
 					next();
 
-				});
+				}
 
-			} else {
+			},
+			function(next){
+				
+				if(newTracks.length>0){
+
+					if(isNewUser){ //Add user with tracks.
+
+						channelData.trackList = newTracks;
+						channelData.counts = {
+							tunedInTotal: 1, tracksPlayedToday: 0,
+							tunedInToday: 1, tracksPlayedTotal: 0
+						};
+						channelData.trackCount = newTracks.length;
+						
+						self._channels.addChannel(channelData, function( err, result ){
+							console.log(channelData.name + " is a new FireSauce.TV channel. :)");
+
+							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
+							twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
+
+						});
+
+					} else { //Just update this users tracks.
+
+						if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
+
+						self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
+							console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
+						});
+						
+					}
+
+				}
+
+				if(!isNewUser){
+					self._channels.incTunedInCount(channelData.name, function( err, result ){
+						console.log("+1 added to "+ channelData.name + "'s tunedInCount.");
+					});
+				}
 
 				next();
 
-			}
+			},
+			function(next){
+				if(since){
 
-		},
-		function(next){
-			
-			if(newTracks.length>0){
-
-				if(isNewUser){ //Add user with tracks.
-
-					channelData.trackList = newTracks;
-					channelData.counts = {
-						tunedInTotal: 1, tracksPlayedToday: 0,
-						tunedInToday: 1, tracksPlayedTotal: 0
-					};
-					channelData.trackCount = newTracks.length;
-					
-					self._channels.addChannel(channelData, function( err, result ){
-						console.log(channelData.name + " is a new FireSauce.TV channel. :)");
-
-						var shoutOutMsg = "The @" + channelData.info.screen_name + " channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
-						// twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){
-						// 	console.log(error);
-						// 	console.log(tweet);
-						// 	console.log(response);
-						// });
-
-					});
-
-				} else { //Just update this users tracks.
-
-					if(newTracks) for(var i=0; i<newTracks.length; i++){ channelData.trackList.push(newTracks[i]); }
-
-					self._channels.addTracks(channelData.name, newTracks, channelData.trackSince, function( err, result ){
-						console.log(channelData.name + " has " + newTracks.length + " new tracks. YAY! :)");
-					});
-					
-				}
-
-			}
-
-			if(!isNewUser){
-				self._channels.incTunedInCount(channelData.name, function( err, result ){
-					console.log("+1 added to "+ channelData.name + "'s tunedInCount.");
-				});
-			}
-
-			next();
-
-		},
-		function(next){
-			if(since){
-
-				var sinceIndex = 0;
-				for(var i=0; i<channelData.trackList.length; i++){
-					if(channelData.trackList[i].id == since) {
-						sinceIndex = i+1;
-						break;
+					var sinceIndex = 0;
+					for(var i=0; i<channelData.trackList.length; i++){
+						if(channelData.trackList[i].id == since) {
+							sinceIndex = i+1;
+							break;
+						}
 					}
+
+					channelData.trackList.splice(0, sinceIndex);
+
 				}
-
-				channelData.trackList.splice(0, sinceIndex);
-
+				next();
 			}
-			next();
-		}
-	],
-	function(){
+		],
+		function(){
 
-		if( !isNewUser || (isNewUser && channelData.trackList.length > 0)) 
-			 res.send(channelData);
-		else res.send(errorObj);
+			if( !isNewUser || (isNewUser && channelData.trackList.length > 0)) 
+				 res.send(channelData);
+			else res.send(errorObj);
 
-	});
+		});
+
+	}	
 
 };
 
