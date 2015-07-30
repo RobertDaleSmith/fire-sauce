@@ -1,16 +1,20 @@
 {
   "dbConfig": {
     "name"        : "fire-sauce",
-    "url"         : "candidate.4.mongolayer.com",
-    "port"        : "10496",
+    "url"         : "c496.candidate.4.mongolayer.com",
+    "port"        : 10496,
     "username"    : "firesauce",
     "password"    : "burntsauce",
-    "secret"      : "***REMOVED***"
+    "secret"      : "***REMOVED***",
+    "replica": {
+      "url": "candidate.3.mongolayer.com",
+      "port": 10904
+    }
   },
   "dbConfigDev": {
     "name"        : "RDS-Testing",
     "url"         : "paulo.mongohq.com",
-    "port"        : "10028",
+    "port"        : 10028,
     "username"    : "firesauce",
     "password"    : "burntsauce",
     "secret"      : "***REMOVED***"
