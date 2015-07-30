@@ -1,8 +1,8 @@
 {
   "dbConfig": {
     "name"        : "fire-sauce",
-    "url"         : "candidate.3.mongolayer.com",
-    "port"        : "10904",
+    "url"         : "candidate.4.mongolayer.com",
+    "port"        : "10496",
     "username"    : "firesauce",
     "password"    : "burntsauce",
     "secret"      : "***REMOVED***"
