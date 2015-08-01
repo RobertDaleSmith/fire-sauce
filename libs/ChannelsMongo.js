@@ -54,9 +54,9 @@ ChannelsMongo.prototype.getLeaderboardChannels = function( callback ){
 	var self = this;
 
 	var sort = { "counts.tunedInTotal":-1 };
-		sort = { "added":1 };
+		// sort = { "added":1 };
 
-	self.channels.find( {}, { sort: sort,/*limit:100,*/ fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+	self.channels.find( {}, { sort: sort,limit:100, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
 
 		if( err ) return callback( err );
 
