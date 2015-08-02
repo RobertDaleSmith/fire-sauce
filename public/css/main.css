@@ -1308,7 +1308,7 @@ nav a:hover {
             position: relative;
             float: left;
             width: calc(100% - 32px);
-            height: 16px;
+            height: 20px;
             text-align: left;
             padding: 0 48px 0 8px;
             line-height: 16px;
@@ -1326,15 +1326,17 @@ nav a:hover {
             position: relative;
             float: left;
             width: calc(100% - 32px);
-            height: 16px;
+            height: 20px;
             text-align: left;
             padding: 0 48px 0 8px;
             line-height: 19px;
             font-size: 12px;
             opacity: 0.5;
-            
+            top: -4px;
 
-
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .track .started{
