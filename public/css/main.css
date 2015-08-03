@@ -1456,6 +1456,9 @@ nav a:hover {
                 width: 100%; height: auto;
                 color: #ffffff;
                 font-weight: 500;
+
+                color: lightcoral;
+                /*opacity: 0.70;*/
             }
 
         .track .url{
@@ -1485,7 +1488,7 @@ nav a:hover {
         .track.error .text,
         .track.error .text a,
         .track.error .started{
-            color: lightcoral;
+            /*color: lightcoral;*/
             opacity: 0.70;
         }
 
