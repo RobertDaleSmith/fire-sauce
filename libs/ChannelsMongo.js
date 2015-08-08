@@ -54,9 +54,9 @@ ChannelsMongo.prototype.getLeaderboardChannels = function( callback ){
 	var self = this;
 
 	var sort = { "counts.tunedInTotal":-1 };
-		// sort = { "added":1 };
+		sort = { "added":1 };
 
-	self.channels.find( {}, { sort: sort,limit:100, fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
+	self.channels.find( {}, { sort: sort,/* limit:100,*/ fields : { trackList:0, trackSince:0 } }, function( err, cursor ){
 
 		if( err ) return callback( err );
 
@@ -122,14 +122,20 @@ ChannelsMongo.prototype.addTracks = function ( channel, newTracks, sinceId, call
 
 	this.channels.ensureIndex( { 'trackList.id': 1 }, { unique: true } );
 
-	this.channels.update(
-		{ name: channel },
-		{
-			$addToSet: { trackList: { $each: newTracks } },
-			$set: { "trackSince" : sinceId, "updated": new Date() },
-			$inc: { "trackCount" : newTracks.length}
-		}
-	);
+	// this.channels.update(
+	// 	{ name: channel },
+	// 	{
+	// 		$addToSet: { trackList: { $each: newTracks } },
+	// 		$inc: { "trackCount" : newTracks.length}
+	// 	}
+	// );
+
+	// this.channels.update(
+	// 	{ name: channel },
+	// 	{
+	// 		$set: { "trackSince" : sinceId, "updated": new Date() }
+	// 	}
+	// );
 
 }
 

@@ -426,7 +426,7 @@ function getUsersTweets(user, since, cb){
 					async.eachLimit(tweetLinks, 20, function(tweet, next) {
 						var thisCnt = 0;
 						
-						console.log(tweet.url);
+						// console.log(tweet.url);
 
 						//Skip request check
 						if(	tweet.url.includes('youtube.com/watch')		||
@@ -445,7 +445,8 @@ function getUsersTweets(user, since, cb){
 						} else {
 
 							request({
-								method: "HEAD",
+								// method: "HEAD",
+								method: "GET",
 								url: tweet.url,
 								followAllRedirects: true,
 								// removeRefererHeader: true,
@@ -456,7 +457,7 @@ function getUsersTweets(user, since, cb){
 								if (error) {
 									// not sure how to handle a bad url...continue for now
 									thisCnt = cnt++;
-									console.log(thisCnt + '\terror getting long from short\t' + error);
+									// console.log(thisCnt + '\terror getting long from short\t' + error);
 									console.log(thisCnt + '\t' + 'errored\t' + tweet.url);
 									next();
 
@@ -522,7 +523,11 @@ function getUsersTweets(user, since, cb){
 					cb(null);
 				}
 
-				console.log('returning results');
+
+				// if(results.expandUrls.length >= lastCheckedId){
+				// }
+
+				
 				// res.send();
 				cb(results.expandUrls, lastCheckedId);
 			});
