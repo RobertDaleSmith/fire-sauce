@@ -122,20 +122,20 @@ ChannelsMongo.prototype.addTracks = function ( channel, newTracks, sinceId, call
 
 	this.channels.ensureIndex( { 'trackList.id': 1 }, { unique: true } );
 
-	// this.channels.update(
-	// 	{ name: channel },
-	// 	{
-	// 		$addToSet: { trackList: { $each: newTracks } },
-	// 		$inc: { "trackCount" : newTracks.length}
-	// 	}
-	// );
+	this.channels.update(
+		{ name: channel },
+		{
+			$addToSet: { trackList: { $each: newTracks } },
+			$inc: { "trackCount" : newTracks.length}
+		}
+	);
 
-	// this.channels.update(
-	// 	{ name: channel },
-	// 	{
-	// 		$set: { "trackSince" : sinceId, "updated": new Date() }
-	// 	}
-	// );
+	this.channels.update(
+		{ name: channel },
+		{
+			$set: { "trackSince" : sinceId, "updated": new Date() }
+		}
+	);
 
 }
 
