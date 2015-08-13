@@ -46,8 +46,8 @@
             <div id="titlebar_wrapper">
                 <div class="btn watching" for="watch_wrapper" title="Channel Tracks"><i class="fa fa-eye"></i></div>
                 <div class="btn history" for="history_wrapper" title="Channel History"><i class="fa fa-history"></i></div>
-                <div class="btn channels active" for="channels_wrapper" title="Top Channels"><i class="fa fa-trophy"></i></div>
-                <div class="btn settings" for="settings_wrapper" title="About the sauce"><i class="fa fa-info-circle"></i></div>
+                <div class="btn channels" for="channels_wrapper" title="Top Channels"><i class="fa fa-trophy"></i></div>
+                <div class="btn settings active" for="settings_wrapper" title="About the sauce"><i class="fa fa-info-circle"></i></div>
             </div>
 
             <div id="search_container">
@@ -84,7 +84,7 @@
                 <ul id="followed_wrapper"></ul>
                 <ul id="watched_wrapper"></ul>
             </div>
-            <div class="panel" id="channels_wrapper" style="display:block;">
+            <div class="panel" id="channels_wrapper" style="display:none;">
                 <ul id="top100_wrapper">
                     {#channels}
                         <li class="channel" channel="{.name}" onClick="watchUsername('{.name}');">
@@ -98,7 +98,7 @@
                     {/channels}
                 </ul>
             </div>
-            <div class="panel" id="settings_wrapper" style="display:none;">
+            <div class="panel" id="settings_wrapper" style="display:block;">
                 <div class="about_container">
                     <div class="about"><span class="title">Welcome to FireSauce.TV alpha</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
                     
