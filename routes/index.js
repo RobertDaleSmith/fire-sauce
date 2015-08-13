@@ -206,6 +206,10 @@ Index.prototype.getChannelInfo = function( req, res ) {
 
 Index.prototype.getChannel = function( req, res ) {
 
+	// req.on('close', function(){
+	// 	console.log('Client closed the connection');
+	// });
+
 	var self = this;
 	var name = req.query.screen_name || "";
 	var since = req.query.since_id;
