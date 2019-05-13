@@ -1,22 +1,17 @@
 {
   "dbConfig": {
-    "name"        : "fire-sauce",
-    "url"         : "c496.candidate.4.mongolayer.com",
-    "port"        : 10496,
-    "username"    : "firesauce",
-    "password"    : "burntsauce",
-    "secret"      : "***REMOVED***",
-    "replica": {
-      "url": "candidate.3.mongolayer.com",
-      "port": 10904
-    }
-  },
-  "dbConfigDev": {
-    "name"        : "RDS-Testing",
-    "url"         : "paulo.mongohq.com",
-    "port"        : 10028,
-    "username"    : "firesauce",
-    "password"    : "burntsauce",
-    "secret"      : "***REMOVED***"
+    "name"      : "fire-sauce",
+    "url"       : "localhost",
+    "port"      : 27017,
+    "username"  : "fire-sauce",
+    "password"  : "",
+    "secret"    : "***REMOVED***",
+    "cookieStr" : "secret-cookie",
+    "collections": [
+      "admin-sessions",
+      "admin-users",
+      "end-users",
+      "channels"
+    ]
   }
 }

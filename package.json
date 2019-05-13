@@ -30,7 +30,7 @@
     "mongodb": "2.*",
     "morgan": "*",
     "multer": "*",
-    "node-sass": "0.8.1",
+    "node-sass": "*",
     "request": "^2.5.5",
     "serve-favicon": "*",
     "twitter": "*",

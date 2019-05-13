@@ -6,12 +6,7 @@ var async = require('async');
 var Mongo = exports.Mongo = function( dbInfo ) {
 	if (typeof(dbInfo) !== 'undefined') {
 		this._dbInfo = dbInfo;
-		
-		var servers = [];
-		servers.push( new mongoServer( dbInfo.url, dbInfo.port, { auto_reconnect:true }) );
-		if(dbInfo.replica) servers.push( new mongoServer( dbInfo.replica.url, dbInfo.replica.port, { auto_reconnect:true }) );
-		this._db = new mongoDB( dbInfo.name, new ReplSet(servers), { safe:true } );
-		
+		this._db = new mongoDB( dbInfo.name, new mongoServer( dbInfo.url, dbInfo.port, { auto_reconnect:true } ), { safe:true } );
 		this._collections = {};
 	}
 }

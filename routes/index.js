@@ -419,7 +419,7 @@ function getUsersTweets(user, since, cb){
 
 					return done(null, tempArr);
 				},
-				expandUrls: ['getTweetLinks', function(done, results) {
+				expandUrls: ['getTweetLinks', function(results, done) {
 					var tweetLinks = results.getTweetLinks;
 					var expandedTweetUrlArr = [];
 

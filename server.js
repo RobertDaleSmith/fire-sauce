@@ -17,8 +17,17 @@ var bodyParser     = require('body-parser')
   , TwitterStrategy= require('passport-twitter').Strategy
   ;
 
-var dbInfo = config.get('dbConfig');
-    dbInfo.collections = [ "admin-sessions", "admin-users", "end-users", "channels" ];
+var dbConfig = config.get('dbConfig');
+var dbInfo = {
+  name: process.env.DB_NAME || dbConfig.name,
+  url: process.env.DB_PATH || dbConfig.url,
+  port: process.env.DB_PORT || dbConfig.port,
+  username: process.env.DB_USER || dbConfig.username,
+  password: process.env.DB_PASS || dbConfig.password,
+  secret: process.env.SECRET || dbConfig.secret,
+  cookieStr: dbConfig.cookieStr,
+  collections: dbConfig.collections,
+};
 
 var app = express();
 
