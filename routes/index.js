@@ -14,10 +14,10 @@ var twitterConfig = config.get('twitterConfig');
 var bitlyAuth = { bitly: bitlyConfig };
 
 var twitterApi = new twitter({
-	consumer_key: twitterConfig.consumerKey,
-	consumer_secret: twitterConfig.consumerSecret,
-	access_token_key: twitterConfig.accessTokenKey,
-	access_token_secret: twitterConfig.accessTokenSecret
+	consumer_key: process.env.TWITTER_KEY || twitterConfig.consumerKey,
+	consumer_secret: process.env.TWITTER_SECRET || twitterConfig.consumerSecret,
+	access_token_key: process.env.TWITTER_TOKEN_KEY || twitterConfig.accessTokenKey,
+	access_token_secret: process.env.TWITTER_TOKEN_SECRET || twitterConfig.accessTokenSecret
 });
 
 var Index = function( mongo ) {

@@ -101,8 +101,8 @@ mongo.connect(function(err) {
   var twitterConfig = config.get('twitterConfig');
 
   passport.use(new TwitterStrategy({
-    consumerKey: twitterConfig.consumerKey,
-    consumerSecret: twitterConfig.consumerSecret,
+    consumerKey: process.env.TWITTER_KEY || twitterConfig.consumerKey,
+    consumerSecret: process.env.TWITTER_SECRET || twitterConfig.consumerSecret,
     callbackURL: twitterConfig.callbackURL
   }, function(token, tokenSecret, profile, done) {
     console.log(token);
@@ -116,24 +116,6 @@ mongo.connect(function(err) {
     //   done(null, user);
     // });
   }));
-
-  passport.use(new TwitterStrategy({
-      consumerKey: twitterConfig.altConsumerKey,
-      consumerSecret: twitterConfig.altConsumerSecret,
-      callbackURL: twitterConfig.callbackURL
-    },
-    function(token, tokenSecret, profile, done) {
-
-      console.log(token);
-      console.log(tokenSecret);
-      console.log(profile);
-      done(null, profile);
-      // User.findOrCreate(..., function(err, user) {
-      //   if (err) { return done(err); }
-      //   done(null, user);
-      // });
-    }
-  ));
 
   /* Middlewares */
   function requiresAdminLogin(req, res, next) {
