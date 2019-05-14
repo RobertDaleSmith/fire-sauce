@@ -6,7 +6,7 @@
 
 	<!-- index/leaderboard.dust -->
 	<div id="main_wrapper">
-        <h1>FireSauce.TV Leaderboard</h1>
+        <h1>Fire Sauce TV Leaderboard</h1>
 
         <table class="pure-table">
         <thead>

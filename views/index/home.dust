@@ -76,7 +76,7 @@
 
             <div class="panel" id="watch_wrapper" style="display:none;">
                 <ul id="schedule_wrapper">
-                    <li class="track placeholder">Submit anyone's Twitter username<br>to discover videos they tweet.</li>
+                    <li class="track placeholder">Enter a Twitter username<br>above to start watching.</li>
                 </ul>
             </div>
             <div class="panel" id="history_wrapper" style="display:none;">
@@ -100,26 +100,28 @@
             </div>
             <div class="panel" id="settings_wrapper" style="display:block;">
                 <div class="about_container">
-                    <div class="about"><span class="title">Welcome to FireSauce.TV alpha</span>,<br>&nbsp; We believe that it should be stupid easy to find what to watch online. So we decided to turn Twitter feeds into TV channels. Enter a Twitter username above and start watching videos that were recently tweeted.</div>
+                    <ul id="schedule_wrapper">
+                        <li class="track placeholder">Enter a Twitter username above<br>to see recently tweeted videos.</li>
+                    </ul>
                     
                     <div class="extension">
-                        <a class="pure-button button-success" href="http://rdal.es/fsTVcrX" target="_blank">Get the Extension</a>
+                        <a class="pure-button button-success" href="http://rdal.es/fsTVcrX" target="_blank">Try the Extension</a>
                     </div>
 
                     <div class="reset">
                         <div class="pure-button button-error" id="clear_history">Clear History</div>
                     </div>
 
-                    <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2019<br><!-- <i class="fa fa-btc"></i> bitcoin<br> --><a href="bitcoin:1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt" target="_blank">1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt</a></div>
-                </div>                
+                    <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2019<br><i class="fa fa-btc"></i> bitcoin <a class="btc" href="bitcoin:1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt" target="_blank">1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt</a></div>
+                </div>
             </div>
         </div>
 
         <div id="splash_wrapper">
-        	<div class="content"> 
-	        	<div class="logo"><div class="iris spinning"></div></div>
-	        	<span class="oneliner">FireSauce.TV</span>
-	        </div>
+            <div class="content">
+                <div class="logo"><div class="iris spinning"></div></div>
+                <span class="oneliner">Fire Sauce TV</span>
+            </div>
         </div>
 
     </div>

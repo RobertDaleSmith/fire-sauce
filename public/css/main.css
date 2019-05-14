@@ -840,6 +840,7 @@ nav a:hover {
         padding: 10px 20px;
         color:#ffffff;
         font-size: 14px;
+        text-align: center;
     }
 
     #settings_wrapper .reset {
@@ -877,13 +878,22 @@ nav a:hover {
                 user-select: initial;
 
     }
-        #settings_wrapper .footer a{
+        #settings_wrapper .footer a {
             color: #ffffff;
             -webkit-user-select: initial;
              -khtml-user-select: initial;
                -moz-user-select: initial;
                 -ms-user-select: initial; /* IE 10+ */
                     user-select: initial;
+            text-decoration: none;
+        }
+
+        #settings_wrapper .footer a:hover {
+            text-decoration: underline;
+        }
+
+        #settings_wrapper .footer a.btc {
+            font-size: 10px;
         }
 
 #status_container{

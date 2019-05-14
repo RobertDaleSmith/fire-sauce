@@ -322,9 +322,9 @@ Index.prototype.getChannel = function( req, res ) {
 						channelData.trackCount = newTracks.length;
 						
 						self._channels.addChannel(channelData, function( err, result ){
-							console.log(channelData.name + " is a new FireSauce.TV channel. :)");
+							console.log(channelData.name + " is a new Fire Sauce TV channel. :)");
 
-							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
+							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at fire-sauce.herokuapp.com/" + channelData.name + " #FireSauceTV";
 							twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 
 						});

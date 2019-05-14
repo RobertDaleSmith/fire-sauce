@@ -1,5 +1,5 @@
 {
-  "name": "FireSauce.TV",
+  "name": "Fire Sauce TV",
   "icons": [
     {
       "src": "launcher-icon-0-75x.png",
@@ -38,7 +38,7 @@
       "density": "4.0"
     }
   ],
-  "start_url": "http://firesauce.tv/",
+  "start_url": "http://fire-sauce.herokuapp.com/",
   "display": "standalone",
   "orientation": ""
 }
