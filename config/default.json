@@ -5,7 +5,7 @@
     "port"      : 27017,
     "username"  : "fire-sauce",
     "password"  : "",
-    "secret"    : "***REMOVED***",
+    "secret"    : "",
     "cookieStr" : "secret-cookie",
     "collections": [
       "admin-sessions",
@@ -13,5 +13,16 @@
       "end-users",
       "channels"
     ]
+  },
+  "twitterConfig": {
+    "consumerKey": "",
+    "consumerSecret": "",
+    "accessTokenKey": "",
+    "accessTokenSecret": "",
+    "callbackURL": "http://firesauce.tv/auth/twitter/callback"
+  },
+  "bitlyConfig": {
+    "username": "",
+    "apikey": ""
   }
 }

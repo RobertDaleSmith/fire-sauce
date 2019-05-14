@@ -1,18 +1,24 @@
 "use strict";
-var async = require("async")
-	, util = require('util')
-	, fs = require('fs')
-	, Twitter = require('twitter')
-	, twitter = new Twitter({
-		consumer_key: '***REMOVED***',
-		consumer_secret: '***REMOVED***',
-		access_token_key: '***REMOVED***',
-		access_token_secret: '***REMOVED***'
-	  })
-	, bitlyAuth = {bitly: {username: ***REMOVED***, apikey: '***REMOVED***'}}
-	, request = require('request')
-	, cheerio = require('cheerio')
-	;
+
+var async = require("async");
+var cheerio = require('cheerio');
+var config = require('config');
+var fs = require('fs');
+var request = require('request');
+var twitter = require('twitter');
+var util = require('util');
+
+var bitlyConfig = config.get('bitlyConfig');
+var twitterConfig = config.get('twitterConfig');
+
+var bitlyAuth = { bitly: bitlyConfig };
+
+var twitterApi = new twitter({
+	consumer_key: twitterConfig.consumerKey,
+	consumer_secret: twitterConfig.consumerSecret,
+	access_token_key: twitterConfig.accessTokenKey,
+	access_token_secret: twitterConfig.accessTokenSecret
+});
 
 var Index = function( mongo ) {
 
@@ -142,7 +148,7 @@ Index.prototype.twitterSearch = function( req, res ) {
 	console.log(query);
 
 	var params = {q: query, count: 200}; 
-	twitter.get('search/tweets', params, function(error, tweets, response) {
+	twitterApi.get('search/tweets', params, function(error, tweets, response) {
 
 		console.log(tweets);
 		res.send(tweets.statuses);
@@ -156,7 +162,7 @@ Index.prototype.twitterGetUserInfo = function( req, res ) {
 	var user = req.query.screen_name;
 	console.log("Fetching user: " + user);
 
-	twitter.get('users/show', {screen_name: user}, function(error, user, response) {
+	twitterApi.get('users/show', {screen_name: user}, function(error, user, response) {
 
 		if(!error){
 			res.send({
@@ -243,7 +249,7 @@ Index.prototype.getChannel = function( req, res ) {
 				} else {
 					// New FireSauce channel or prevous is due for an update.
 					console.log('getting twitter user info');
-					twitter.get('users/show', {screen_name: name}, function(error, user, response) {
+					twitterApi.get('users/show', {screen_name: name}, function(error, user, response) {
 
 						if(!error){
 							channelData.info = {
@@ -316,7 +322,7 @@ Index.prototype.getChannel = function( req, res ) {
 							console.log(channelData.name + " is a new FireSauce.TV channel. :)");
 
 							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.tv/" + channelData.name + " #FireSauceTV";
-							twitter.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
+							twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 
 						});
 
@@ -387,7 +393,7 @@ function getUsersTweets(user, since, cb){
 
 	var lastCheckedId;
 	var params = {screen_name: user, count: 200, since_id: since, include_rts: true};
-	twitter.get('statuses/user_timeline', params, function(error, tweets, response) {
+	twitterApi.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 		if (!error) {
 			// console.log(tweets);

@@ -30,16 +30,23 @@ Mongo.prototype.connect = function(callback) {
 		return;
 	}
 	var self = this;
-	var iterator = function( collectionName, callback) { 
-		self._loadCollection( collectionName, callback ); 
-	};
-	
+
 	self._db.open(function (err, db) {
 		if (err === null) {
 			self._db.authenticate(self._dbInfo.username, self._dbInfo.password, function(err, status) {
 				if (self._dbInfo.collections) {
 					var collections = self._dbInfo.collections;
-					async.forEach (collections, iterator, callback);
+					async.forEach(collections, function(collectionName, next){
+						console.log(collectionName + " collection is loading..");
+						self._loadCollection( collectionName, function(){
+							console.log(collectionName + " collection is loaded!");
+							console.log(next);
+						});
+						next();
+					}, function(){
+						console.log("All collections loaded.");
+						callback();
+					});
 				} else {
 					callback(err, status);
 				}

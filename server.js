@@ -18,6 +18,7 @@ var bodyParser     = require('body-parser')
   ;
 
 var dbConfig = config.get('dbConfig');
+
 var dbInfo = {
   name: process.env.DB_NAME || dbConfig.name,
   url: process.env.DB_PATH || dbConfig.url,
@@ -97,10 +98,29 @@ mongo.connect(function(err) {
   var Admin = require('./routes/admin.js').initAdmin;
   routes.Admin = new Admin(mongo);
 
+  var twitterConfig = config.get('twitterConfig');
+
   passport.use(new TwitterStrategy({
-      consumerKey: "***REMOVED***",
-      consumerSecret: "***REMOVED***",
-      callbackURL: "http://firesauce.tv/auth/twitter/callback"
+    consumerKey: twitterConfig.consumerKey,
+    consumerSecret: twitterConfig.consumerSecret,
+    callbackURL: twitterConfig.callbackURL
+  }, function(token, tokenSecret, profile, done) {
+    console.log(token);
+    console.log(tokenSecret);
+    console.log(profile);
+
+    done(null, profile);
+
+    // User.findOrCreate(..., function(err, user) {
+    //   if (err) { return done(err); }
+    //   done(null, user);
+    // });
+  }));
+
+  passport.use(new TwitterStrategy({
+      consumerKey: twitterConfig.altConsumerKey,
+      consumerSecret: twitterConfig.altConsumerSecret,
+      callbackURL: twitterConfig.callbackURL
     },
     function(token, tokenSecret, profile, done) {
 
