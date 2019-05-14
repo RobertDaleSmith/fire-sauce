@@ -950,6 +950,9 @@ nav a:hover {
         outline:0;
         border-color: #4f6074;
     }
+    input#search_input::placeholder{
+        color: lightgrey;
+    }
 
     div#search_button{
         display: inline-block;

@@ -53,7 +53,7 @@
             <div id="search_container">
                
                 <div id="search_wrapper">
-                    <input id="search_input" type="text" placeholder="" value="" maxlength="16">
+                    <input id="search_input" type="text" placeholder="TwitterUserName" value="" maxlength="16">
                     <div id="search_button" title="Fetch channel's video tweets.">watch</div>
                 </div>
 
