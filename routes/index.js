@@ -11,7 +11,10 @@ var util = require('util');
 var bitlyConfig = config.get('bitlyConfig');
 var twitterConfig = config.get('twitterConfig');
 
-var bitlyAuth = { bitly: bitlyConfig };
+var bitlyAuth = { bitly: {
+	username: process.env.BITLY_NAME || twitterConfig.username,
+	apikey: process.env.BITLY_KEY || twitterConfig.apikey
+}};
 
 var twitterApi = new twitter({
 	consumer_key: process.env.TWITTER_KEY || twitterConfig.consumerKey,
