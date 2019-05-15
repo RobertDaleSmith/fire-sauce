@@ -26,7 +26,7 @@
                 <div class="name">FireSauceTV</div>
                 <img class="avatar" src="/img/logo_io_sq.jpg">
                 <div class="click_area"></div>
-                <a class="profile_link" href="https://twitter.com/intent/user?screen_name=FireSauceTV">
+                <a class="profile_link" href="https://twitter.com/intent/user?screen_name=FireSauceTV" target="_blank">
                     <div class="screen_name">@FireSauceTV</div>
                 </a>
                 <div class="follow_btn"><span>FOLLOW</span></div>
