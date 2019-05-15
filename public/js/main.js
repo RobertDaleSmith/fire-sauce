@@ -469,7 +469,7 @@ function renderTracks(tweets){
 			.append($('<a/>')
 				.addClass("started")
 				// .attr('title', moment( new Date(tweet.created_at)).format('llll') )
-				.attr('href','http://twitter.com/'+tweet.user.screen_name+'/status/'+tweet.id)
+				.attr('href','http://twitter.com/'+tweet.user+'/status/'+tweet.id)
 				.attr('target','_blank')
 				.append($('<span/>')
 					.addClass("fromNow")
