@@ -327,7 +327,7 @@ Index.prototype.getChannel = function( req, res ) {
 							console.log(channelData.name + " is a new Fire Sauce TV channel with " + channelData.trackCount + " tracks. :)");
 
 							// tweet about new channel with at least x videos found in prod only.
-							if (isProduction && channelData.trackCount > 20) {
+							if (isProduction && channelData.trackCount >= 10) {
 								var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.net/" + channelData.name + " #FireSauceTV";
 								twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 							}
