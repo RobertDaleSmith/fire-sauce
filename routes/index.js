@@ -23,6 +23,8 @@ var twitterApi = new twitter({
 	access_token_secret: process.env.TWITTER_TOKEN_SECRET || twitterConfig.accessTokenSecret
 });
 
+var isProduction = process.env.production;
+
 var Index = function( mongo ) {
 
 	var self = this;
@@ -322,11 +324,13 @@ Index.prototype.getChannel = function( req, res ) {
 						channelData.trackCount = newTracks.length;
 						
 						self._channels.addChannel(channelData, function( err, result ){
-							console.log(channelData.name + " is a new Fire Sauce TV channel. :)");
+							console.log(channelData.name + " is a new Fire Sauce TV channel with " + channelData.trackCount + " tracks. :)");
 
-							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.net/" + channelData.name + " #FireSauceTV";
-							twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
-
+							// tweet about new channel with at least x videos found in prod only.
+							if (isProduction && channelData.trackCount > 20) {
+								var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.net/" + channelData.name + " #FireSauceTV";
+								twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
+							}
 						});
 
 					} else { //Just update this users tracks.
