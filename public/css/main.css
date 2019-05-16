@@ -2057,6 +2057,7 @@ nav a:hover {
         width: auto;
         height: 48px;
         padding: 10px 10px 10px 48px;
+        background-color: rgba(0,0,0,0.66);
     }
 
         #channel_info_wrapper .avatar{
@@ -2114,6 +2115,7 @@ nav a:hover {
         top: 4px; right: 4px;
         font-size: 12px;
         max-width: calc(100% - 280px);
+        background-color: rgba(0,0,0,0.66);
     }
     @media (max-width: 359px){
         #track_tweet_wrapper{
