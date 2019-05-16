@@ -1,6 +1,6 @@
 Fire Sauce TV
 ==========
-Fire Sauce TV is an easy way to discover new video content through turning Twitter feeds into a TV channels. Submit any Twitter username to instantly find and watch all recently tweeted YouTube video urls.
+Fire Sauce TV is an easy way to discover new video content through turning Twitter feeds into TV channels. Submit any Twitter username to instantly find and watch all recently tweeted YouTube video urls.
 
 ### Channel URLs
 Appending a Twitter username to end of the `firesauce.net/` URL will automatically search and play that channel upon loading.
