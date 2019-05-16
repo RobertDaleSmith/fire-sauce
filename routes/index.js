@@ -324,7 +324,7 @@ Index.prototype.getChannel = function( req, res ) {
 						self._channels.addChannel(channelData, function( err, result ){
 							console.log(channelData.name + " is a new Fire Sauce TV channel. :)");
 
-							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at fire-sauce.herokuapp.com/" + channelData.name + " #FireSauceTV";
+							var shoutOutMsg = "@" + channelData.info.screen_name + " channel is now live at firesauce.net/" + channelData.name + " #FireSauceTV";
 							twitterApi.post('statuses/update', {status: shoutOutMsg}, function(error, tweet, response){});
 
 						});

@@ -19,7 +19,7 @@
     "consumerSecret": "",
     "accessTokenKey": "",
     "accessTokenSecret": "",
-    "callbackURL": "http://fire-sauce.herokuapp.com/auth/twitter/callback"
+    "callbackURL": "http://firesauce.net/auth/twitter/callback"
   },
   "bitlyConfig": {
     "username": "",

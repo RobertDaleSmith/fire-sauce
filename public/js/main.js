@@ -518,7 +518,7 @@ function renderTracks(tweets){
 						.attr('target','_blank')
 						.attr('title','Say something about it')
 						.attr('href','https://twitter.com/intent/tweet?in-reply-to='+tweet.id+
-									 '&related=firesaucetv%3AFire%20Sauce.TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
+									 '&related=firesaucetv%3AFire%20Sauce%20TV&url='+tweet.url.replace('https://','http://').replace('http://www.youtube.com/watch?v=','http://youtu.be/')+
 									 '&via='+tweet.user+
 									 '&hashtags=firesaucetv'
 						)
