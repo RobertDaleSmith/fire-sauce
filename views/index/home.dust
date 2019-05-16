@@ -104,7 +104,7 @@
                         <li class="track placeholder">Enter a Twitter username above<br>to see recently tweeted videos.</li>
                     </ul>
                     
-                    <div class="extension">
+                    <div class="extension" style="display: none;">
                         <a class="pure-button button-success" href="http://rdal.es/fsTVcrX" target="_blank">Try the Extension</a>
                     </div>
 
