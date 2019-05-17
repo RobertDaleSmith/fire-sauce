@@ -253,7 +253,7 @@ Index.prototype.getChannel = function( req, res ) {
 					next();
 				} else {
 					// New FireSauce channel or prevous is due for an update.
-					console.log('getting twitter user info');
+					console.log('getting twitter user info for ' + name);
 					twitterApi.get('users/show', {screen_name: name}, function(error, user, response) {
 
 						if(!error){

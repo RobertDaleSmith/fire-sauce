@@ -92,18 +92,13 @@ ChannelsMongo.prototype.addChannel = function ( channel, callback ){
 	channel.added = new Date();
 	channel.updated = new Date();
 
-	this.channels.insert( channel, function (error, channel) {
-		// console.log(error);
-		// console.log(channels);
-		callback(error, channel);
-	});
-	
 	this.channels.ensureIndex( { 'name': 1 }, { unique: true } );
 
 	this.channels.update(
 		{ name: channel.name },
 		channel,
-		{ upsert: true }
+		{ upsert: true },
+		callback
 	);
 
 }
