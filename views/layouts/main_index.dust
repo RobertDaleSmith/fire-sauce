@@ -17,20 +17,19 @@
         <meta name="apple-mobile-web-app-title" content="Fire Sauce TV">
 
         <!-- Twitter Card data -->
-        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@FireSauceTV">
         <meta name="twitter:title" content="Fire Sauce TV">
-        <meta name="twitter:description" content="Turning Twitter into TV">
+        <meta name="twitter:description" content="Find and watch tweeted YouTube videos.">
         <meta name="twitter:creator" content="@RobertDaleSmith">
-        <!-- Twitter summary card with large image must be at least 280x150px -->
-        <meta name="twitter:image:src" content="http://firesauce.net/twitter_card.png">
+        <meta name="twitter:image" content="http://firesauce.net/twitter_card.png">
 
         <!-- Open Graph data -->
         <meta property="og:title" content="Fire Sauce TV" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://firesauce.net/" />
         <meta property="og:image" content="http://firesauce.net/og-image.png" />
-        <meta property="og:description" content="Fire Sauce TV turns any Twitter feed into an human curated TV channel." />
+        <meta property="og:description" content="Find and watch tweeted YouTube videos." />
         <meta property="og:site_name" content="Fire Sauce TV" />
 
         <meta property="fb:admins" content="537257174" />
