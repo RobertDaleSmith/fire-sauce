@@ -68,7 +68,6 @@ textarea {
     padding: 0.2em 0;
 }
 
-
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
@@ -176,8 +175,6 @@ nav a:hover {
    FireSauce's custom styles
    ========================================================================== */
 
-
-
 .button-success,
 .button-error,
 .button-warning,
@@ -202,16 +199,6 @@ nav a:hover {
 .button-secondary {
     background: rgb(66, 184, 221); /* this is a light blue */
 }
-
-
-
-
-
-
-
-
-
-
 
 /* ==========================================================================
    Media Queries
@@ -417,14 +404,11 @@ nav a:hover {
     }
 }
 
-
-
-
-.ui-loader{
+.ui-loader {
     display: none;
 }
 
-#main_wrapper{
+#main_wrapper {
     display: block;
     position: absolute;
     top: 0px; left: 0px;
@@ -433,7 +417,7 @@ nav a:hover {
 
 }
 
-#player_viewport{
+#player_viewport {
     display: block;
     position: absolute;
     top: 0px; left: 0px;
@@ -445,12 +429,12 @@ nav a:hover {
          -o-transition: left 500ms, width 500ms;
             transition: left 500ms, width 500ms;
 }
-#main_wrapper.side_open #player_viewport{
+#main_wrapper.side_open #player_viewport {
     left: 320px;
     width: calc(100% - 320px);
 }
 
-#player_watermark{
+#player_watermark {
     display: block;
     position: absolute;
 
@@ -477,15 +461,15 @@ nav a:hover {
          -o-transition: opacity 500ms;
             transition: opacity 500ms;
 }
-#player_watermark:hover{
+#player_watermark:hover {
     opacity: 0.666;
 }
-#player_watermark.live{
+#player_watermark.live {
     opacity: 0.666;
 
 }
 
-#ytplayer{
+#ytplayer {
     display: block;
     position: relative;
     width: 100%;
@@ -493,7 +477,7 @@ nav a:hover {
 
 }
 
-#chrome_wrapper{
+#chrome_wrapper {
     display: block;
     position: absolute;
     top: 0; left: -320px;
@@ -508,11 +492,11 @@ nav a:hover {
          -o-transition: left 500ms;
             transition: left 500ms;
 }
-#main_wrapper.side_open #chrome_wrapper{
+#main_wrapper.side_open #chrome_wrapper {
     left: 0px;
 }
 
-#titlebar_wrapper{
+#titlebar_wrapper {
     display: inline-block;
     position: relative;
     float: left;
@@ -527,7 +511,7 @@ nav a:hover {
     background-color: rgba(0,0,0,0.25);
 
 }
-    #titlebar_wrapper .btn{
+    #titlebar_wrapper .btn {
         display: inline-block;
         position: relative;
         float: left;
@@ -543,33 +527,33 @@ nav a:hover {
         border-width: 0 0 1px 0;
         border-color: transparent;
     }
-    #titlebar_wrapper .btn:hover{
+    #titlebar_wrapper .btn:hover {
         border-color: rgba(255,255,255, 0.1);
         background-color:rgba(255,255,255,0.1);
     }
-    #titlebar_wrapper .btn:active{
+    #titlebar_wrapper .btn:active {
         color:#394658;
         border-color: #fff;
         background-color: #fff;
     }
-    #titlebar_wrapper .btn.active{
+    #titlebar_wrapper .btn.active {
         color: #fff;
         border-color: #59faad;
         background-color: rgba(255,255,255,0.1);
         cursor: default;
     }
-    #titlebar_wrapper .btn.active.watching{
+    #titlebar_wrapper .btn.active.watching {
         cursor: pointer;
     }
 
-#watch_wrapper{
+#watch_wrapper {
     display: inline-block;
     position: relative;
     width: 100%;
     height: calc(100% - 116px);
 }
 
-#history_wrapper, #channels_wrapper{
+#history_wrapper, #channels_wrapper {
     display: inline-block;
     position: relative;
     width: 100%;
@@ -580,7 +564,7 @@ nav a:hover {
     #suggested_wrapper,
     #followed_wrapper,
     #watched_wrapper,
-    #top100_wrapper{
+    #top100_wrapper {
         display: inline-block;
         position: relative;
         width: 100%; height: auto;
@@ -590,7 +574,7 @@ nav a:hover {
         #suggested_wrapper::before,
         #followed_wrapper::before,
         #watched_wrapper::before,
-        #top100_wrapper::before{
+        #top100_wrapper::before {
             content: '';
             display: inline-block;
             position: relative;
@@ -601,29 +585,29 @@ nav a:hover {
             line-height: 30px;
             font-weight: 300;
         }
-        #suggested_wrapper::before{
+        #suggested_wrapper::before {
             content:'SUGGESTED CHANNELS';
             display: inline-block;
             position: relative;
         }
-        #followed_wrapper::before{
+        #followed_wrapper::before {
             content:'FOLLOWED CHANNELS';
             display: inline-block;
             position: relative;
         }
-        #watched_wrapper::before{
+        #watched_wrapper::before {
             content:'PREVIOUSLY WATCHED';
             display: inline-block;
             position: relative;
         }
-        #top100_wrapper::before{
+        #top100_wrapper::before {
             content:'LEADERBOARD';
             display: inline-block;
             position: relative;
         }
 
         #history_wrapper .channel, 
-        #channels_wrapper .channel{
+        #channels_wrapper .channel {
             display: inline-block;
             position: relative;
             float: left;
@@ -642,16 +626,15 @@ nav a:hover {
                -moz-box-shadow: inset -1px 0 0 #36414f;
                     box-shadow: inset -1px 0 0 #36414f;
             background-color: transparent;
-
         }
         
         #history_wrapper .channel.edit,
-        #channels_wrapper .channel.edit{
+        #channels_wrapper .channel.edit {
             left:50px;
         }
 
             #history_wrapper .channel .options,
-            #channels_wrapper .channel .options{
+            #channels_wrapper .channel .options {
                 display: inline-block;
                 position: absolute;
                 left: -50px; top: 0px;
@@ -661,19 +644,19 @@ nav a:hover {
                 line-height: 72px;
             }
                 #history_wrapper .channel .options .btn.delete,
-                #channels_wrapper .channel .options .btn.delete{
+                #channels_wrapper .channel .options .btn.delete {
                     display: inline-block;
                     position: relative;
                     width: 100%; height: 100%;
                     color:#ffffff;
                 }
                 #history_wrapper .channel .options .btn.delete:active,
-                #channels_wrapper .channel .options .btn.delete:active{
+                #channels_wrapper .channel .options .btn.delete:active {
                     background-color:rgba(255, 0, 0, 0.7);
                 }
 
             #history_wrapper .channel .status,
-            #channels_wrapper .channel .status{
+            #channels_wrapper .channel .status {
                 display: inline-block;
                 position: absolute;
                 left: 0px; top: 0px;
@@ -681,12 +664,12 @@ nav a:hover {
                 background-color: transparent;
             }
             #history_wrapper .channel.active .status,
-            #channels_wrapper .channel.active .status{
+            #channels_wrapper .channel.active .status {
                 background-color: #59faad;
             }
 
             #history_wrapper .channel .info,
-            #channels_wrapper .channel .info{
+            #channels_wrapper .channel .info {
                 display: inline-block;
                 position: absolute;
                 left: 0px; top: 0px;
@@ -694,16 +677,16 @@ nav a:hover {
                 padding: inherit; 
             }
             #history_wrapper .channel .info:hover,
-            #channels_wrapper .channel .info:hover{
+            #channels_wrapper .channel .info:hover {
                 background-color: rgba(255,255,255,0.05);
             }
             #history_wrapper .channel .info:active,
-            #channels_wrapper .channel .info:active{
+            #channels_wrapper .channel .info:active {
                 background-color: rgba(255,255,255,0.1);
             }
 
                 #history_wrapper .channel .avatar,
-                #channels_wrapper .channel .avatar{
+                #channels_wrapper .channel .avatar {
                     display: inline-block;
                     position: absolute;
                     left: 10px; top: 10px;
@@ -711,7 +694,7 @@ nav a:hover {
                     border-radius: 48px;
                 }
                 #history_wrapper .channel .name,
-                #channels_wrapper .channel .name{
+                #channels_wrapper .channel .name {
                     display: inline-block;
                     position: relative;
                     float: left;
@@ -725,7 +708,7 @@ nav a:hover {
 
                 }
                 #history_wrapper .channel .screen_name,
-                #channels_wrapper .channel .screen_name{
+                #channels_wrapper .channel .screen_name {
                     display: inline-block;
                     position: relative;
                     float: left;
@@ -739,7 +722,7 @@ nav a:hover {
                     margin: 0px 0 8px 0;
                 }
                 #history_wrapper .channel .views,
-                #channels_wrapper .channel .views{
+                #channels_wrapper .channel .views {
                     display: inline-block;
                     position: absolute;
                     top: 10px;
@@ -754,15 +737,15 @@ nav a:hover {
                     background-color: rgba(0,0,0,0.2);
                     border-radius: 30px;
                 }
-                #channels_wrapper .channel .views{
+                #channels_wrapper .channel .views {
                     /*font-size: 18px;*/
                 }
                 #history_wrapper .channel.suggested .views,
-                #channels_wrapper .channel.suggested .views{
+                #channels_wrapper .channel.suggested .views {
                     display: none;
                 }
 
-            input.follow{
+            input.follow {
                 display: inline-block;
                 position: absolute;
                 bottom: 10px;
@@ -780,24 +763,24 @@ nav a:hover {
                 cursor: pointer;
                 color: #53D063;
             }
-            input.follow:active{
+            input.follow:active {
                 opacity: 0.7;
             }
-            input.follow:focus{
+            input.follow:focus {
                 outline:0;
                 border-color: rgba(83, 208, 99, 0.35);
             }
             #history_wrapper .channel.followed input.follow,
-            #channels_wrapper .channel.followed input.follow{
+            #channels_wrapper .channel.followed input.follow {
                 color: #f4f4f4;
                 background-color: #53D063;
                 border-color: #53D063;
             }
             #history_wrapper .channel.suggested input.follow,
-            #channels_wrapper .channel.suggested input.follow{
+            #channels_wrapper .channel.suggested input.follow {
                 display: none;
             }
-#settings_wrapper{
+#settings_wrapper {
     display: inline-block;
     position: relative;
     width: 100%;
@@ -897,7 +880,7 @@ nav a:hover {
             font-size: 10px;
         }
 
-#status_container{
+#status_container {
     display: inline-block;
     position: absolute;
     bottom: 0px; left: 0px;
@@ -905,7 +888,7 @@ nav a:hover {
     
 }
 
-#search_container{
+#search_container {
     display: inline-block;
     position: relative;
     width: 100%;
@@ -915,7 +898,7 @@ nav a:hover {
 }
 
 
-#search_wrapper{
+#search_wrapper {
     display: inline-block;
     position: relative;
     float: left;
@@ -925,7 +908,7 @@ nav a:hover {
     font-size: 22px;
 
 }
-#search_wrapper::after{
+#search_wrapper::after {
     content: '@';
     display: inline-block;
     position: absolute;
@@ -938,7 +921,7 @@ nav a:hover {
     line-height: 46px;
 }
 
-    input#search_input{
+    input#search_input {
         display: inline-block;
         position: relative;
         width: 100%;
@@ -957,15 +940,15 @@ nav a:hover {
             -ms-user-select: initial; /* IE 10+ */
                 user-select: initial;
     }
-    input#search_input:focus{
+    input#search_input:focus {
         outline:0;
         border-color: #4f6074;
     }
-    input#search_input::placeholder{
+    input#search_input::placeholder {
         color: lightgrey;
     }
 
-    div#search_button{
+    div#search_button {
         display: inline-block;
         position: absolute;
         top: 22px;
@@ -983,16 +966,13 @@ nav a:hover {
         cursor: pointer;
         color: #53D063;
     }
-    div#search_button:active{
+    div#search_button:active {
         opacity: 0.7;
     }
-    div#search_button:focus{
+    div#search_button:focus {
         outline:0;
         border-color: rgba(83, 208, 99, 0.35);
     }
-
-
-
 
     @-webkit-keyframes rotating /* Safari and Chrome */ {
       from {
@@ -1084,7 +1064,7 @@ nav a:hover {
               animation: dimming 1.5s linear infinite;
     }
 
-#searching_wrapper{
+#searching_wrapper {
     display: inline-block;
     position: absolute;
     top: initial; bottom: 0px;
@@ -1103,11 +1083,11 @@ nav a:hover {
          -o-transition: height ease-in 250ms, padding ease-in 250ms;
             transition: height ease-in 250ms, padding ease-in 250ms;
 }
-#searching_wrapper.searching{
+#searching_wrapper.searching {
     height: 44px;
     padding: 10px 0;
 }
-    #searching_spinner{
+    #searching_spinner {
         display: inline-block;
         position: relative;
         float: left;
@@ -1121,11 +1101,11 @@ nav a:hover {
         background-repeat: no-repeat;
         background-position: 2px 2px;
     }
-        /*#failed_wrapper #searching_spinner{
+        /*#failed_wrapper #searching_spinner {
             background-image: url('../img/logo_io.png');
         }*/
 
-    #searching_message{
+    #searching_message {
         display: inline-block;
         position: relative;
         float: left;
@@ -1134,7 +1114,7 @@ nav a:hover {
 
     }
 
-    input#cancel_search_button{
+    input#cancel_search_button {
         display: inline-block;
         position: absolute;
         top: 10px;
@@ -1152,14 +1132,14 @@ nav a:hover {
         cursor: pointer;
         color: #4f6074;
     }
-    input#cancel_search_button:active{
+    input#cancel_search_button:active {
         opacity: 0.7;
     }
-    input#cancel_search_button:focus{
+    input#cancel_search_button:focus {
         outline:0;
     }
 
-#failed_wrapper{
+#failed_wrapper {
     display: inline-block;
     position: absolute;
     top: initial; bottom: 0px;
@@ -1181,11 +1161,11 @@ nav a:hover {
             transition: height ease-in 250ms, padding ease-in 250ms;
 
 }
-#failed_wrapper.failed{
+#failed_wrapper.failed {
     height: 44px;
     padding: 10px 0;
 }
-    #failed_message{
+    #failed_message {
         display: inline-block;
         position: relative;
         float: left;
@@ -1194,7 +1174,7 @@ nav a:hover {
 
     }
 
-    input#close_failed_button{
+    input#close_failed_button {
         display: inline-block;
         position: absolute;
         top: 10px;
@@ -1212,15 +1192,14 @@ nav a:hover {
         cursor: pointer;
         color: #4f6074;
     }
-    input#close_failed_button:active{
+    input#close_failed_button:active {
         opacity: 0.7;
     }
-    input#close_failed_button:focus{
+    input#close_failed_button:focus {
         outline:0;
     }
 
-
-#schedule_wrapper{
+#schedule_wrapper {
     display: inline-block;
     position: relative;
     width: 100%;
@@ -1235,14 +1214,14 @@ nav a:hover {
     border-color: #4f6074;
 
 }
-    #progress_wrapper{
+    #progress_wrapper {
         display: block;
         position: absolute;
         top: 0px; left: 0px;
 
     }
 
-    .track{
+    .track {
         display: inline-block;
         position: relative;
         float:left;
@@ -1268,30 +1247,30 @@ nav a:hover {
 
         cursor: pointer;
     }
-    .track:active{
+    .track:active {
         /*background-color: rgba(0, 0, 0, 0.1);*/
     }
-    .track.placeholder{
+    .track.placeholder {
         cursor: default;
     }
-        .track .indicator{
+        .track .indicator {
             display: inline-block;
             position: absolute;
             left: 0px; top:0px;
             height: 100%; width: 5px;
             background-color: transparent;
         }
-        .track.playing .indicator{
+        .track.playing .indicator {
             background-color: #59faad !important;
         }
-        .track.watched .indicator{
+        .track.watched .indicator {
             background-color: rgba(89, 250, 173, 0.3);
         }
-        .track.error .indicator{
+        .track.error .indicator {
             background-color: lightcoral;
         }
 
-        .track .progress{
+        .track .progress {
             display: inline-block;
             position: absolute;
             left: 0px; top:0px;
@@ -1303,11 +1282,11 @@ nav a:hover {
                  -o-transition: width 1s;
                     transition: width 1s;*/
         }
-        .track.watched .progress{
+        .track.watched .progress {
             width: 100%;
         }
 
-        .track .avatar{
+        .track .avatar {
             display: inline-block;
             position: relative;
             float: left;
@@ -1317,7 +1296,7 @@ nav a:hover {
             border-radius: 32px;
         }
 
-        .track .user_name{
+        .track .user_name {
             display: inline-block;
             position: relative;
             float: left;
@@ -1335,7 +1314,7 @@ nav a:hover {
             
         }
 
-        .track .user_screen_name{
+        .track .user_screen_name {
             display: inline-block;
             position: relative;
             float: left;
@@ -1353,7 +1332,7 @@ nav a:hover {
             text-overflow: ellipsis;
         }
 
-        .track .started{
+        .track .started {
             display: inline-block;
             position: absolute;
             right: 15px;
@@ -1368,31 +1347,31 @@ nav a:hover {
             color: #ffffff;
             text-decoration: none;
         }
-        .track .started:hover{
+        .track .started:hover {
             text-decoration: underline;
         }  
             .track .started .fromNow,
-            .track .started .exactDate{
+            .track .started .exactDate {
                 display: inline-block;
                 position: relative;
                 width: auto; height: auto;
             }
             .track .started .fromNow:hover,
-            .track .started .exactDate:hover{
+            .track .started .exactDate:hover {
                 text-decoration: underline;
             }
-            .track .started .exactDate{
+            .track .started .exactDate {
                 display: none;
             }
-            .track .started:hover .exactDate{
+            .track .started:hover .exactDate {
                 display: inline-block;
             }
-            .track .started:hover .fromNow{
+            .track .started:hover .fromNow {
                 display: none;
             }
 
 
-        .track .btn.options{
+        .track .btn.options {
             display: inline-block;
             position: absolute;
             top:0px; right: 0px;
@@ -1404,16 +1383,16 @@ nav a:hover {
             color: #ffffff;
             font-size: 10px;
         }
-            .track .btn.options:hover{
+            .track .btn.options:hover {
                 background-color: rgba(0,0,0,0.1);
             }
-            .track .btn.options:active{
+            .track .btn.options:active {
                 background-color: #ffffff;
                 color: #000000;
             }
 
 
-        .track .text{
+        .track .text {
             display: inline-block;
             position: relative;
             float:left;
@@ -1434,7 +1413,7 @@ nav a:hover {
                     user-select: initial;
         }
 
-        .track .text .link:hover{
+        .track .text .link:hover {
             text-decoration: underline;
         }
 
@@ -1442,29 +1421,29 @@ nav a:hover {
             content: '@';
         }
 
-            .text a{
+            .text a {
                 text-decoration: none;
                 color: #ffffff;
             }
-            .text a:hover{
+            .text a:hover {
                 text-decoration: underline;
                 color: #59faad;
             }
-            .text .channel{
+            .text .channel {
                 display: inline-block;
                 position: relative;
                 width: auto; height: auto;
                 color: #59faad;
             }
-            .text .channel:hover{
+            .text .channel:hover {
                 text-decoration: underline;
 
             }
-            .track .text .emoji{
+            .track .text .emoji {
                 width: 16px;
             }
 
-            .text .errMsg{
+            .text .errMsg {
                 display: block;
                 position: relative;
                 width: 100%; height: auto;
@@ -1475,7 +1454,7 @@ nav a:hover {
                 /*opacity: 0.70;*/
             }
 
-        .track .url{
+        .track .url {
             display: inline-block;
             position: relative;
             float:left;
@@ -1484,8 +1463,7 @@ nav a:hover {
             font-size: 10px;
             text-align: left;
         }
-
-        .track .controls{
+        .track .controls {
             display: inline-block;
             position: relative;
             float:left;
@@ -1501,25 +1479,24 @@ nav a:hover {
         }*/
         .track.error .text,
         .track.error .text a,
-        .track.error .started{
+        .track.error .started {
             /*color: lightcoral;*/
             opacity: 0.70;
         }
 
-        .track .controls .group{
+        .track .controls .group {
             display: inline-block;
             position: relative;
             width: auto; height: auto;
             float: left;
         }
-        .track .controls .group.social{
+        .track .controls .group.social {
             display: inline-block;
             position: absolute;
             right: 0px;
             top: 0px;
         }
-
-            .track .controls .btn{
+            .track .controls .btn {
                 display: inline-block;
                 position: relative;
                 float: left;
@@ -1530,31 +1507,30 @@ nav a:hover {
                 cursor: pointer;
                 color: #ffffff;
             }
-            .track .controls .btn:hover{
+            .track .controls .btn:hover {
                 background-color: rgba(0,0,0,0.1);
             }
-            .track .controls .btn:active{
+            .track .controls .btn:active {
                 opacity: 1;
             }
-            .track .controls .btn.right{
+            .track .controls .btn.right {
                 float: right;
                 margin: 0 0 0 4px;
             }
-            .track .controls .btn.pause{
+            .track .controls .btn.pause {
                 display: none;
             }
-            .track.playing .controls .btn.pause{
+            .track.playing .controls .btn.pause {
                 display: inline-block;
             }
-            .track .controls .btn.fav.diamond{
+            .track .controls .btn.fav.diamond {
                 color: gold;
             }
-            .track .controls .btn.resauce.resauced{
+            .track .controls .btn.resauce.resauced {
                 color: lightgreen;
             }
 
-
-.timeSlider_holder{
+.timeSlider_holder {
     display: inline-block;
     display: none;
     position: absolute;
@@ -1573,12 +1549,11 @@ nav a:hover {
     overflow: hidden;
 }
 
-.timeSlider_holder:hover{
-    
+.timeSlider_holder:hover {
     bottom:0px;
 }
 
-#fractionLoaded{
+#fractionLoaded {
     display: inline-block;
     position: absolute;
     top:0px; left:0px;
@@ -1607,7 +1582,7 @@ nav a:hover {
             transition: top ease-in 250ms;
 
 }
-#player_viewport:hover .timeSlider{
+#player_viewport:hover .timeSlider {
     top: 0px;
 
     -webkit-transition: top ease-in 500ms;
@@ -1667,7 +1642,7 @@ nav a:hover {
   background-color: #CF3B30;
 }
 
-#timer_current{
+#timer_current {
     display:none;
     position: absolute;
     top: 1px;
@@ -1681,7 +1656,7 @@ nav a:hover {
     line-height: 10px;
 }
 
-#timer_duration{
+#timer_duration {
     display:none;
     position: absolute;
     top: 1px;
@@ -1695,7 +1670,7 @@ nav a:hover {
     line-height: 10px;
 }
 
-#channel_info_wrapper{
+#channel_info_wrapper {
     display: inline-block;
     position: absolute;
     top: 40px;
@@ -1711,12 +1686,11 @@ nav a:hover {
        -moz-transition: border-radius 500ms;
          -o-transition: border-radius 500ms;
             transition: border-radius 500ms;
-
 }
-#channel_info_wrapper.default{
+#channel_info_wrapper.default {
     cursor: default;
 }
-     #channel_info_wrapper .click_area{
+     #channel_info_wrapper .click_area {
         display: inline-block;
         position: absolute;
         left: 0px; top: 0px;
@@ -1724,7 +1698,7 @@ nav a:hover {
         border-radius: 48px;
     }
 
-    #channel_info_wrapper .avatar{
+    #channel_info_wrapper .avatar {
         display: inline-block;
         position: absolute;
         left: 10px; top: 10px;
@@ -1732,7 +1706,7 @@ nav a:hover {
         border-radius: 48px;
     }
 
-    #channel_info_wrapper .spinner{
+    #channel_info_wrapper .spinner {
         display: inline-block;
         position: absolute;
         left: 10px; top: 10px;
@@ -1753,26 +1727,22 @@ nav a:hover {
                 animation: rotating 2s linear infinite;
     }
     #channel_info_wrapper .spinner.rotating {
-
         left: 7px; top: 7px;
         width: 54px; height: 54px;
         border-radius: 54px;
         opacity: 1;
-
-        
     }
 
-    #channel_info_wrapper .name{
+    #channel_info_wrapper .name {
         display: block;
         position: relative;
         width: auto; height: auto;
         color:#fff;
         font-size: 20px;
         font-weight: 300;
-
     }
 
-    #channel_info_wrapper .profile_link{
+    #channel_info_wrapper .profile_link {
         display: block;
         position: relative;
         width: auto; height: auto;
@@ -1782,15 +1752,15 @@ nav a:hover {
         text-decoration: none;
         color: rgba(255,255,255,0.75);
     }
-    #channel_info_wrapper .profile_link:hover{
+    #channel_info_wrapper .profile_link:hover {
         text-decoration: underline;
     }
 
-        #channel_info_wrapper .screen_name{
+        #channel_info_wrapper .screen_name {
 
         }
 
-    #channel_info_wrapper .follow_btn{
+    #channel_info_wrapper .follow_btn {
         display: block;
         position: absolute;
         top: 68px;
@@ -1812,7 +1782,7 @@ nav a:hover {
                 transition: height 500ms;
 
     }
-        #channel_info_wrapper .follow_btn span{
+        #channel_info_wrapper .follow_btn span {
             display: inline-block;
             position: absolute;
             bottom: 0px;
@@ -1821,15 +1791,15 @@ nav a:hover {
             text-align: center;
         }
 
-#channel_info_wrapper.followed{
+#channel_info_wrapper.followed {
     border-radius: 6px;
 }
 
-    #channel_info_wrapper.followed .follow_btn{
+    #channel_info_wrapper.followed .follow_btn {
         height: 0px;
     }
 
-#track_tweet_wrapper{
+#track_tweet_wrapper {
     display: inline-block;
     position: absolute;
     top: 40px;   right: 30px;
@@ -1847,11 +1817,11 @@ nav a:hover {
 
     text-overflow: ellipsis;
 }
-    #track_tweet_wrapper a{
+    #track_tweet_wrapper a {
         color: rgba(255,255,255,0.66);
         text-decoration: none;
     }
-    #track_tweet_wrapper a:hover{
+    #track_tweet_wrapper a:hover {
         color: #59faad;
         /*text-decoration: underline;*/
     }
@@ -1862,7 +1832,7 @@ nav a:hover {
 
     #track_tweet_wrapper span.text,
     #track_tweet_wrapper span.text .channel,
-    #track_tweet_wrapper span.text .link{
+    #track_tweet_wrapper span.text .link {
         -webkit-user-select: initial;
          -khtml-user-select: initial;
            -moz-user-select: initial;
@@ -1870,10 +1840,10 @@ nav a:hover {
                 user-select: initial;
     }
     #track_tweet_wrapper span.text .channel,
-    #track_tweet_wrapper span.text .link{
+    #track_tweet_wrapper span.text .link {
         cursor: pointer;
     }
-    #track_tweet_wrapper span.text .link:hover{
+    #track_tweet_wrapper span.text .link:hover {
         text-decoration: underline;
     }
 
@@ -1883,7 +1853,7 @@ nav a:hover {
     }*/
 }
 
-#toggle_sidebar_btn{
+#toggle_sidebar_btn {
     display: inline-block;
     position: absolute;
     top: calc(50% - 50px);
@@ -1905,34 +1875,33 @@ nav a:hover {
          -o-transition: opacity 500ms;
             transition: opacity 500ms;
 }
-#toggle_sidebar_btn:hover{
+#toggle_sidebar_btn:hover {
     background-color: rgba(255,255,255,0.15);
     color: rgba(255,255,255,0.25);
 }
-#toggle_sidebar_btn:active{
+#toggle_sidebar_btn:active {
     background-color: rgba(255,255,255,1);
     color: rgba(0,0,0,1);
 }
-#player_viewport:hover #toggle_sidebar_btn{
+#player_viewport:hover #toggle_sidebar_btn {
     opacity: 1;
 }
 
-    #toggle_sidebar_btn .fa-chevron-left{
+    #toggle_sidebar_btn .fa-chevron-left {
         display: none;
     }
-    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-right{
+    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-right {
         display: none;
     }
-    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-left{
+    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-left {
         display: inline-block;
     }
 
-    #toggle_sidebar_btn .fa-chevron-up, #toggle_sidebar_btn .fa-chevron-down{
+    #toggle_sidebar_btn .fa-chevron-up, #toggle_sidebar_btn .fa-chevron-down {
         display: none;
     }
 
-
-#splash_wrapper{
+#splash_wrapper {
     display: inline-block;
     position: absolute;
     top:0px; left:0px;
@@ -1950,19 +1919,18 @@ nav a:hover {
          -o-transition: opacity 500ms;
             transition: opacity 500ms;
 }
-#splash_wrapper.done{
+#splash_wrapper.done {
     opacity: 0;
 }
-    #splash_wrapper .content{
+    #splash_wrapper .content {
         display: inline-block;
         position: relative;
         top: calc(50% - 192px);
 
         width: auto;
         height:auto;
-
     }
-        #splash_wrapper .logo{
+        #splash_wrapper .logo {
             display: inline-block;
             position: relative;
 
@@ -1975,7 +1943,7 @@ nav a:hover {
             background-size: 100% auto;
 
         }
-            #splash_wrapper .logo .iris{
+            #splash_wrapper .logo .iris {
                 display: inline-block;
                 position: absolute;
                 top: 108px;
@@ -1990,7 +1958,7 @@ nav a:hover {
                 background-size: 100% auto;
 
             }
-        #splash_wrapper .oneliner{
+        #splash_wrapper .oneliner {
           display: block;
           position: relative;
           width: auto;
@@ -2010,16 +1978,16 @@ nav a:hover {
             font-weight: normal;
         }
 
-@media (max-width: 812px){
+@media (max-width: 812px) {
 
-    #player_watermark{
+    #player_watermark {
         left: 20px;  bottom: 40px;
         width: 32px;
         height: 38px;
         background-size: 32px 38px;
     }
 
-    #channel_info_wrapper{
+    #channel_info_wrapper {
         top: 4px; left: 4px;
         width: auto;
         height: 48px;
@@ -2027,35 +1995,33 @@ nav a:hover {
         background-color: rgba(0,0,0,0.66);
     }
 
-        #channel_info_wrapper .avatar{
+        #channel_info_wrapper .avatar {
             width: 28px;
             height: 28px;
             border-radius: 28px;
         }
 
-        #channel_info_wrapper .spinner{
+        #channel_info_wrapper .spinner {
             width: 28px;
             height: 28px;
             border-radius: 28px;
         }
         #channel_info_wrapper .spinner.rotating {
-
             left: 7px; top: 7px;
             width: 34px; height: 34px;
             border-radius: 34px;
-            
         }
 
-        #channel_info_wrapper .name{
+        #channel_info_wrapper .name {
             line-height: 17px;
             font-size: 14px;
         }
 
-        #channel_info_wrapper .screen_name{
+        #channel_info_wrapper .screen_name {
             font-size: 10px;
         }
 
-        #channel_info_wrapper .profile_link{
+        #channel_info_wrapper .profile_link {
             font-size: 13px;
             line-height: 14px;
         }
@@ -2067,39 +2033,37 @@ nav a:hover {
             #channel_info_wrapper .follow_btn span {
                 height: 12px;
                 line-height: 12px;
-                font-size: 10px;
+                font-size: 7px;
             }
 
-    #track_tweet_wrapper{
+    #track_tweet_wrapper {
         top: 4px; right: 4px;
         font-size: 12px;
         max-width: calc(100% - 280px);
         background-color: rgba(0,0,0,0.66);
     }
-    @media (max-width: 359px){
-        #track_tweet_wrapper{
+    @media (max-width: 359px) {
+        #track_tweet_wrapper {
             display: none;
         }
     }
 }
 
 @media screen and (orientation: portrait) {
-
     #player_viewport{
-
         -webkit-transition: height 500ms;
            -moz-transition: height 500ms;
              -o-transition: height 500ms;
                 transition: height 500ms;
 
     }
-    #main_wrapper.side_open #player_viewport{
+    #main_wrapper.side_open #player_viewport {
         width: 100%;
         left: 0px;
         height: 40%;
     }
 
-    #chrome_wrapper{
+    #chrome_wrapper {
         top: initial;
         bottom: -100%;
         left: 0px;
@@ -2114,11 +2078,11 @@ nav a:hover {
                 transition: bottom 500ms;
 
     }
-    #main_wrapper.side_open #chrome_wrapper{
+    #main_wrapper.side_open #chrome_wrapper {
         bottom: 0%;
     }
 
-    #toggle_sidebar_btn{
+    #toggle_sidebar_btn {
         top: initial; bottom: 0px;
         left: calc(50% - 25px);
         width: 50px;
@@ -2126,18 +2090,18 @@ nav a:hover {
         line-height: 27px;
     }
     #toggle_sidebar_btn .fa-chevron-left, 
-    #toggle_sidebar_btn .fa-chevron-right{
+    #toggle_sidebar_btn .fa-chevron-right {
         display: none;
     }
-    #toggle_sidebar_btn .fa-chevron-up{
+    #toggle_sidebar_btn .fa-chevron-up {
         display: inline-block;
     }
 
     #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-left,
-    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-up{
+    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-up {
         display: none;
     }
-    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-down{
+    #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-down {
         display: inline-block;
     }
 }
