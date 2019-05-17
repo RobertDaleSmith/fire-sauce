@@ -2010,7 +2010,7 @@ nav a:hover {
             font-weight: normal;
         }
 
-@media (max-width: 720px){
+@media (max-width: 812px){
 
     #player_watermark{
         left: 20px;  bottom: 40px;
