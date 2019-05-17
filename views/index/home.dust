@@ -76,7 +76,7 @@
 
             <div class="panel" id="watch_wrapper" style="display:none;">
                 <ul id="schedule_wrapper">
-                    <li class="track placeholder">Enter a Twitter username<br>above to start watching.</li>
+                    <li class="track placeholder">Enter a Twitter username above<br>to see recently tweeted videos.</li>
                 </ul>
             </div>
             <div class="panel" id="history_wrapper" style="display:none;">
