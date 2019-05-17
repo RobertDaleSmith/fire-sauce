@@ -103,16 +103,15 @@
                     <ul id="schedule_wrapper">
                         <li class="track placeholder">Enter a Twitter username above<br>to see recently tweeted videos.</li>
                     </ul>
-                    
+
                     <div class="extension" style="display: none;">
                         <a class="pure-button button-success" href="https://chrome.google.com/webstore/detail/fire-sauce-tv/dgngdndfoepijbjffjmleionchodilpf" target="_blank">Try the Extension</a>
                     </div>
 
-                    <div class="reset">
-                        <div class="pure-button button-error" id="clear_history">Clear History</div>
+                    <div class="footer">
+                        <div class="reset"><div class="pure-button button-error" id="clear_history">Clear History</div></div>
+                        <a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin <a class="btc" href="bitcoin:1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt" target="_blank">1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt</a>
                     </div>
-
-                    <div class="footer"><a href="http://twitter.com/FireSauceTV" target="_blank">@FireSauceTV</a> by <a href="http://twitter.com/RobertDaleSmith" target="_blank">@RobertDaleSmith</a> &copy; 2015<br><i class="fa fa-btc"></i> bitcoin <a class="btc" href="bitcoin:1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt" target="_blank">1HVHBdCwo1ze1mMTq4Mk6nW7Vh184qRCmt</a></div>
                 </div>
             </div>
         </div>
