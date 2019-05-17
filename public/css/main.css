@@ -1942,7 +1942,7 @@ nav a:hover {
     text-align: center;
     opacity:1;
 
-    z-index: 1000;
+    z-index: 10010;
 
     -webkit-transition: opacity 500ms;
        -moz-transition: opacity 500ms;
