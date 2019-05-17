@@ -291,7 +291,7 @@ window.onresize = function onResizeEvent(event) {
 	if ( window.innerHeight > window.innerWidth ) 
 		 isNowPortrait = true;
 	else isNowPortrait = false;
-	if ( isNowPortrait != isPortrait ) updateTweetOverLayWidth();
+	/*if ( isNowPortrait != isPortrait )*/ updateTweetOverLayWidth();
 	isPortrait = isNowPortrait;
 }
 

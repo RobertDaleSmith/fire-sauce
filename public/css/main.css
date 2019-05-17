@@ -2010,41 +2010,7 @@ nav a:hover {
             font-weight: normal;
         }
 
-
-@media screen and (orientation: portrait) {
-
-    #player_viewport{
-
-        -webkit-transition: height 500ms;
-           -moz-transition: height 500ms;
-             -o-transition: height 500ms;
-                transition: height 500ms;
-
-    }
-    #main_wrapper.side_open #player_viewport{
-        width: 100%;
-        left: 0px;
-        height: 40%;
-    }
-
-    #chrome_wrapper{
-        top: initial;
-        bottom: -100%;
-        left: 0px;
-        width: 100%;
-        height: 60%;
-
-        z-index: 10002;
-
-        -webkit-transition: bottom 500ms;
-           -moz-transition: bottom 500ms;
-             -o-transition: bottom 500ms;
-                transition: bottom 500ms;
-
-    }
-    #main_wrapper.side_open #chrome_wrapper{
-        bottom: 0%;
-    }
+@media (max-width: 720px){
 
     #player_watermark{
         left: 20px;  bottom: 40px;
@@ -2104,14 +2070,6 @@ nav a:hover {
                 font-size: 10px;
             }
 
-    #channel_info_wrapper.followed{
-
-    }
-
-        #channel_info_wrapper.followed .follow_btn{
-
-        }
-
     #track_tweet_wrapper{
         top: 4px; right: 4px;
         font-size: 12px;
@@ -2122,6 +2080,42 @@ nav a:hover {
         #track_tweet_wrapper{
             display: none;
         }
+    }
+}
+
+@media screen and (orientation: portrait) {
+
+    #player_viewport{
+
+        -webkit-transition: height 500ms;
+           -moz-transition: height 500ms;
+             -o-transition: height 500ms;
+                transition: height 500ms;
+
+    }
+    #main_wrapper.side_open #player_viewport{
+        width: 100%;
+        left: 0px;
+        height: 40%;
+    }
+
+    #chrome_wrapper{
+        top: initial;
+        bottom: -100%;
+        left: 0px;
+        width: 100%;
+        height: 60%;
+
+        z-index: 10002;
+
+        -webkit-transition: bottom 500ms;
+           -moz-transition: bottom 500ms;
+             -o-transition: bottom 500ms;
+                transition: bottom 500ms;
+
+    }
+    #main_wrapper.side_open #chrome_wrapper{
+        bottom: 0%;
     }
 
     #toggle_sidebar_btn{
@@ -2146,7 +2140,4 @@ nav a:hover {
     #main_wrapper.side_open #toggle_sidebar_btn .fa-chevron-down{
         display: inline-block;
     }
-
-
-
 }
