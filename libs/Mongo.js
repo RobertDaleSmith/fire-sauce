@@ -2,12 +2,18 @@ var mongoDB = require('mongodb').Db;
 var mongoServer = require('mongodb').Server;
 var ReplSet = require('mongodb').ReplSet;
 var async = require('async');
+var util = require('util');
+var { MongoClient } = require('mongodb');
+var config = require('config');
+
+var dbConfig = config.get('dbConfig');
+
+// Connection URL
+var uri = process.env.DB_URL || 'mongodb://localhost:27017/fire-sauce';
 
 var Mongo = exports.Mongo = function( dbInfo ) {
 	if (typeof(dbInfo) !== 'undefined') {
 		this._dbInfo = dbInfo;
-		this._db = new mongoDB( dbInfo.name, new mongoServer( dbInfo.url, dbInfo.port, { auto_reconnect:true } ), { safe:true } );
-		this._collections = {};
 	}
 }
 
@@ -25,13 +31,17 @@ Mongo.prototype._loadCollection = function(collectionName, callback) {
 
 /* The callback will take two params, an error or null, and the database object*/
 Mongo.prototype.connect = function(callback) {
-	if (typeof(this._db) === 'undefined') {
-		callback(Error("No DB Info provided"));
-		return;
-	}
 	var self = this;
+	MongoClient.connect(uri, (err, client)=>{
+		console.log('Connected successfully to server');
+		self._db = client.db(self._dbInfo.name);
+		self._collections = {};
 
-	self._db.open(function (err, db) {
+		if (typeof(self._db) === 'undefined') {
+			callback(Error("No DB Info provided"));
+			return;
+		}
+
 		if (err === null) {
 			self._db.authenticate(self._dbInfo.username, self._dbInfo.password, function(err, status) {
 				if (self._dbInfo.collections) {
