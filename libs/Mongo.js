@@ -9,7 +9,7 @@ var config = require('config');
 var dbConfig = config.get('dbConfig');
 
 // Connection URL
-var uri = process.env.DB_URL || 'mongodb://localhost:27017/fire-sauce';
+var uri = process.env.DB_PATH || 'mongodb://localhost:27017/fire-sauce';
 
 var Mongo = exports.Mongo = function( dbInfo ) {
 	if (typeof(dbInfo) !== 'undefined') {
