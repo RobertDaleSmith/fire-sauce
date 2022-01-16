@@ -33,6 +33,12 @@ Mongo.prototype._loadCollection = function(collectionName, callback) {
 Mongo.prototype.connect = function(callback) {
 	var self = this;
 	MongoClient.connect(uri, (err, client)=>{
+		if(err) {
+			console.log(err);
+			callback(err);
+			return;
+		}
+
 		console.log('Connected successfully to server');
 		self._db = client.db(self._dbInfo.name);
 		self._collections = {};
