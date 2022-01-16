@@ -571,7 +571,7 @@ function renderTracks(tweets){
 		;
 		element.bind('click', function(e){
 			var self = this;
-			var classString = $(e.toElement).attr('class');
+			var classString = $(e.target).attr('class');
 			var preventClasses = [ "fa", "btn", "link", "channel", "exactDate" ];
 
 			// console.log(e);
@@ -591,8 +591,8 @@ function renderTracks(tweets){
 				// console.log('PING');
 				var parentEl;
 
-				if($(e.toElement).hasClass('track')) parentEl = $(e.toElement);
-				else parentEl = $(e.toElement).closest('li.track');
+				if($(e.target).hasClass('track')) parentEl = $(e.target);
+				else parentEl = $(e.target).closest('li.track');
 				// console.log(parentEl);
 				if(parentEl.hasClass('playing'))
 					videoPauseClickEvent(e, self);
@@ -922,8 +922,8 @@ function videoStartClickEvent(e, self){
 
 	var parentEl;
 	if(!self)self=this;
-	if($(e.toElement).hasClass('track')) parentEl = $(e.toElement);
-	else parentEl = $(e.toElement).closest('li.track');
+	if($(e.target).hasClass('track')) parentEl = $(e.target);
+	else parentEl = $(e.target).closest('li.track');
 
 	
 	if($(self).hasClass('restart')){
